@@ -109,24 +109,65 @@ public class Game {
         
         int diffAlpha = Math.abs(m1.getAlpha() - m2.getAlpha());
         int diffNumeric = Math.abs(m1.getNumeric() - m2.getNumeric());
-        int marbles; // number of marbles moved
         Marble m3 = null;
+        Marble rear = null;
         
         // broad conditions that the move MIGHT be legal
         if((diffAlpha <= 2) && diffNumeric <= 2){
             
+            
+            // find the marble between the selected marbles, or fail if there isn't one present
+            if(diffAlpha == 2 || diffNumeric == 2){
+                m3 = this.searchBoard( (m1.getAlpha()+m2.getAlpha())/2 , (m1.getNumeric()+m2.getNumeric())/2);
+                if(m3 == null){
+                    return false;
+                }
+            } 
+            
             // more specific success conditions, same row, same diagonal (1-4), same diagonal (2-5) respectively
             if(m1.getAlpha() == m2.getAlpha() || m1.getNumeric() == m2.getNumeric() || diffAlpha == diffNumeric){
+
+                // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
+                if(m1.getAlpha() == m2.getAlpha()){
+                    if(direction == 3){
+                        rear = (m1.getNumeric() < m2.getNumeric()) ? m1 : m2;
+                        return this.move(rear, direction, 0);
+                    }
+                    if(direction == 6){
+                        rear = (m1.getNumeric() < m2.getNumeric()) ? m2 : m1;
+                        return this.move(rear, direction, 0);
+                    }
+                }
+                
+                // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
+                if(m1.getNumeric() == m2.getNumeric()){
+                    if(direction == 1){
+                        rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
+                        return this.move(rear, direction, 0);
+                    }
+                    if(direction == 4){
+                        rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
+                        return this.move(rear, direction, 0);
+                    }
+                }
+                
+                // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
+                if(diffAlpha == diffNumeric){
+                    if(direction == 2){
+                        rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
+                        return this.move(rear, direction, 0);
+                    }
+                    if(direction == 5){
+                        rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
+                        return this.move(rear, direction, 0);
+                    }
+                }
+
                 m1.changePos(direction);
                 m2.changePos(direction);
-                // find the marble between the selected marbles, or fail if there isn't one present
-                if(diffAlpha == 2 || diffNumeric == 2){
-                    m3 = this.searchBoard( (m1.getAlpha()-m2.getAlpha())/2 , (m1.getNumeric()-m2.getNumeric())/2);
-                    if(m3 == null){
-                        return false;
-                    }
+                if(m3 != null){
                     m3.changePos(direction);
-                }     
+                }   
                 return true;
             } 
         }
@@ -134,10 +175,11 @@ public class Game {
         return false;
     }
     
+    
     /**
      * @param the move to add to a move history list
      */
-    private void addMoveToList(Move move){
+    public void addMoveToList(Move move){
         if(move.getMovedList().get(0).isBlack()){
             blackMoves.add(move);
         } else {
