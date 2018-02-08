@@ -21,14 +21,18 @@ public class TestDriver {
         test.addMarble(m1);
         test.addMarble(m2);
         test.addMarble(m3);
-        test.addMarble(m4);
+        //test.addMarble(m4);
         
         System.out.println(m1.toString());
         System.out.println(m2.toString());
         System.out.println(m3.toString());
         System.out.println(m4.toString());
         
-        test.move(m1, 1, 0);
+        // test.move(m1, 1, 0); <- this was an inline move to test
+        
+        test.move(m1, m2, 1);
+        
+        
         System.out.println(m1.toString());
         System.out.println(m2.toString());
         System.out.println(m3.toString());
