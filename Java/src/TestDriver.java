@@ -1,6 +1,5 @@
-/**
- * 
- */
+import javax.swing.JFrame;
+
 
 /**
  * @author Mike
@@ -23,20 +22,28 @@ public class TestDriver {
         test.addMarble(m3);
         //test.addMarble(m4);
         
-        System.out.println(m1.toString());
-        System.out.println(m2.toString());
-        System.out.println(m3.toString());
-        System.out.println(m4.toString());
+//        System.out.println(m1.toString());
+//        System.out.println(m2.toString());
+//        System.out.println(m3.toString());
+//        System.out.println(m4.toString());
         
         // test.move(m1, 1, 0); <- this was an inline move to test
         
         test.move(m1, m2, 1);
         
         
-        System.out.println(m1.toString());
-        System.out.println(m2.toString());
-        System.out.println(m3.toString());
-        System.out.println(m4.toString());
+//        System.out.println(m1.toString());
+//        System.out.println(m2.toString());
+//        System.out.println(m3.toString());
+//        System.out.println(m4.toString());
+        
+        final GameFrameTest frame = new GameFrameTest();
+        
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setSize(1000, 700);
+        frame.setVisible(true);
+        
+        
         
     }
 }

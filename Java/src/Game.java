@@ -115,7 +115,6 @@ public class Game {
         // broad conditions that the move MIGHT be legal
         if((diffAlpha <= 2) && diffNumeric <= 2){
             
-            
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
                 m3 = this.searchBoard( (m1.getAlpha()+m2.getAlpha())/2 , (m1.getNumeric()+m2.getNumeric())/2);
