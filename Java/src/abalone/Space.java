@@ -1,3 +1,4 @@
+package abalone;
 public class Space {
 
     private int alpha;

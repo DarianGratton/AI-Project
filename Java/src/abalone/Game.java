@@ -1,3 +1,5 @@
+package abalone;
+
 import java.util.ArrayList;
 
 /**
@@ -17,8 +19,8 @@ public class Game {
     
     // initial layouts to copy into game board; need to be filled in
     private static final ArrayList<Marble> standardLayout = new ArrayList<Marble>();
-    private ArrayList<Marble> germanDaisy;
-    private ArrayList<Marble> belgianDaisy;
+    private static ArrayList<Marble> germanDaisy;
+    private static ArrayList<Marble> belgianDaisy;
     
     // marbles lost by each player, respectively
     private int blackLost;
