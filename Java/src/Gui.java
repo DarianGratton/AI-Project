@@ -18,4 +18,8 @@ public class Gui {
             
         }
     }
+    
+    public void moveMarbles(Marble m1, int direction, boolean isBlack){
+        
+    }
 }
