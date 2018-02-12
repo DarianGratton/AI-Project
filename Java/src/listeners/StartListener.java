@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import abalone.Marble;
+import game.Marble;
 
 public class StartListener implements ActionListener {
 

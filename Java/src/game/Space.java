@@ -1,4 +1,4 @@
-package abalone;
+package game;
 public class Space {
 
     private int alpha;
