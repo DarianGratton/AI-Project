@@ -1,5 +1,4 @@
 
-
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -85,6 +84,7 @@ public class GameFrame extends JFrame {
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
      */
+
     public GameFrame() {
         setTitle("Abalone");
         
