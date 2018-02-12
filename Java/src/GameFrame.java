@@ -1,4 +1,3 @@
-package abalone;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -18,7 +17,7 @@ import javax.swing.JPanel;
 
 import listeners.StartListener;
 
-public class GameFrameTest extends JFrame {
+public class GameFrame extends JFrame {
     
     /**
      * Generated serial UID.
@@ -85,7 +84,8 @@ public class GameFrameTest extends JFrame {
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
      */
-    public GameFrameTest() {
+
+    public GameFrame() {
         setTitle("Abalone");
         
         this.setLayout(new BorderLayout());

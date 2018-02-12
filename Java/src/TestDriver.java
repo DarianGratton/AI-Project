@@ -37,7 +37,7 @@ public class TestDriver {
 //        System.out.println(m3.toString());
 //        System.out.println(m4.toString());
         
-        final GameFrameTest frame = new GameFrameTest();
+        final GameFrame frame = new GameFrame();
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);

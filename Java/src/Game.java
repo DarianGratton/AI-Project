@@ -28,6 +28,7 @@ public class Game {
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
     
+    // sets AI colour
     private boolean aiIsBlack;
     
     // next move as recommended by AI
