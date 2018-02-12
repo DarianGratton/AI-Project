@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -81,6 +82,9 @@ public class GameFrame extends JFrame {
     // Label for game time
     private JLabel gameTime;
     
+    //Creates an array list of coordinates of marbles.
+    private ArrayList<Space> spaceList;
+    
     /**
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
@@ -88,6 +92,8 @@ public class GameFrame extends JFrame {
 
     public GameFrame() {
         setTitle("Abalone");
+        
+        spaceList = new ArrayList<Space>();
         
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(), BorderLayout.CENTER);
@@ -240,28 +246,35 @@ public class GameFrame extends JFrame {
         super.paint(g);
         int y = 0;
         int x = 0;
-        int space = 500;
+        int blank = 500;
+        int c = 0;
         g.setColor(Color.GRAY);
         for(int j = 5; j <= 9; j++) {
-            x = space;
+            x = blank;
             y += 60;
-            for(int i = 0; i < j; i ++) {
+            for(int i = 1; i <= j; i ++) {
                 g.fillOval(x + 60, y, 65, 65);
+                c = (x + blank - 1000)/60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
                 x += 60;
             }
-            space -= 30;
+            blank -= 30;
         }
-        space = 410;
+        c =0;
+        blank = 410;
         for(int j = 8; j >= 5; j--) {
-            x = space;
+            x = blank;
             y += 60;
             for(int i = 0; i < j; i ++) {
                 g.fillOval(x + 60, y, 65, 65);
+                c = (x - blank - 1000)/60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
                 x += 60;
             }
-            space += 30;
+            blank += 30;
         }
         
     }
+
 
 }
