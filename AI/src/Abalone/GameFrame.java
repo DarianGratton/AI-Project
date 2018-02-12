@@ -1,4 +1,4 @@
-package Abalone;
+package abalone;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -10,6 +10,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
+    
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     
     private JPanel players;
     private JPanel game;
