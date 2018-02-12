@@ -9,6 +9,7 @@ import java.util.ArrayList;
  *
  */
 public class Move {
+    
     private ArrayList<Marble> movedList;
     private int direction;
     private long time;
@@ -81,5 +82,23 @@ public class Move {
      */
     public void addMovedToList(Marble moved){
         this.movedList.add(moved);
+    }
+    
+    /* (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        
+        sb.append("Move [");
+        
+        for(Marble m: movedList) {
+            sb.append("Marble [alpha=" + m.getAlpha() + ", numeric=" + m.getNumeric() + "] ");
+        }
+        
+        sb.append("direction=" + direction + ", time=" + time + "]");
+        
+        return sb.toString();
     }
 }

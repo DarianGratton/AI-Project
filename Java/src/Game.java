@@ -9,14 +9,14 @@ import java.util.ArrayList;
  *
  */
 public class Game {
-       
+    
     private ArrayList<Marble> board;
     
     // timer for total game; mostly for pausing purposes
     private long gameTime;
     
     // initial layouts to copy into game board; need to be filled in
-    private ArrayList<Marble> standardLayout;
+    private static final ArrayList<Marble> standardLayout = new ArrayList<Marble>();
     private ArrayList<Marble> germanDaisy;
     private ArrayList<Marble> belgianDaisy;
     
@@ -28,11 +28,167 @@ public class Game {
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
     
-
-    public Game(){
-        this.board = new ArrayList<Marble>();
-    }
+    private boolean aiIsBlack;
     
+    // next move as recommended by AI
+    private Move recommended;
+    
+    private int aiMoveLimit;
+    private int humanMoveLimit;
+    
+    // default unit is seconds?
+    private long aiTimeLimit;
+    private long humanTimeLimit;
+    
+
+    /**
+     * Default constructor; uses standard layout
+     */
+    public Game(){
+        this.board = standardLayout;
+        this.blackLost = 0;
+        this.whiteLost = 0;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
+        this.aiIsBlack = false;
+        this.aiMoveLimit = 100;
+        this.humanMoveLimit = this.aiMoveLimit;
+        this.aiTimeLimit = (long) 1000.0;
+        this.humanTimeLimit = this.aiTimeLimit;
+    } 
+    
+    /**
+     * @param board
+     * @param blackMoves
+     * @param whiteMoves
+     * @param aiIsBlack
+     * @param aiMoveLimit
+     * @param humanMoveLimit
+     * @param aiTimeLimit
+     * @param humanTimeLimit
+     */
+    public Game(ArrayList<Marble> layout, boolean aiIsBlack,
+            int aiMoveLimit, int humanMoveLimit, long aiTimeLimit, long humanTimeLimit) {
+        this.board = layout;
+        this.aiIsBlack = aiIsBlack;
+        this.aiMoveLimit = aiMoveLimit;
+        this.humanMoveLimit = humanMoveLimit;
+        this.aiTimeLimit = aiTimeLimit;
+        this.humanTimeLimit = humanTimeLimit;
+    }
+
+    /**
+     * @return the gameTime
+     */
+    public long getGameTime() {
+        return gameTime;
+    }
+
+    /**
+     * @param gameTime the gameTime to set
+     */
+    public void setGameTime(long gameTime) {
+        this.gameTime = gameTime;
+    }
+
+    /**
+     * @return the aiIsBlack
+     */
+    public boolean isAiIsBlack() {
+        return aiIsBlack;
+    }
+
+    /**
+     * @param aiIsBlack the aiIsBlack to set
+     */
+    public void setAiIsBlack(boolean aiIsBlack) {
+        this.aiIsBlack = aiIsBlack;
+    }
+
+    /**
+     * @return the recommended
+     */
+    public Move getRecommended() {
+        return recommended;
+    }
+
+    /**
+     * @param recommended the recommended to set
+     */
+    public void setRecommended(Move recommended) {
+        this.recommended = recommended;
+    }
+
+    /**
+     * @return the aiMoveLimit
+     */
+    public int getAiMoveLimit() {
+        return aiMoveLimit;
+    }
+
+    /**
+     * @param aiMoveLimit the aiMoveLimit to set
+     */
+    public void setAiMoveLimit(int aiMoveLimit) {
+        this.aiMoveLimit = aiMoveLimit;
+    }
+
+    /**
+     * @return the humanMoveLimit
+     */
+    public int getHumanMoveLimit() {
+        return humanMoveLimit;
+    }
+
+    /**
+     * @param humanMoveLimit the humanMoveLimit to set
+     */
+    public void setHumanMoveLimit(int humanMoveLimit) {
+        this.humanMoveLimit = humanMoveLimit;
+    }
+
+    /**
+     * @return the aiTimeLimit
+     */
+    public double getAiTimeLimit() {
+        return aiTimeLimit;
+    }
+
+    /**
+     * @param aiTimeLimit the aiTimeLimit to set
+     */
+    public void setAiTimeLimit(long aiTimeLimit) {
+        this.aiTimeLimit = aiTimeLimit;
+    }
+
+    /**
+     * @return the humanTimeLimit
+     */
+    public long getHumanTimeLimit() {
+        return humanTimeLimit;
+    }
+
+    /**
+     * @param humanTimeLimit the humanTimeLimit to set
+     */
+    public void setHumanTimeLimit(long humanTimeLimit) {
+        this.humanTimeLimit = humanTimeLimit;
+    }
+
+    /**
+     * @return the blackMoves
+     */
+    public ArrayList<Move> getBlackMoves() {
+        return blackMoves;
+    }
+
+    /**
+     * @return the whiteMoves
+     */
+    public ArrayList<Move> getWhiteMoves() {
+        return whiteMoves;
+    }
+
     public void addMarble(Marble m){
         this.board.add(m);
     }
@@ -184,6 +340,16 @@ public class Game {
         } else {
             whiteMoves.add(move);
         }
+    }
+    
+    // black's score = number of white marbles knocked out
+    public int getBlackScore(){
+        return this.whiteLost; 
+    }
+    
+    // white's score = number of black marbles knocked out
+    public int getWhiteScore(){
+        return this.blackLost;
     }
     
 }

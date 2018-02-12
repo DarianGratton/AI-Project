@@ -13,7 +13,9 @@ public class Gui {
         
     }
     
-    public void displayScore(){
-        
+    public void displayScore(Game g, boolean isBlack){
+        if(isBlack){
+            
+        }
     }
 }
