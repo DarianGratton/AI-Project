@@ -85,7 +85,11 @@ public class GameFrame extends JFrame {
     //Creates an array list of coordinates of marbles.
     private ArrayList<Space> spaceList;
     
-    /**
+    public ArrayList<Space> getSpaceList() {
+		return spaceList;
+	}
+
+	/**
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
      */
