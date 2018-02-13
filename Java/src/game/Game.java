@@ -11,42 +11,70 @@ import java.util.ArrayList;
  *
  */
 public class Game {
-    
+
     private ArrayList<Marble> board;
-    
+
     // timer for total game; mostly for pausing purposes
     private long gameTime;
-    
+
     // initial layouts to copy into game board; need to be filled in
-    private static final ArrayList<Marble> standardLayout = new ArrayList<Marble>() {
-        
-        
+    public static final ArrayList<Marble> standardLayout = new ArrayList<Marble>() {
+        {
+            add(new Marble(1, 1, true));
+            add(new Marble(1, 2, true));
+            add(new Marble(1, 3, true));
+            add(new Marble(1, 4, true));
+            add(new Marble(1, 5, true));
+            add(new Marble(2, 1, true));
+            add(new Marble(2, 2, true));
+            add(new Marble(2, 4, true));
+            add(new Marble(2, 5, true));
+            add(new Marble(2, 6, true));
+            add(new Marble(3, 3, true));
+            add(new Marble(3, 4, true));
+            add(new Marble(3, 5, true));        
+
+            add(new Marble(7, 5, false));
+            add(new Marble(7, 6, false));
+            add(new Marble(7, 7, false));
+            add(new Marble(8, 4, false));
+            add(new Marble(8, 5, false));
+            add(new Marble(8, 6, false));
+            add(new Marble(8, 7, false));
+            add(new Marble(8, 8, false));
+            add(new Marble(8, 9, false));
+            add(new Marble(9, 5, false));
+            add(new Marble(9, 6, false));
+            add(new Marble(9, 7, false));
+            add(new Marble(9, 8, false));
+            add(new Marble(9, 9, false));
+        }
     };
-    
+
     private static ArrayList<Marble> germanDaisy;
     private static ArrayList<Marble> belgianDaisy;
-    
+
     // marbles lost by each player, respectively
     private int blackLost;
     private int whiteLost;
-    
+
     // list of moves as objects per player
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
-    
+
     // sets AI colour
     private boolean aiIsBlack;
-    
+
     // next move as recommended by AI
     private Move recommended;
-    
+
     private int aiMoveLimit;
     private int humanMoveLimit;
-    
+
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
-    
+
 
     /**
      * Default constructor; uses standard layout
@@ -63,7 +91,7 @@ public class Game {
         this.aiTimeLimit = (long) 1000.0;
         this.humanTimeLimit = this.aiTimeLimit;
     } 
-    
+
     /**
      * @param board
      * @param blackMoves
@@ -84,6 +112,10 @@ public class Game {
         this.humanTimeLimit = humanTimeLimit;
     }
 
+    public ArrayList<Marble> getBoard(){
+        return this.board;
+    }
+    
     /**
      * @return the gameTime
      */
@@ -199,7 +231,7 @@ public class Game {
     public void addMarble(Marble m){
         this.board.add(m);
     }
-    
+
     /**
      * returns the marble at a given location, or null if there isn't one
      * @param alpha the lettered coordinate to search for
@@ -213,39 +245,39 @@ public class Game {
         }       
         return null;
     }
-    
+
     public Marble checkAdjacent(Marble m, int direction){
         switch (direction) {
-            // 1: top-left
-            case 1: return this.searchBoard(m.getAlpha()+1, m.getNumeric());
-            // 2: top-right
-            case 2: return this.searchBoard(m.getAlpha()+1, m.getNumeric()+1);
-            // 3: right
-            case 3:return this.searchBoard(m.getAlpha(), m.getNumeric()+1);
-            // 4: bottom-right
-            case 4: return this.searchBoard(m.getAlpha()-1, m.getNumeric());
-            // 5: bottom-left
-            case 5: return this.searchBoard(m.getAlpha()-1, m.getNumeric()-1);
-            // 6: left
-            case 6: return this.searchBoard(m.getAlpha()+1, m.getNumeric()-1);  
-    }
+        // 1: top-left
+        case 1: return this.searchBoard(m.getAlpha()+1, m.getNumeric());
+        // 2: top-right
+        case 2: return this.searchBoard(m.getAlpha()+1, m.getNumeric()+1);
+        // 3: right
+        case 3:return this.searchBoard(m.getAlpha(), m.getNumeric()+1);
+        // 4: bottom-right
+        case 4: return this.searchBoard(m.getAlpha()-1, m.getNumeric());
+        // 5: bottom-left
+        case 5: return this.searchBoard(m.getAlpha()-1, m.getNumeric()-1);
+        // 6: left
+        case 6: return this.searchBoard(m.getAlpha()+1, m.getNumeric()-1);  
+        }
         // fallback to break if something weird happens
         return null;
     }
-    
+
     /**
      * this version implements an inline move
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
     public boolean move(Marble moved, int direction){
-        
+
         Marble adjacent = null;
         boolean isBlack = moved.isBlack();
         int pushedFriend = 0;
-        
+
         adjacent = this.checkAdjacent(moved, direction);
-        
+
         if(adjacent == null){
             moved.changePos(direction);
             return true;
@@ -257,24 +289,24 @@ public class Game {
                 return true;
             }
         }
-        
+
         // default return
         return false;
     }
-    
+
     /**
      * this version implements an inline move, using an extra parameter for the recursive calls
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
     public boolean move(Marble moved, int direction, int pushedFriendly){
-        
+
         Marble adjacent = null;
         boolean isBlack = moved.isBlack();
         int pushedFriend = pushedFriendly;
-        
+
         adjacent = this.checkAdjacent(moved, direction);
-        
+
         if(adjacent == null){
             moved.changePos(direction);
             return true;
@@ -286,11 +318,11 @@ public class Game {
                 return true;
             }
         }
-        
+
         // default return
         return false;
     }
-    
+
     /**
      * this version implements a broadside move
      * @param m1 the first marble to move
@@ -298,15 +330,15 @@ public class Game {
      * @param direction the direction of the move
      */
     public boolean move(Marble m1, Marble m2, int direction) {
-        
+
         int diffAlpha = Math.abs(m1.getAlpha() - m2.getAlpha());
         int diffNumeric = Math.abs(m1.getNumeric() - m2.getNumeric());
         Marble m3 = null;
         Marble rear = null;
-        
+
         // broad conditions that the move MIGHT be legal
         if((diffAlpha <= 2) && diffNumeric <= 2){
-            
+
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
                 m3 = this.searchBoard( (m1.getAlpha()+m2.getAlpha())/2 , (m1.getNumeric()+m2.getNumeric())/2);
@@ -314,7 +346,7 @@ public class Game {
                     return false;
                 }
             } 
-            
+
             // more specific success conditions, same row, same diagonal (1-4), same diagonal (2-5) respectively
             if(m1.getAlpha() == m2.getAlpha() || m1.getNumeric() == m2.getNumeric() || diffAlpha == diffNumeric){
 
@@ -329,7 +361,7 @@ public class Game {
                         return this.move(rear, direction, 0);
                     }
                 }
-                
+
                 // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
                 if(m1.getNumeric() == m2.getNumeric()){
                     if(direction == 1){
@@ -341,7 +373,7 @@ public class Game {
                         return this.move(rear, direction, 0);
                     }
                 }
-                
+
                 // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
                 if(diffAlpha == diffNumeric){
                     if(direction == 2){
@@ -365,8 +397,8 @@ public class Game {
         // fallback case, move fails
         return false;
     }
-    
-    
+
+
     /**
      * @param the move to add to a move history list
      */
@@ -377,15 +409,15 @@ public class Game {
             whiteMoves.add(move);
         }
     }
-    
+
     // black's score = number of white marbles knocked out
     public int getBlackScore(){
         return this.whiteLost; 
     }
-    
+
     // white's score = number of black marbles knocked out
     public int getWhiteScore(){
         return this.blackLost;
     }
-    
+
 }
