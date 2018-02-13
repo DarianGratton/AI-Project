@@ -24,7 +24,6 @@ public class GameFrame extends JFrame {
      */
     private static final long serialVersionUID = 2986344142823166606L;
     
-    //private Game gameG;
     private Move move;
     
     // For scrolling if JPanel in History gets to big
@@ -138,7 +137,7 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         gameLabels.add(createLabel(new JLabel(), "Total game time: "));
-        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " /*+ gameG.getRecommended().toString()*/));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: "));
         
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
