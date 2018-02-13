@@ -7,6 +7,7 @@ import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -14,6 +15,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import listeners.StartListener;
@@ -26,7 +28,14 @@ public class GameFrame extends JFrame {
     private static final long serialVersionUID = 2986344142823166606L;
     
     private Game gameG;
-
+    private Move move;
+    
+    // For scrolling if JPanel in History gets to big
+    private JScrollPane vertical;
+    
+    // List of all moves taken
+    private ArrayList<String> moveList = new ArrayList<>(); 
+    
     // JPanel that contains the player boards
     private JPanel players;
     
@@ -49,8 +58,8 @@ public class GameFrame extends JFrame {
     // JPanel to hold Player info
     private JPanel playerInfo;
     
-    // JPanel for initial start
-    private JPanel startPanel;
+    // JPanel to hold history of everything (moves, time)
+    private JPanel museum;
     
     // Button for starting the game
     private JButton start;
@@ -91,6 +100,7 @@ public class GameFrame extends JFrame {
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
+        this.add(createMuseumPanel(), BorderLayout.EAST);
        
         // For testing proposes
         gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -157,6 +167,37 @@ public class GameFrame extends JFrame {
         return game;
     }
     
+    private JPanel createMuseumPanel() {
+        
+        museum = new JPanel();
+        museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
+        museum.add(createHistoryPanel(new JPanel(), new JLabel("White Move History")));
+        museum.add(createHistoryPanel(new JPanel(), new JLabel("Black Move History")));
+        
+        return museum;
+    }    
+    
+    private JPanel createHistoryPanel(JPanel panel, JLabel label) {
+        
+        panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setPreferredSize(new Dimension(200, 300));
+        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        panel.add(label);
+        JPanel console = new JPanel();
+        
+        vertical = new JScrollPane(console);
+        vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(vertical);
+        
+        for (int i = 0; i < move.getMovedList().size(); ++i) {
+            move.getMovedList().get(i).toString();
+        }           
+
+        return panel;
+    }
+    
     /**
      * Creates the individual player cards with their stats and 
      * color.
@@ -174,7 +215,7 @@ public class GameFrame extends JFrame {
             JLabel numTurns) {
         
         panel = new JPanel();
-        panel.setPreferredSize(new Dimension(300, 300));
+        panel.setPreferredSize(new Dimension(200, 300));
         panel.setLayout(new BorderLayout());
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
         
@@ -202,6 +243,7 @@ public class GameFrame extends JFrame {
     }
     
     /**
+     * Creates a button and adds a listener
      * 
      * @param button
      * @param text
@@ -235,7 +277,7 @@ public class GameFrame extends JFrame {
         super.paint(g);
         int y = 0;
         int x = 0;
-        int space = 500;
+        int space = 300;
         g.setColor(Color.GRAY);
         for(int j = 5; j <= 9; j++) {
             x = space;
@@ -246,7 +288,7 @@ public class GameFrame extends JFrame {
             }
             space -= 30;
         }
-        space = 410;
+        space = 210;
         for(int j = 8; j >= 5; j--) {
             x = space;
             y += 60;
