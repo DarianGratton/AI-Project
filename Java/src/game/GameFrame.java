@@ -138,6 +138,21 @@ public class GameFrame extends JFrame {
     private JPanel createGamePanel() {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
+        gameBoard.setLayout(new BoxLayout(gameBoard, BoxLayout.PAGE_AXIS));
+        
+        moveToMake = new JTextArea(2, 20);
+        moveToMake.setMaximumSize(moveToMake.getPreferredSize());
+        
+        gameBoard.add(moveToMake);
+        
+        makeMove = new JButton("Make Move");
+        gameBoard.add(makeMove);
+        
+        JPanel console = new JPanel();
+        
+        vertical = new JScrollPane(console);
+        vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        gameBoard.add(vertical);
         
         JPanel gameLabels = new JPanel();
         gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
