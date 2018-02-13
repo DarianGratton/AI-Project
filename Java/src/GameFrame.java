@@ -24,7 +24,7 @@ public class GameFrame extends JFrame {
      */
     private static final long serialVersionUID = 2986344142823166606L;
     
-    private Game gameG;
+    //private Game gameG;
     private Move move;
     
     // For scrolling if JPanel in History gets to big
