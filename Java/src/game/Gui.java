@@ -108,7 +108,7 @@ public abstract class Gui {
 		int numeric = m.getNumeric();
 		boolean isBlack = m.isBlack();
 
-		ArrayList <Space> list = frame.getSpaceList();
+		ArrayList<Space> list = frame.getSpaceList();
 		for(Space s : list) {
 			if(s.getAlpha() == alpha && s.getNum() == numeric) {
 				if(isBlack)
