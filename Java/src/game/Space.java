@@ -1,19 +1,23 @@
 package game;
 
-public class Space {
+import java.awt.geom.Ellipse2D;
+
+public class Space extends Ellipse2D.Double {
 
     private int alpha;
     private int num;
-    private int x;
-    private int y;
+    private double x;
+    private double y;
     
     private Space() {   }    
 
-    public Space(int alpha, int num, int x, int y) {
+    public Space(int alpha, int num, double x, double y) {
+        super(x, y, 65, 65);
         this.alpha = alpha;
         this.num = num;
         this.x = x;
         this.y = y;
+        
     }
 
     public int getAlpha() {
@@ -32,7 +36,7 @@ public class Space {
         this.num = num;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
@@ -42,15 +46,15 @@ public class Space {
         
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 }

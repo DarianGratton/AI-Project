@@ -73,9 +73,9 @@ public abstract class Gui {
 	 * @param direction
 	 * @param isBlack
 	 */
-	public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction, boolean isBlack){
+	public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction){
 		// short circuit and only continue if the player is trying to move their own marble
-		if(playerIsBlack == isBlack){
+		if(playerIsBlack == m1.isBlack()){
 			// check to see if move is valid
 			if(g.move(m1, m2, direction)){
 				g.addMoveToList(new Move(m1, m2, direction, System.nanoTime() - turnStart));
@@ -120,11 +120,11 @@ public abstract class Gui {
 					g.setColor(Color.BLACK);
 				else
 					g.setColor(Color.WHITE);
-				g.fillOval(s.getX(), s.getY(), 65, 65);
+				//g.fillOval(s.getX(), s.getY(), 65, 65);
 			}
 			else {
 				g.setColor(Color.BLACK);
-				g.drawOval(s.getX(), s.getY(), 65, 65);
+				//g.drawOval(s.getX(), s.getY(), 65, 65);
 			}
 				
 		}

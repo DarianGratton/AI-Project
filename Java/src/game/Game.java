@@ -109,10 +109,10 @@ public class Game {
              add(new Marble(2, 4, false));
              add(new Marble(2, 5, false));
              add(new Marble(2, 6, false));
-             add(new Marble(2, 7, false));
+             add(new Marble(3, 5, false));
              add(new Marble(3, 6, false));
              add(new Marble(7, 4, false));
-             add(new Marble(8, 3, false));
+             add(new Marble(7, 5, false));
              add(new Marble(8, 4, false));
              add(new Marble(8, 5, false));
              add(new Marble(8, 6, false));
