@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -165,9 +164,10 @@ public class GameFrame extends JFrame {
         options = new JPanel();
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
-        gameLabels.add(createLabel(new JLabel(), "Total game time: " + TestDriver.game.getGameTime()));
-        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: "  + TestDriver.game.getRecommended().toString() ));
         
+        gameLabels.add(createLabel(new JLabel(), "Total game time: "));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " + TestDriver.game.getRecommended().toString()));
+
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
         reset = createButton(reset, "Reset Game", null);

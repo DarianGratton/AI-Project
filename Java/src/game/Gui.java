@@ -25,8 +25,12 @@ public abstract class Gui {
 	/**
 	 * IDK if this needs to exist
 	 */
-	public static void startGame(){
+	public static Game startGame(ArrayList<Marble> layout, boolean aiIsBlack, int aiMoveLimit, int humanMoveLimit,
+            long aiTimeLimit, long humanTimeLimit){
 		turnStart = System.nanoTime();
+		
+		return new Game(layout, aiIsBlack, aiMoveLimit, humanMoveLimit,
+                aiTimeLimit, humanTimeLimit);
 	}
 
 	/**

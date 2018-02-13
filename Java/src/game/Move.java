@@ -15,6 +15,12 @@ public class Move {
     private int direction;
     private long time;
     
+    public Move() {
+        this.movedList = new ArrayList<Marble>();
+        this.direction = 0;
+        this.time = 0;
+    }
+    
     /**
      * @param moved
      * @param movedList
