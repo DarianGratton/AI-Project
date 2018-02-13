@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+
 /**
  * 
  */
@@ -74,29 +76,24 @@ public abstract class Gui {
         }
     }
     
-    public static void drawBoard(ArrayList<Marble> board){    
+    public static void drawBoard(ArrayList<Marble> board, GameFrame frame, Graphics g){    
         for(Marble m : board){
-           
+            drawMarble(m, frame, g);
         }
     }
-
-//    public static void drawMarble(Marble m){
-//        int alpha = m.getAlpha();
-//        int numeric = m.getNumeric();
-//        boolean isBlack = m.isBlack();
-//        
-//        
-//  }  
     
-    public void paintComponent(Graphics g, Marble m, GameFrame frame) {
-    	//super.paintComponent(g);
+    public static void drawMarble(Marble m, GameFrame frame, Graphics g) {
+        frame.paint(g);
     	int alpha = m.getAlpha();
         int numeric = m.getNumeric();
         boolean isBlack = m.isBlack();
+        
+        
   
         ArrayList <Space> list = frame.getSpaceList();
         for(Space s : list) {
         	if(s.getAlpha() == alpha && s.getNum() == numeric) {
+        	    
         		if(isBlack)
             		g.setColor(Color.BLACK);
             	else
@@ -104,9 +101,7 @@ public abstract class Gui {
         		g.fillOval(s.getX(), s.getY(), 65, 65);
         	}
         		
-        }
-        
-
+        }        
     }  
  
 }

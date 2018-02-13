@@ -1,4 +1,6 @@
 package game;
+import java.awt.Graphics;
+
 import javax.swing.JFrame;
 
 
@@ -26,7 +28,9 @@ public class TestDriver {
         frame.setSize(1000, 700);
         frame.setVisible(true);
         
+        Graphics g = frame.getGraphics();
         
+        Gui.drawBoard(test.getBoard(), frame, g);
         
     }
 }
