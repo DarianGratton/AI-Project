@@ -35,17 +35,20 @@ import game.TestDriver;public class StartListener implements ActionListener {
         JRadioButton standardButton = new JRadioButton("Standard");
         standardButton.setActionCommand(standardButton.getText());
 
+
+        
         JRadioButton germanButton = new JRadioButton("German Daisy");
         germanButton.setActionCommand(germanButton.getText());
-
+        
         JRadioButton belgianButton = new JRadioButton("Belgian Daisy");
         belgianButton.setActionCommand(standardButton.getText());
-
+        
         JRadioButton blackButton = new JRadioButton("Black");
         blackButton.setActionCommand(blackButton.getText());
-
+        
         JRadioButton whiteButton = new JRadioButton("White");
         whiteButton.setActionCommand(whiteButton.getText());
+        
 
         ButtonGroup boardGroup = new ButtonGroup();
         boardGroup.add(standardButton);
@@ -60,6 +63,7 @@ import game.TestDriver;public class StartListener implements ActionListener {
         startPanel.add(standardButton);
         startPanel.add(germanButton);
         startPanel.add(belgianButton);
+        
         startPanel.add(new JLabel("Choose your color: "));
         startPanel.add(blackButton);
         startPanel.add(whiteButton);        
@@ -80,6 +84,7 @@ import game.TestDriver;public class StartListener implements ActionListener {
                 "Game Settings", JOptionPane.OK_CANCEL_OPTION);
 
         if (result == JOptionPane.OK_OPTION) {
+
             if (standardButton.isSelected()) {
                 layout = Game.standardLayout;
 
@@ -105,6 +110,7 @@ import game.TestDriver;public class StartListener implements ActionListener {
 
             TestDriver.game = Gui.startGame(layout, aiIsBlack, aiMoveLimit, humanMoveLimit,
                     aiTimeLimit, humanTimeLimit);
+
         }
     }
 }
