@@ -260,7 +260,7 @@ public class GameFrame extends JFrame {
         playerInfo.add(createLabel(numTurns, "Total # of Moves: " /*+ move.getMovedList().size()*/));
         
         // Display time taken per move
-        playerInfo.add(createLabel(turnTime, "Turn Time: " + gameG.getGameTime()));
+        playerInfo.add(createLabel(turnTime, "Turn Time: " + TestDriver.game.getGameTime()));
                
         return panel;
     }
