@@ -158,6 +158,7 @@ public class Game {
         this.aiTimeLimit = (long) 1000.0;
         this.humanTimeLimit = this.aiTimeLimit;
         this.startTime = System.nanoTime();
+        this.recommended = new Move();
     } 
 
     /**
