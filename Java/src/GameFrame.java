@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
 
 import listeners.StartListener;
 
@@ -23,6 +24,8 @@ public class GameFrame extends JFrame {
      * Generated serial UID.
      */
     private static final long serialVersionUID = 2986344142823166606L;
+    
+    private Game gameG;
 
     // JPanel that contains the player boards
     private JPanel players;
@@ -77,9 +80,6 @@ public class GameFrame extends JFrame {
     private JLabel whiteNumMoves;
     private JLabel blackNumMoves;
     
-    // Label for game time
-    private JLabel gameTime;
-    
     /**
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
@@ -127,11 +127,14 @@ public class GameFrame extends JFrame {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
         
+        JPanel gameLabels = new JPanel();
+        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
+        
         options = new JPanel();
         options.setLayout(new BorderLayout());
-        
-        gameTime = createLabel(gameTime, "Total game time: ");
-        options.add(gameTime, BorderLayout.NORTH);
+        options.add(gameLabels, BorderLayout.NORTH);
+        gameLabels.add(createLabel(new JLabel(), "Total game time: "));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " /*+ gameG.getRecommended().toString()*/));
         
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
@@ -158,12 +161,12 @@ public class GameFrame extends JFrame {
      * Creates the individual player cards with their stats and 
      * color.
      * 
-     * @param panel
-     * @param teamLabel
-     * @param teamColor
-     * @param turnTime
-     * @param totalTurnTime
-     * @param numTurns
+     * @param panel Player Panel
+     * @param teamLabel Team Color label
+     * @param teamColor Team color
+     * @param turnTime turn time taken per player
+     * @param totalTurnTime sum of all turn time
+     * @param numTurns number of Turns player has taken
      * @return
      */
     private JPanel createMarblePanel(JPanel panel, JLabel teamLabel, 
@@ -176,32 +179,25 @@ public class GameFrame extends JFrame {
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
         
         teamLabel = createLabel(teamLabel, teamColor);
+        teamLabel.setBorder(new EmptyBorder( 0, 0, 20, 0));
         panel.add(teamLabel, BorderLayout.NORTH);
         
         playerInfo = new JPanel();
-        playerInfo.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(playerInfo, BorderLayout.SOUTH);
+        panel.add(playerInfo, BorderLayout.CENTER);
+        playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
+
+        // Display game score
+        playerInfo.add(createLabel(new JLabel(), "Total score: "));
         
-        turnTime = createLabel(turnTime, "Turn Time: ");
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.5;
-        playerInfo.add(turnTime, c);
+        // Display number of moves taken per player
+        playerInfo.add(createLabel(numTurns, "Total # of Moves: "));
         
-        totalTurnTime = createLabel(totalTurnTime, "Total Turn Time: ");
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weighty = 0.5;
-        playerInfo.add(totalTurnTime, c);
+        // Display time taken per move
+        playerInfo.add(createLabel(turnTime, "Turn Time: "));
         
-        numTurns = createLabel(numTurns, "Total # of Moves: ");
-        c.gridx = 0;
-        c.gridy = 2;
-        c.weighty = 0.5;
-        playerInfo.add(numTurns, c);
-        
+        // Sum of all the players turn times
+        playerInfo.add(createLabel(totalTurnTime, "Total Turn Time: "));
+               
         return panel;
     }
     

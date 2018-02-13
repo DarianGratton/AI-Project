@@ -27,6 +27,7 @@ public class StartListener implements ActionListener {
         boardGroup.add(standardButton);
         boardGroup.add(germanButton);
         boardGroup.add(belgianButton);
+        boardGroup.getElements().nextElement().getText();
         
         ButtonGroup playerGroup = new ButtonGroup();
         playerGroup.add(blackButton);
