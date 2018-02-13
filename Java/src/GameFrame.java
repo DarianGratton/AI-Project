@@ -24,6 +24,7 @@ public class GameFrame extends JFrame {
      */
     private static final long serialVersionUID = 2986344142823166606L;
     
+    private Game gameG;
     private Move move;
     
     // For scrolling if JPanel in History gets to big
@@ -50,7 +51,7 @@ public class GameFrame extends JFrame {
     
     // JPanel to hold Player info
     private JPanel playerInfo;
-    
+
     // JPanel to hold history of everything (moves, time)
     private JPanel museum;
     
@@ -81,7 +82,7 @@ public class GameFrame extends JFrame {
     // Label for number of moves taken
     private JLabel whiteNumMoves;
     private JLabel blackNumMoves;
-
+    
     /**
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
@@ -94,6 +95,7 @@ public class GameFrame extends JFrame {
         this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
+
        
         // For testing proposes
         gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -137,7 +139,7 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         gameLabels.add(createLabel(new JLabel(), "Total game time: "));
-        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: "));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " /*+ gameG.getRecommended().toString()*/));
         
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
@@ -160,10 +162,6 @@ public class GameFrame extends JFrame {
         return game;
     }
     
-    /**
-     * 
-     * @return
-     */
     private JPanel createMuseumPanel() {
         
         museum = new JPanel();
@@ -174,12 +172,6 @@ public class GameFrame extends JFrame {
         return museum;
     }    
     
-    /**
-     * 
-     * @param panel
-     * @param label
-     * @return
-     */
     private JPanel createHistoryPanel(JPanel panel, JLabel label) {
         
         panel = new JPanel();
@@ -194,7 +186,6 @@ public class GameFrame extends JFrame {
         vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(vertical);
         
-        // Prints all the moves to the JPanel
         for (int i = 0; i < move.getMovedList().size(); ++i) {
             move.getMovedList().get(i).toString();
         }           
@@ -220,6 +211,8 @@ public class GameFrame extends JFrame {
         
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 300));
+
+        teamLabel = createLabel(teamLabel, teamColor);
         teamLabel.setBorder(new EmptyBorder( 0, 0, 20, 0));
         panel.add(teamLabel, BorderLayout.NORTH);
         
@@ -277,7 +270,6 @@ public class GameFrame extends JFrame {
         super.paint(g);
         int y = 0;
         int x = 0;
-
         int space = 300;
         g.setColor(Color.GRAY);
         for(int j = 5; j <= 9; j++) {
