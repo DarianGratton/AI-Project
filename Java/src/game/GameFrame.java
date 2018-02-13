@@ -99,9 +99,10 @@ public class GameFrame extends JFrame {
         setTitle("Abalone");
         
         this.spaceList = new ArrayList<Space>();
+        BoardPanel board = new BoardPanel(Game.germanDaisy);
 
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(), BorderLayout.CENTER);
+        this.add(createGamePanel(board), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
 
@@ -139,12 +140,11 @@ public class GameFrame extends JFrame {
      * 
      * @return the game JPanel with all the swing elements
      */
-    private JPanel createGamePanel() {
+    private JPanel createGamePanel(BoardPanel  board) {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
         gameBoard.setLayout(new BorderLayout());
         
-        BoardPanel board = new BoardPanel(Game.germanDaisy);
         gameBoard.add(board, BorderLayout.CENTER);
         
         JPanel gameLabels = new JPanel();
