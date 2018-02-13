@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 public abstract class Gui {
 
     private static long turnStart;
+    private static ArrayList<Space> spaceList;
     
     /**
      * IDK if this needs to exist
@@ -65,9 +66,9 @@ public abstract class Gui {
      * @param direction
      * @param isBlack
      */
-    public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction, boolean isBlack){
+    public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction){
         // short circuit and only continue if the player is trying to move their own marble
-        if(playerIsBlack == isBlack){
+        if(playerIsBlack == m1.isBlack()){
             // check to see if move is valid
             if(g.move(m1, m2, direction)){
                 g.addMoveToList(new Move(m1, m2, direction, System.nanoTime() - turnStart));
@@ -76,32 +77,54 @@ public abstract class Gui {
         }
     }
     
-    public static void drawBoard(ArrayList<Marble> board, GameFrame frame, Graphics g){    
+    public static void drawBoard(ArrayList<Marble> board, GameFrame frame){    
+        Graphics g = frame.getGraphics().create();
+        frame.paint(g);
         for(Marble m : board){
             drawMarble(m, frame, g);
         }
+        g.dispose();
     }
     
     public static void drawMarble(Marble m, GameFrame frame, Graphics g) {
-        frame.paint(g);
-    	int alpha = m.getAlpha();
+    	
+        int alpha = m.getAlpha();
         int numeric = m.getNumeric();
-        boolean isBlack = m.isBlack();
-        
-        
+        boolean isBlack = m.isBlack();        
   
         ArrayList <Space> list = frame.getSpaceList();
         for(Space s : list) {
         	if(s.getAlpha() == alpha && s.getNum() == numeric) {
-        	    
         		if(isBlack)
             		g.setColor(Color.BLACK);
             	else
             		g.setColor(Color.WHITE);
         		g.fillOval(s.getX(), s.getY(), 65, 65);
         	}
-        		
-        }        
-    }  
- 
+        }
+    }
+    
+    public static void putMarblesInShit(ArrayList<Marble> marbles){
+        char[][] board = new char[10][10];
+
+        for(Marble m : marbles){
+            if(m.isBlack()){
+                board[m.getAlpha()][m.getNumeric()] = 'b';
+            } else {
+                board[m.getAlpha()][m.getNumeric()] = 'w';
+            }
+        }
+        
+        StringBuilder sb;
+        for(int i = 9; i > 0; i--){
+            for(int j = 1; j < 10; j++){
+                sb = new StringBuilder();
+                sb.append("[");
+                sb.append(board[i][j]);
+                sb.append("]");
+                System.out.print(sb.toString());
+            }
+            System.out.println();
+        }
+    }
 }

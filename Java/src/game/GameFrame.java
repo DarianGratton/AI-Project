@@ -275,12 +275,12 @@ public class GameFrame extends JFrame {
         int x = 0;
         int blank = 500;
         int c = 0;
-        g.setColor(Color.GRAY);
+        g.setColor(Color.BLACK);
         for(int j = 5; j <= 9; j++) {
             x = blank;
             y += 60;
             for(int i = 1; i <= j; i ++) {
-                g.fillOval(x + 60, y, 65, 65);
+                g.drawOval(x + 60, y, 65, 65);
                 c = (x + blank - 1000)/60;
                 spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
                 x += 60;
@@ -293,14 +293,13 @@ public class GameFrame extends JFrame {
             x = blank;
             y += 60;
             for(int i = 0; i < j; i ++) {
-                g.fillOval(x + 60, y, 65, 65);
+                g.drawOval(x + 60, y, 65, 65);
                 c = (x - blank - 1000)/60;
                 spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
                 x += 60;
             }
             blank += 30;
         }
-        
     }
 
 
