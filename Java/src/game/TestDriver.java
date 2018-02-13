@@ -20,17 +20,19 @@ public class TestDriver {
             System.out.println(m.toString());
         }
 
-    
-        
         final GameFrame frame = new GameFrame();
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
-        frame.setVisible(true);
+        frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
-        
+        frame.paintComponents(g);
         Gui.drawBoard(test.getBoard(), frame, g);
         
+//        Gui.moveMarbles(test, true, test.searchBoard(1,1), 2);
+//        frame.repaint();
+//        Gui.drawBoard(test.getBoard(), frame, g);
+       
     }
 }
