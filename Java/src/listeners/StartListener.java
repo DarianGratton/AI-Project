@@ -69,13 +69,13 @@ public class StartListener implements ActionListener {
         if (result == JOptionPane.OK_OPTION) {
             
             if (standardButton.isSelected()) {
-                layout = Game.getStandardlayout();
+                layout = Game.standardLayout;
                 
             } else if (germanButton.isSelected()) {
-                layout = Game.getGermanDaisy();
+                layout = Game.germanDaisy;
                 
             } else if (belgianButton.isSelected()) {
-                layout = Game.getBelgiandaisy();
+                layout = Game.belgianDaisy;
                 
             }
             

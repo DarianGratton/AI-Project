@@ -6,6 +6,10 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
+<<<<<<< HEAD
+=======
+import java.util.ArrayList;
+>>>>>>> origin/Dev
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -14,13 +18,16 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+<<<<<<< HEAD
 import javax.swing.JTextArea;
+=======
+>>>>>>> origin/Dev
 import javax.swing.border.EmptyBorder;
 
 import listeners.StartListener;
 
 public class GameFrame extends JFrame {
-    
+
     /**
      * Generated serial UID.
      */
@@ -88,6 +95,8 @@ public class GameFrame extends JFrame {
     private JButton makeMove;
     private JTextArea moveToMake;
     
+    private ArrayList<Space> spaceList;
+
     /**
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
@@ -95,18 +104,19 @@ public class GameFrame extends JFrame {
 
     public GameFrame() {
         setTitle("Abalone");
-        gameG = StartListener.getGame();
         
+        this.spaceList = new ArrayList<Space>();
+
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
-       
+
         // For testing proposes
         gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
         options.setBorder(BorderFactory.createLineBorder(Color.black));
     }
-    
+
     /**
      * Creates a JPanel containing each marble team and their different
      * player info.
@@ -114,21 +124,22 @@ public class GameFrame extends JFrame {
      * @return the players JPanel with all the swing elements
      */
     private JPanel createPlayerPanel() {
+
         
         players = new JPanel();
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
         
         players.add(createMarblePanel(whiteMarbles, whiteMarblePlayer,
                 "Team White: ", whiteTurnTime, whiteTotalTurnTime, whiteNumMoves,
-                gameG.getWhiteScore()));
+                TestDriver.game.getWhiteScore()));
         
         players.add(createMarblePanel(blackMarbles, blackMarblePlayer,
                 "Team Black: ", blackTurnTime, blackTotalTurnTime, blackNumMoves,
-                gameG.getBlackScore()));
+                TestDriver.game.getBlackScore()));
         
         return players;
     }
-    
+
     /**
      * Creates a JPanel containing the game-board itself and options pertaining
      * to game-board. 
@@ -160,8 +171,8 @@ public class GameFrame extends JFrame {
         options = new JPanel();
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
-        gameLabels.add(createLabel(new JLabel(), "Total game time: " + gameG.getGameTime()));
-        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " /* + gameG.getRecommended().toString() */));
+        gameLabels.add(createLabel(new JLabel(), "Total game time: " + TestDriver.game.getGameTime()));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: "  + TestDriver.game.getRecommended().toString() ));
         
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
@@ -170,12 +181,15 @@ public class GameFrame extends JFrame {
         
         optionButtons = new JPanel();
         options.add(optionButtons, BorderLayout.SOUTH);
-        
+
+        optionButtons = new JPanel();
+        options.add(optionButtons, BorderLayout.SOUTH);
+
         optionButtons.add(start);
         optionButtons.add(stop);
         optionButtons.add(reset);
         optionButtons.add(pause);
-        
+
         game = new JPanel();
         game.setLayout(new BoxLayout(game, BoxLayout.PAGE_AXIS));
         game.add(gameBoard);
@@ -183,19 +197,19 @@ public class GameFrame extends JFrame {
         
         return game;
     }
-    
+
     private JPanel createMuseumPanel() {
-        
+
         museum = new JPanel();
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
         museum.add(createHistoryPanel(new JPanel(), new JLabel("White Move History")));
         museum.add(createHistoryPanel(new JPanel(), new JLabel("Black Move History")));
         
         return museum;
-    }    
-    
+    }      
+
     private JPanel createHistoryPanel(JPanel panel, JLabel label) {
-        
+
         panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         panel.setPreferredSize(new Dimension(200, 300));
@@ -214,7 +228,7 @@ public class GameFrame extends JFrame {
 
         return panel;
     }
-    
+
     /**
      * Creates the individual player cards with their stats and 
      * color.
@@ -230,7 +244,7 @@ public class GameFrame extends JFrame {
     private JPanel createMarblePanel(JPanel panel, JLabel teamLabel, 
             String teamColor, JLabel turnTime, JLabel totalTurnTime, 
             JLabel numTurns, int score) {
-        
+
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 300));
 
@@ -256,7 +270,7 @@ public class GameFrame extends JFrame {
                
         return panel;
     }
-    
+
     /**
      * Creates a button and adds a listener
      * 
@@ -271,7 +285,7 @@ public class GameFrame extends JFrame {
         
         return button; 
     }
-    
+
     /**
      * Creates a JLabel that takes an label and sets it text to the 
      * inputed String parameter text. Sets the font and size.
@@ -302,40 +316,44 @@ public class GameFrame extends JFrame {
         this.gameG = gameG;
     }
 
-    
-//    public void paint(Graphics g) {  
-//        super.paint(g);
-//        int y = 0;
-//        int x = 0;
-//        int blank = 500;
-//        int c = 0;
-//        g.setColor(Color.GRAY);
-//        for(int j = 5; j <= 9; j++) {
-//            x = blank;
-//            y += 60;
-//            for(int i = 1; i <= j; i ++) {
-//                g.fillOval(x + 60, y, 65, 65);
-//                c = (x + blank - 1000)/60;
-//                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
-//                x += 60;
-//            }
-//            blank -= 30;
-//        }
-//        c =0;
-//        blank = 410;
-//        for(int j = 8; j >= 5; j--) {
-//            x = blank;
-//            y += 60;
-//            for(int i = 0; i < j; i ++) {
-//                g.fillOval(x + 60, y, 65, 65);
-//                c = (x - blank - 1000)/60;
-//                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
-//                x += 60;
-//            }
-//            blank += 30;
-//        }
-        
-    //}
+    public ArrayList<Space> getSpaceList(){
+        return this.spaceList;
+    }
+
+    public void paint(Graphics g) {  
+        super.paint(g);
+        int y = 0;
+        int x = 0;
+        int blank = 500;
+        int c = 0;
+        g.setColor(Color.BLACK);
+        for(int j = 5; j <= 9; j++) {
+            x = blank;
+            y += 60;
+            for(int i = 1; i <= j; i ++) {
+                g.drawOval(x + 60, y, 65, 65);
+                c = (x + blank - 1000)/60;
+                x += 60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
+
+            }
+            blank -= 30;
+        }
+        c =0;
+        blank = 410;
+        for(int j = 8; j >= 5; j--) {
+            x = blank;
+            y += 60;
+            for(int i = 0; i < j; i ++) {
+                g.drawOval(x + 60, y, 65, 65);
+                c = (x - blank - 1000)/60;
+                x += 60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
+
+            }
+            blank += 30;
+        }
+    }
 
 
 }

@@ -102,23 +102,23 @@ public class Game {
              add(new Marble(8, 8, true));
              add(new Marble(8, 9, true));
              add(new Marble(9, 8, true));
-             add(new Marble(9, 9, true));           
-             
+             add(new Marble(9, 9, true));
+
+             add(new Marble(1, 4, false));
+             add(new Marble(1, 5, false));
+             add(new Marble(2, 4, false));
              add(new Marble(2, 5, false));
              add(new Marble(2, 6, false));
-             add(new Marble(3, 5, false));
+             add(new Marble(2, 7, false));
              add(new Marble(3, 6, false));
-             add(new Marble(3, 7, false));
-             add(new Marble(4, 6, false));
-             add(new Marble(4, 7, false));
-             add(new Marble(6, 3, false));
-             add(new Marble(6, 4, false));
-             add(new Marble(7, 3, false));
              add(new Marble(7, 4, false));
-             add(new Marble(7, 5, false));
+             add(new Marble(8, 3, false));
              add(new Marble(8, 4, false));
              add(new Marble(8, 5, false));
-         }
+             add(new Marble(8, 6, false));
+             add(new Marble(9, 5, false));
+             add(new Marble(9, 6, false));
+        }
     }; 
 
     // marbles lost by each player, respectively
@@ -386,7 +386,7 @@ public class Game {
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
-    public boolean move(Marble moved, int direction, int pushedFriendly) {
+    public boolean move(Marble moved, int direction, int pushedFriendly){
 
         Marble adjacent = null;
         boolean isBlack = moved.isBlack();
@@ -473,12 +473,17 @@ public class Game {
                     }
                 }
 
-                m1.changePos(direction);
-                m2.changePos(direction);
-                if(m3 != null){
-                    m3.changePos(direction);
-                }   
-                return true;
+                // first case: only 2 marbles
+                if((checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && m3 == null) 
+                        // second case: 3 marbles involved
+                        || checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && checkAdjacent(m3, direction) == null){
+                    m1.changePos(direction);
+                    m2.changePos(direction);
+                    if(m3 != null){
+                        m3.changePos(direction);
+                    }   
+                    return true;
+                }      
             } 
         }
         // fallback case, move fails
@@ -507,24 +512,4 @@ public class Game {
         return this.blackLost;
     }
 
-    /**
-     * @return the germanDaisy
-     */
-    public static ArrayList<Marble> getGermanDaisy() {
-        return germanDaisy;
-    }
-
-    /**
-     * @return the standardlayout
-     */
-    public static ArrayList<Marble> getStandardlayout() {
-        return standardLayout;
-    }
-
-    /**
-     * @return the belgiandaisy
-     */
-    public static ArrayList<Marble> getBelgiandaisy() {
-        return belgianDaisy;
-    }
 }

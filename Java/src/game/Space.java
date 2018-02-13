@@ -1,4 +1,5 @@
 package game;
+
 public class Space {
 
     private int alpha;
@@ -38,6 +39,7 @@ public class Space {
     @Override
     public String toString() {
         return "Space [alpha=" + alpha + ", num=" + num + ", x=" + x + ", y=" + y + "]";
+        
     }
 
     public void setX(int x) {
@@ -51,5 +53,4 @@ public class Space {
     public void setY(int y) {
         this.y = y;
     }
-
 }
