@@ -100,14 +100,15 @@ public class GameFrame extends JFrame {
         
         this.spaceList = new ArrayList<Space>();
 
+        BoardPanel board = new BoardPanel(Game.belgianDaisy);
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(), BorderLayout.CENTER);
+        this.add(board, BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
 
         // For testing proposes
-        gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
-        options.setBorder(BorderFactory.createLineBorder(Color.black));
+        board.setBorder(BorderFactory.createLineBorder(Color.black));
+        //options.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
     /**
@@ -314,7 +315,7 @@ public class GameFrame extends JFrame {
         return this.spaceList;
     }
 
-    public void paint(Graphics g) {  
+    /*public void paint(Graphics g) {  
         super.paint(g);
         int y = 0;
         int x = 0;
@@ -348,6 +349,6 @@ public class GameFrame extends JFrame {
             blank += 30;
         }
     }
-
+*/
 
 }
