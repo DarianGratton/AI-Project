@@ -1,11 +1,10 @@
+package game;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
@@ -14,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
+import javax.swing.border.EmptyBorder;
 
 import listeners.StartListener;
 
@@ -23,7 +25,13 @@ public class GameFrame extends JFrame {
      * Generated serial UID.
      */
     private static final long serialVersionUID = 2986344142823166606L;
-
+    
+    private Game gameG;
+    private Move move;
+    
+    // For scrolling if JPanel in History gets to big
+    private JScrollPane vertical;
+    
     // JPanel that contains the player boards
     private JPanel players;
     
@@ -46,8 +54,8 @@ public class GameFrame extends JFrame {
     // JPanel to hold Player info
     private JPanel playerInfo;
     
-    // JPanel for initial start
-    private JPanel startPanel;
+    // JPanel to hold history of everything (moves, time)
+    private JPanel museum;
     
     // Button for starting the game
     private JButton start;
@@ -77,8 +85,8 @@ public class GameFrame extends JFrame {
     private JLabel whiteNumMoves;
     private JLabel blackNumMoves;
     
-    // Label for game time
-    private JLabel gameTime;
+    private JButton makeMove;
+    private JTextArea moveToMake;
     
     /**
      * Constructor that creates the initial state of the board.
@@ -87,10 +95,12 @@ public class GameFrame extends JFrame {
 
     public GameFrame() {
         setTitle("Abalone");
+        gameG = StartListener.getGame();
         
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
+        this.add(createMuseumPanel(), BorderLayout.EAST);
        
         // For testing proposes
         gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -109,10 +119,12 @@ public class GameFrame extends JFrame {
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
         
         players.add(createMarblePanel(whiteMarbles, whiteMarblePlayer,
-                "Team White: ", whiteTurnTime, whiteTotalTurnTime, whiteNumMoves));
+                "Team White: ", whiteTurnTime, whiteTotalTurnTime, whiteNumMoves,
+                gameG.getWhiteScore()));
         
         players.add(createMarblePanel(blackMarbles, blackMarblePlayer,
-                "Team Black: ", blackTurnTime, blackTotalTurnTime, blackNumMoves));
+                "Team Black: ", blackTurnTime, blackTotalTurnTime, blackNumMoves,
+                gameG.getBlackScore()));
         
         return players;
     }
@@ -127,11 +139,14 @@ public class GameFrame extends JFrame {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
         
+        JPanel gameLabels = new JPanel();
+        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
+        
         options = new JPanel();
         options.setLayout(new BorderLayout());
-        
-        gameTime = createLabel(gameTime, "Total game time: ");
-        options.add(gameTime, BorderLayout.NORTH);
+        options.add(gameLabels, BorderLayout.NORTH);
+        gameLabels.add(createLabel(new JLabel(), "Total game time: " + gameG.getGameTime()));
+        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " /* + gameG.getRecommended().toString() */));
         
         start = createButton(start, "Start Game", new StartListener());
         stop  = createButton(stop, "Stop Game", null);
@@ -154,58 +169,81 @@ public class GameFrame extends JFrame {
         return game;
     }
     
-    /**
-     * Creates the individual player cards with their stats and 
-     * color.
-     * 
-     * @param panel
-     * @param teamLabel
-     * @param teamColor
-     * @param turnTime
-     * @param totalTurnTime
-     * @param numTurns
-     * @return
-     */
-    private JPanel createMarblePanel(JPanel panel, JLabel teamLabel, 
-            String teamColor, JLabel turnTime, JLabel totalTurnTime, 
-            JLabel numTurns) {
+    private JPanel createMuseumPanel() {
+        
+        museum = new JPanel();
+        museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
+        museum.add(createHistoryPanel(new JPanel(), new JLabel("White Move History")));
+        museum.add(createHistoryPanel(new JPanel(), new JLabel("Black Move History")));
+        
+        return museum;
+    }    
+    
+    private JPanel createHistoryPanel(JPanel panel, JLabel label) {
         
         panel = new JPanel();
-        panel.setPreferredSize(new Dimension(300, 300));
-        panel.setLayout(new BorderLayout());
+        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+        panel.setPreferredSize(new Dimension(200, 300));
         panel.setBorder(BorderFactory.createLineBorder(Color.black));
         
-        teamLabel = createLabel(teamLabel, teamColor);
-        panel.add(teamLabel, BorderLayout.NORTH);
+        panel.add(label);
+        JPanel console = new JPanel();
         
-        playerInfo = new JPanel();
-        playerInfo.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        panel.add(playerInfo, BorderLayout.SOUTH);
+        vertical = new JScrollPane(console);
+        vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        panel.add(vertical);
         
-        turnTime = createLabel(turnTime, "Turn Time: ");
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 0.5;
-        playerInfo.add(turnTime, c);
-        
-        totalTurnTime = createLabel(totalTurnTime, "Total Turn Time: ");
-        c.gridx = 0;
-        c.gridy = 1;
-        c.weighty = 0.5;
-        playerInfo.add(totalTurnTime, c);
-        
-        numTurns = createLabel(numTurns, "Total # of Moves: ");
-        c.gridx = 0;
-        c.gridy = 2;
-        c.weighty = 0.5;
-        playerInfo.add(numTurns, c);
-        
+//        for (int i = 0; i < move.getMovedList().size(); ++i) {
+//            move.getMovedList().get(i).toString();
+//        }           
+
         return panel;
     }
     
     /**
+     * Creates the individual player cards with their stats and 
+     * color.
+     * 
+     * @param panel Player Panel
+     * @param teamLabel Team Color label
+     * @param teamColor Team color
+     * @param turnTime turn time taken per player
+     * @param totalTurnTime sum of all turn time
+     * @param numTurns number of Turns player has taken
+     * @return
+     */
+    private JPanel createMarblePanel(JPanel panel, JLabel teamLabel, 
+            String teamColor, JLabel turnTime, JLabel totalTurnTime, 
+            JLabel numTurns, int score) {
+        
+        panel = new JPanel();
+        panel.setPreferredSize(new Dimension(200, 300));
+
+        panel.setLayout(new BorderLayout());
+        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        
+        teamLabel = createLabel(teamLabel, teamColor);
+        teamLabel.setBorder(new EmptyBorder( 0, 0, 20, 0));
+        panel.add(teamLabel, BorderLayout.NORTH);
+        
+        playerInfo = new JPanel();
+        panel.add(playerInfo, BorderLayout.CENTER);
+        playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
+
+        // Display game score
+        playerInfo.add(createLabel(new JLabel(), "Total score: " + score));
+        
+        // Display number of moves taken per player
+        playerInfo.add(createLabel(numTurns, "Total # of Moves: " /*+ move.getMovedList().size()*/));
+        
+        // Display time taken per move
+        playerInfo.add(createLabel(turnTime, "Turn Time: " + gameG.getGameTime()));
+               
+        return panel;
+    }
+    
+    /**
+     * Creates a button and adds a listener
      * 
      * @param button
      * @param text
@@ -235,32 +273,54 @@ public class GameFrame extends JFrame {
         return label;
     }
     
-    public void paint(Graphics g) {  
-        super.paint(g);
-        int y = 0;
-        int x = 0;
-        int space = 500;
-        g.setColor(Color.GRAY);
-        for(int j = 5; j <= 9; j++) {
-            x = space;
-            y += 60;
-            for(int i = 0; i < j; i ++) {
-                g.fillOval(x + 60, y, 65, 65);
-                x += 60;
-            }
-            space -= 30;
-        }
-        space = 410;
-        for(int j = 8; j >= 5; j--) {
-            x = space;
-            y += 60;
-            for(int i = 0; i < j; i ++) {
-                g.fillOval(x + 60, y, 65, 65);
-                x += 60;
-            }
-            space += 30;
-        }
-        
+    /**
+     * @return the gameG
+     */
+    public Game getGameG() {
+        return gameG;
     }
+
+    /**
+     * @param gameG the gameG to set
+     */
+    public void setGameG(Game gameG) {
+        this.gameG = gameG;
+    }
+
+    
+//    public void paint(Graphics g) {  
+//        super.paint(g);
+//        int y = 0;
+//        int x = 0;
+//        int blank = 500;
+//        int c = 0;
+//        g.setColor(Color.GRAY);
+//        for(int j = 5; j <= 9; j++) {
+//            x = blank;
+//            y += 60;
+//            for(int i = 1; i <= j; i ++) {
+//                g.fillOval(x + 60, y, 65, 65);
+//                c = (x + blank - 1000)/60;
+//                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
+//                x += 60;
+//            }
+//            blank -= 30;
+//        }
+//        c =0;
+//        blank = 410;
+//        for(int j = 8; j >= 5; j--) {
+//            x = blank;
+//            y += 60;
+//            for(int i = 0; i < j; i ++) {
+//                g.fillOval(x + 60, y, 65, 65);
+//                c = (x - blank - 1000)/60;
+//                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
+//                x += 60;
+//            }
+//            blank += 30;
+//        }
+        
+    //}
+
 
 }
