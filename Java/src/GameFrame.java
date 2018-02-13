@@ -51,7 +51,7 @@ public class GameFrame extends JFrame {
     
     // JPanel to hold Player info
     private JPanel playerInfo;
-
+    
     // JPanel to hold history of everything (moves, time)
     private JPanel museum;
     
@@ -95,7 +95,6 @@ public class GameFrame extends JFrame {
         this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
-
        
         // For testing proposes
         gameBoard.setBorder(BorderFactory.createLineBorder(Color.black));
@@ -186,9 +185,9 @@ public class GameFrame extends JFrame {
         vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         panel.add(vertical);
         
-        for (int i = 0; i < move.getMovedList().size(); ++i) {
-            move.getMovedList().get(i).toString();
-        }           
+//        for (int i = 0; i < move.getMovedList().size(); ++i) {
+//            move.getMovedList().get(i).toString();
+//        }           
 
         return panel;
     }
@@ -212,6 +211,9 @@ public class GameFrame extends JFrame {
         panel = new JPanel();
         panel.setPreferredSize(new Dimension(200, 300));
 
+        panel.setLayout(new BorderLayout());
+        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        
         teamLabel = createLabel(teamLabel, teamColor);
         teamLabel.setBorder(new EmptyBorder( 0, 0, 20, 0));
         panel.add(teamLabel, BorderLayout.NORTH);
