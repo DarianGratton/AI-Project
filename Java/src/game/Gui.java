@@ -125,5 +125,27 @@ public abstract class Gui {
 		}
 
 	}  
+    public static void putMarblesInShit(ArrayList<Marble> marbles){
+        char[][] board = new char[10][10];
 
+        for(Marble m : marbles){
+            if(m.isBlack()){
+                board[m.getAlpha()][m.getNumeric()] = 'b';
+            } else {
+                board[m.getAlpha()][m.getNumeric()] = 'w';
+            }
+        }
+        
+        StringBuilder sb;
+        for(int i = 9; i > 0; i--){
+            for(int j = 1; j < 10; j++){
+                sb = new StringBuilder();
+                sb.append("[");
+                sb.append(board[i][j]);
+                sb.append("]");
+                System.out.print(sb.toString());
+            }
+            System.out.println();
+        }
+    }
 }

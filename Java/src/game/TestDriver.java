@@ -15,10 +15,6 @@ public class TestDriver {
      */
     public static void main(String[] args) {
         Game test = new Game(Game.belgianDaisy, true, 0, 0, 100, 100);
-        
-        for(Marble m : test.getBoard()){
-            System.out.println(m.toString());
-        }
 
         final GameFrame frame = new GameFrame();
         

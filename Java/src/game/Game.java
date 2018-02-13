@@ -109,10 +109,10 @@ public class Game {
              add(new Marble(2, 4, false));
              add(new Marble(2, 5, false));
              add(new Marble(2, 6, false));
-             add(new Marble(3, 5, false));
+             add(new Marble(2, 7, false));
              add(new Marble(3, 6, false));
              add(new Marble(7, 4, false));
-             add(new Marble(7, 5, false));
+             add(new Marble(8, 3, false));
              add(new Marble(8, 4, false));
              add(new Marble(8, 5, false));
              add(new Marble(8, 6, false));
@@ -473,12 +473,17 @@ public class Game {
                     }
                 }
 
-                m1.changePos(direction);
-                m2.changePos(direction);
-                if(m3 != null){
-                    m3.changePos(direction);
-                }   
-                return true;
+                // first case: only 2 marbles
+                if((checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && m3 == null) 
+                        // second case: 3 marbles involved
+                        || checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && checkAdjacent(m3, direction) == null){
+                    m1.changePos(direction);
+                    m2.changePos(direction);
+                    if(m3 != null){
+                        m3.changePos(direction);
+                    }   
+                    return true;
+                }      
             } 
         }
         // fallback case, move fails
