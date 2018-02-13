@@ -82,9 +82,6 @@ public class GameFrame extends JFrame {
     // Label for number of moves taken
     private JLabel whiteNumMoves;
     private JLabel blackNumMoves;
-    
-    // Label for game time
-    private JLabel gameTime;
 
     /**
      * Constructor that creates the initial state of the board.
