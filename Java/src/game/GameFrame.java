@@ -100,14 +100,13 @@ public class GameFrame extends JFrame {
         
         this.spaceList = new ArrayList<Space>();
 
-        BoardPanel board = new BoardPanel(Game.germanDaisy);
         this.setLayout(new BorderLayout());
-        this.add(board, BorderLayout.CENTER);
+        this.add(createGamePanel(), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
 
         // For testing proposes
-        board.setBorder(BorderFactory.createLineBorder(Color.black));
+        // board.setBorder(BorderFactory.createLineBorder(Color.black));
         //options.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
@@ -143,21 +142,10 @@ public class GameFrame extends JFrame {
     private JPanel createGamePanel() {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
-        gameBoard.setLayout(new BoxLayout(gameBoard, BoxLayout.PAGE_AXIS));
+        gameBoard.setLayout(new BorderLayout());
         
-        moveToMake = new JTextArea(2, 20);
-        moveToMake.setMaximumSize(moveToMake.getPreferredSize());
-        
-        gameBoard.add(moveToMake);
-        
-        makeMove = new JButton("Make Move");
-        gameBoard.add(makeMove);
-        
-        JPanel console = new JPanel();
-        
-        vertical = new JScrollPane(console);
-        vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        gameBoard.add(vertical);
+        BoardPanel board = new BoardPanel(Game.germanDaisy);
+        gameBoard.add(board, BorderLayout.CENTER);
         
         JPanel gameLabels = new JPanel();
         gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));

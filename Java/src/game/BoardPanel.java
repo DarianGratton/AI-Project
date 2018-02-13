@@ -23,10 +23,6 @@ public class BoardPanel extends JPanel {
     private ArrayList<Marble> marbles;
     private ArrayList<DrawMarble> drawn;    
 
-    protected BoardPanel(){
-    	
-    }
-
     public BoardPanel(ArrayList<Marble> board){
         this.marbles = board;  
         this.spaceList = new ArrayList<Space>();
