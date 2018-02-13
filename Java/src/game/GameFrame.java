@@ -100,7 +100,7 @@ public class GameFrame extends JFrame {
         
         this.spaceList = new ArrayList<Space>();
 
-        BoardPanel board = new BoardPanel(Game.belgianDaisy);
+        BoardPanel board = new BoardPanel(Game.germanDaisy);
         this.setLayout(new BorderLayout());
         this.add(board, BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
@@ -314,41 +314,4 @@ public class GameFrame extends JFrame {
     public ArrayList<Space> getSpaceList(){
         return this.spaceList;
     }
-
-    /*public void paint(Graphics g) {  
-        super.paint(g);
-        int y = 0;
-        int x = 0;
-        int blank = 500;
-        int c = 0;
-        g.setColor(Color.BLACK);
-        for(int j = 5; j <= 9; j++) {
-            x = blank;
-            y += 60;
-            for(int i = 1; i <= j; i ++) {
-                g.drawOval(x + 60, y, 65, 65);
-                c = (x + blank - 1000)/60;
-                x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
-
-            }
-            blank -= 30;
-        }
-        c =0;
-        blank = 410;
-        for(int j = 8; j >= 5; j--) {
-            x = blank;
-            y += 60;
-            for(int i = 0; i < j; i ++) {
-                g.drawOval(x + 60, y, 65, 65);
-                c = (x - blank - 1000)/60;
-                x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
-
-            }
-            blank += 30;
-        }
-    }
-*/
-
 }
