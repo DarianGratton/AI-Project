@@ -6,10 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
-<<<<<<< HEAD
-=======
 import java.util.ArrayList;
->>>>>>> origin/Dev
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -18,10 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-<<<<<<< HEAD
 import javax.swing.JTextArea;
-=======
->>>>>>> origin/Dev
 import javax.swing.border.EmptyBorder;
 
 import listeners.StartListener;
@@ -266,7 +260,7 @@ public class GameFrame extends JFrame {
         playerInfo.add(createLabel(numTurns, "Total # of Moves: " /*+ move.getMovedList().size()*/));
         
         // Display time taken per move
-        playerInfo.add(createLabel(turnTime, "Turn Time: " + gameG.getGameTime()));
+        playerInfo.add(createLabel(turnTime, "Turn Time: " + TestDriver.game.getGameTime()));
                
         return panel;
     }
