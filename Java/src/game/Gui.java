@@ -1,5 +1,7 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 /**
@@ -68,15 +70,35 @@ public abstract class Gui {
     
     public static void drawBoard(ArrayList<Marble> board){    
         for(Marble m : board){
-            drawMarble(m);
+           
         }
     }
 
-    public static void drawMarble(Marble m){
-        int alpha = m.getAlpha();
+//    public static void drawMarble(Marble m){
+//        int alpha = m.getAlpha();
+//        int numeric = m.getNumeric();
+//        boolean isBlack = m.isBlack();
+//        
+//        
+//  }  
+    
+    public void paintComponent(Graphics g, Marble m, GameFrame frame) {
+    	//super.paintComponent(g);
+    	int alpha = m.getAlpha();
         int numeric = m.getNumeric();
         boolean isBlack = m.isBlack();
+  
+        ArrayList <Space> list = frame.getSpaceList();
+        for(Space s : list) {
+        	if(s.getAlpha() == alpha && s.getNum() == numeric) {
+        		if(isBlack)
+            		g.setColor(Color.BLACK);
+            	else
+            		g.setColor(Color.WHITE);
+        		g.fillOval(s.getX(), s.getY(), 65, 65);
+        	}
+        		
+        }
         
-        // do the thing that draws it there    
-    }    
+    }
 }
