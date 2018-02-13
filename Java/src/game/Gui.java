@@ -14,11 +14,13 @@ import java.util.ArrayList;
  */
 public abstract class Gui {
 
+    private static long turnStart;
+    
     /**
      * IDK if this needs to exist
      */
     public static void startGame(){
-        
+        turnStart = System.nanoTime();
     }
     
     /**
@@ -45,8 +47,10 @@ public abstract class Gui {
     public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, int direction){
         // short circuit and only continue if the player is trying to move their own marble
         if(playerIsBlack == m1.isBlack()){
+            // check to see if move is valid
             if(g.move(m1, direction)){
-                g.addMoveToList(new Move(m1, direction));
+                g.addMoveToList(new Move(m1, direction, System.nanoTime() - turnStart));
+                turnStart = System.nanoTime();
             }
         }
     }
@@ -62,8 +66,10 @@ public abstract class Gui {
     public static void moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction, boolean isBlack){
         // short circuit and only continue if the player is trying to move their own marble
         if(playerIsBlack == isBlack){
+            // check to see if move is valid
             if(g.move(m1, m2, direction)){
-                g.addMoveToList(new Move(m1, m2, direction));
+                g.addMoveToList(new Move(m1, m2, direction, System.nanoTime() - turnStart));
+                turnStart = System.nanoTime();
             }
         }
     }
@@ -100,5 +106,7 @@ public abstract class Gui {
         		
         }
         
-    }
+
+    }  
+ 
 }
