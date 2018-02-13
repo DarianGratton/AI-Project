@@ -18,7 +18,11 @@ public class Game {
     private long gameTime;
     
     // initial layouts to copy into game board; need to be filled in
-    private static final ArrayList<Marble> standardLayout = new ArrayList<Marble>();
+    private static final ArrayList<Marble> standardLayout = new ArrayList<Marble>() {
+        
+        
+    };
+    
     private static ArrayList<Marble> germanDaisy;
     private static ArrayList<Marble> belgianDaisy;
     
@@ -231,6 +235,35 @@ public class Game {
     
     /**
      * this version implements an inline move
+     * @param moved the rear marble to move
+     * @param direction the direction of the move
+     */
+    public boolean move(Marble moved, int direction){
+        
+        Marble adjacent = null;
+        boolean isBlack = moved.isBlack();
+        int pushedFriend = 0;
+        
+        adjacent = this.checkAdjacent(moved, direction);
+        
+        if(adjacent == null){
+            moved.changePos(direction);
+            return true;
+        } 
+        else if(adjacent.isBlack() == isBlack && pushedFriend < 2){
+            pushedFriend++;
+            if(this.move(adjacent, direction, pushedFriend)){
+                moved.changePos(direction);
+                return true;
+            }
+        }
+        
+        // default return
+        return false;
+    }
+    
+    /**
+     * this version implements an inline move, using an extra parameter for the recursive calls
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */

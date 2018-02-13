@@ -30,8 +30,10 @@ public class Move {
      * @param movedList
      * @param direction
      */
-    public Move(ArrayList<Marble> movedList, int direction) {
-        this.movedList = movedList;
+    public Move(Marble m1, Marble m2, int direction) {
+        this.movedList = new ArrayList<Marble>();
+        this.movedList.add(m1);
+        this.movedList.add(m2);
         this.direction = direction;
     }
 
