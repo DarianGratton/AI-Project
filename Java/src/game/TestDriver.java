@@ -20,6 +20,7 @@ public class TestDriver {
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
+
         frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
