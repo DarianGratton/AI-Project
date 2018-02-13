@@ -282,8 +282,9 @@ public class GameFrame extends JFrame {
             for(int i = 1; i <= j; i ++) {
                 g.drawOval(x + 60, y, 65, 65);
                 c = (x + blank - 1000)/60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
                 x += 60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
+               
             }
             blank -= 30;
         }
@@ -295,8 +296,9 @@ public class GameFrame extends JFrame {
             for(int i = 0; i < j; i ++) {
                 g.drawOval(x + 60, y, 65, 65);
                 c = (x - blank - 1000)/60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
                 x += 60;
+                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
+               
             }
             blank += 30;
         }

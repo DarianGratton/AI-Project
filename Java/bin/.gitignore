@@ -1,20 +1,10 @@
+
 /Game.class
-<<<<<<< HEAD
 /GameFrame.class
 /Gui.class
 /Marble.class
 /Move.class
 /Space.class
 /TestDriver.class
-=======
-/Gui.class
-/Marble.class
-/Move.class
-/TestDriver.class
-/GameFrame.class
-/GameFrameTest.class
-/Space.class
->>>>>>> Dev
-/listeners/
-/abalone/
 /game/
+/listeners/

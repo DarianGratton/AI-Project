@@ -16,28 +16,19 @@ public class TestDriver {
     public static void main(String[] args) {
         Game test = new Game(Game.belgianDaisy, true, 0, 0, 100, 100);
 
-        /*final GameFrame frame = new GameFrame();
+        final GameFrame frame = new GameFrame();
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
-        frame.setVisible(true);
-      
-        Gui.drawBoard(test.getBoard(), frame);
+        frame.setVisible(true);  
         
-        System.out.println("got here");*/
-        Gui.putMarblesInShit(test.getBoard());
+        Graphics g = frame.getGraphics();
+        frame.paintComponents(g);
+        Gui.drawBoard(test.getBoard(), frame, g);
         
-        Marble m1 = test.searchBoard(1, 1);
-        Gui.moveMarbles(test, true, m1, 2);
-        
-        System.out.println();
-        Gui.putMarblesInShit(test.getBoard());
-        
-        Marble m2 = test.searchBoard(3, 2);
-        Marble m3 = test.searchBoard(3, 3);
-        Gui.moveMarbles(test, true, m2, m3, 2);
-        
-        System.out.println();
-        Gui.putMarblesInShit(test.getBoard());
+//        Gui.moveMarbles(test, true, test.searchBoard(1,1), 2);
+//        frame.repaint();
+//        Gui.drawBoard(test.getBoard(), frame, g);
+       
     }
 }
