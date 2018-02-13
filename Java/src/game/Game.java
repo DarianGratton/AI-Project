@@ -15,6 +15,7 @@ public class Game {
     private ArrayList<Marble> board;
 
     // timer for total game; mostly for pausing purposes
+    private long startTime;
     private long gameTime;
 
     // initial layouts to copy into game board; need to be filled in
@@ -27,6 +28,7 @@ public class Game {
             add(new Marble(1, 5, true));
             add(new Marble(2, 1, true));
             add(new Marble(2, 2, true));
+            add(new Marble(2, 3, true));
             add(new Marble(2, 4, true));
             add(new Marble(2, 5, true));
             add(new Marble(2, 6, true));
@@ -51,8 +53,73 @@ public class Game {
         }
     };
 
-    private static ArrayList<Marble> germanDaisy;
-    private static ArrayList<Marble> belgianDaisy;
+    public static ArrayList<Marble> germanDaisy = new ArrayList<Marble>() {
+        {
+            add(new Marble(2, 1, true));
+            add(new Marble(2, 2, true));
+            add(new Marble(3, 1, true));
+            add(new Marble(3, 2, true));
+            add(new Marble(3, 3, true));
+            add(new Marble(4, 2, true));
+            add(new Marble(4, 3, true));
+            add(new Marble(6, 7, true));
+            add(new Marble(6, 8, true));
+            add(new Marble(7, 7, true));
+            add(new Marble(7, 8, true));
+            add(new Marble(7, 9, true));
+            add(new Marble(8, 8, true));
+            add(new Marble(8, 9, true));        
+    
+            add(new Marble(2, 5, false));
+            add(new Marble(2, 6, false));
+            add(new Marble(3, 5, false));
+            add(new Marble(3, 6, false));
+            add(new Marble(3, 7, false));
+            add(new Marble(4, 6, false));
+            add(new Marble(4, 7, false));
+            add(new Marble(6, 3, false));
+            add(new Marble(6, 4, false));
+            add(new Marble(7, 3, false));
+            add(new Marble(7, 4, false));
+            add(new Marble(7, 5, false));
+            add(new Marble(8, 4, false));
+            add(new Marble(8, 5, false));
+        }
+    };
+    
+    public static final ArrayList<Marble> belgianDaisy = new ArrayList<Marble>() {
+        {
+             add(new Marble(1, 1, true));
+             add(new Marble(1, 2, true));
+             add(new Marble(2, 1, true));
+             add(new Marble(2, 2, true));
+             add(new Marble(2, 3, true));
+             add(new Marble(3, 2, true));
+             add(new Marble(3, 3, true));
+             add(new Marble(7, 7, true));
+             add(new Marble(7, 8, true));
+             add(new Marble(8, 7, true));
+             add(new Marble(8, 8, true));
+             add(new Marble(8, 9, true));
+             add(new Marble(9, 8, true));
+             add(new Marble(9, 9, true));           
+             
+             add(new Marble(2, 5, false));
+             add(new Marble(2, 6, false));
+             add(new Marble(3, 5, false));
+             add(new Marble(3, 6, false));
+             add(new Marble(3, 7, false));
+             add(new Marble(4, 6, false));
+             add(new Marble(4, 7, false));
+             add(new Marble(6, 3, false));
+             add(new Marble(6, 4, false));
+             add(new Marble(7, 3, false));
+             add(new Marble(7, 4, false));
+             add(new Marble(7, 5, false));
+             add(new Marble(8, 4, false));
+             add(new Marble(8, 5, false));
+         }
+    }; 
 
     // marbles lost by each player, respectively
     private int blackLost;
@@ -90,6 +157,7 @@ public class Game {
         this.humanMoveLimit = this.aiMoveLimit;
         this.aiTimeLimit = (long) 1000.0;
         this.humanTimeLimit = this.aiTimeLimit;
+        this.startTime = System.nanoTime();
     } 
 
     /**
@@ -105,17 +173,36 @@ public class Game {
     public Game(ArrayList<Marble> layout, boolean aiIsBlack,
             int aiMoveLimit, int humanMoveLimit, long aiTimeLimit, long humanTimeLimit) {
         this.board = layout;
+        this.blackLost = 0;
+        this.whiteLost = 0;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
         this.aiIsBlack = aiIsBlack;
         this.aiMoveLimit = aiMoveLimit;
         this.humanMoveLimit = humanMoveLimit;
         this.aiTimeLimit = aiTimeLimit;
         this.humanTimeLimit = humanTimeLimit;
+        this.startTime = System.nanoTime();
     }
 
     public ArrayList<Marble> getBoard(){
         return this.board;
     }
     
+    /**
+     * @return the startTime
+     */
+    public long getStartTime() {
+        return startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public void setStartTime() {
+        this.startTime = System.nanoTime();
+    }
+
     /**
      * @return the gameTime
      */
@@ -126,8 +213,8 @@ public class Game {
     /**
      * @param gameTime the gameTime to set
      */
-    public void setGameTime(long gameTime) {
-        this.gameTime = gameTime;
+    public void setGameTime() {
+        this.gameTime = System.nanoTime() - this.getStartTime();
     }
 
     /**
