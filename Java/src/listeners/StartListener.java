@@ -95,34 +95,4 @@ public class StartListener implements ActionListener {
         
     }
 
-    /**
-     * @return the game
-     */
-    public static Game getGame() {
-        return game;
-    }
-
-    /**
-     * @param game the game to set
-     */
-    public void setGame(Game game) {
-        this.game = game;
-    }
-
-    /**
-     * @return the layout
-     */
-    public static ArrayList<Marble> getLayout() {
-        return layout;
-    }
-
-    /**
-     * @param layout the layout to set
-     */
-    public static void setLayout(ArrayList<Marble> layout) {
-        StartListener.layout = layout;
-    }
-    
-    
-
 }
