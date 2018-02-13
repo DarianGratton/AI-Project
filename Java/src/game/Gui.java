@@ -1,4 +1,7 @@
 package game;
+
+import java.util.ArrayList;
+
 /**
  * 
  */
@@ -7,7 +10,7 @@ package game;
  * @author Mike
  *
  */
-public class Gui {
+public abstract class Gui {
 
     /**
      * IDK if this needs to exist
@@ -63,6 +66,17 @@ public class Gui {
         }
     }
     
-    
-    
+    public static void drawBoard(ArrayList<Marble> board){    
+        for(Marble m : board){
+            drawMarble(m);
+        }
+    }
+
+    public static void drawMarble(Marble m){
+        int alpha = m.getAlpha();
+        int numeric = m.getNumeric();
+        boolean isBlack = m.isBlack();
+        
+        // do the thing that draws it there    
+    }    
 }
