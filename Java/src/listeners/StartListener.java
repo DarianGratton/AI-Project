@@ -18,10 +18,8 @@ import game.Marble;
 import game.TestDriver;public class StartListener implements ActionListener {    
 
     private ArrayList<Marble> layout;
-    private int aiMoveLimit;
-    private long aiTimeLimit;
-    private int humanMoveLimit;
-    private long humanTimeLimit;
+    private int moveLimit;
+    private long gameTimeLimit;
     private boolean aiIsBlack;
 
     @Override
@@ -34,8 +32,6 @@ import game.TestDriver;public class StartListener implements ActionListener {
 
         JRadioButton standardButton = new JRadioButton("Standard");
         standardButton.setActionCommand(standardButton.getText());
-
-
         
         JRadioButton germanButton = new JRadioButton("German Daisy");
         germanButton.setActionCommand(germanButton.getText());
@@ -49,7 +45,15 @@ import game.TestDriver;public class StartListener implements ActionListener {
         JRadioButton whiteButton = new JRadioButton("White");
         whiteButton.setActionCommand(whiteButton.getText());
         
+        JRadioButton humanVsHuman = new JRadioButton("Human VS Human");
+        humanVsHuman.setActionCommand(humanVsHuman.getText());
+        
+        JRadioButton humanVsComputer = new JRadioButton("Human VS Computer");
+        humanVsComputer.setActionCommand(humanVsComputer.getText());
 
+        JRadioButton comVsCom = new JRadioButton("Computer VS Computer");
+        comVsCom.setActionCommand(comVsCom.getText());
+        
         ButtonGroup boardGroup = new ButtonGroup();
         boardGroup.add(standardButton);
         boardGroup.add(germanButton);
@@ -58,6 +62,11 @@ import game.TestDriver;public class StartListener implements ActionListener {
         ButtonGroup playerGroup = new ButtonGroup();
         playerGroup.add(blackButton);
         playerGroup.add(whiteButton);
+        
+        ButtonGroup modeGroup = new ButtonGroup();
+        modeGroup.add(humanVsHuman);
+        modeGroup.add(humanVsComputer);
+        modeGroup.add(comVsCom);
 
         startPanel.add(new JLabel("Choose your initial board state: "));
         startPanel.add(standardButton);
@@ -66,19 +75,22 @@ import game.TestDriver;public class StartListener implements ActionListener {
         
         startPanel.add(new JLabel("Choose your color: "));
         startPanel.add(blackButton);
-        startPanel.add(whiteButton);        
+        startPanel.add(whiteButton);     
         
-        JTextField aiMoves = new JTextField(3);
-        startPanel.add(aiMoves);
+        startPanel.add(new JLabel("Choose mode: "));
+        startPanel.add(humanVsHuman);
+        startPanel.add(humanVsComputer);
+        startPanel.add(comVsCom);
         
-        JTextField humanMoves = new JTextField(3);
-        startPanel.add(humanMoves);
+        JLabel gameLimit = new JLabel("Set Game Time Limit: ");
+        JTextField gameTime = new JTextField(3);
+        startPanel.add(gameLimit);
+        startPanel.add(gameTime);
         
-        JTextField aiTime = new JTextField(3);
-        startPanel.add(aiTime);
-        
-        JTextField humanTime = new JTextField(3);
-        startPanel.add(humanTime);
+        JLabel moveTimeLimit = new JLabel("Set Move Time Limit: ");
+        JTextField moveTime = new JTextField(2);
+        startPanel.add(moveTimeLimit);
+        startPanel.add(moveTime);
 
         int result = JOptionPane.showConfirmDialog(null, startPanel,
                 "Game Settings", JOptionPane.OK_CANCEL_OPTION);
@@ -102,14 +114,10 @@ import game.TestDriver;public class StartListener implements ActionListener {
                 aiIsBlack = false;
             }
             
-            aiMoveLimit = Integer.parseInt(aiMoves.getText());
-            humanMoveLimit = Integer.parseInt(humanMoves.getText());
-            
-            aiTimeLimit = Long.parseLong(aiTime.getText());
-            humanTimeLimit = Long.parseLong(humanTime.getText());
+            moveLimit = Integer.parseInt(moveTime.getText());
+            gameTimeLimit = Long.parseLong(gameTime.getText());
 
-            TestDriver.game = Gui.startGame(layout, aiIsBlack, aiMoveLimit, humanMoveLimit,
-                    aiTimeLimit, humanTimeLimit);
+            //TestDriver.game = Gui.startGame(layout, aiIsBlack, moveLimit, gameTimeLimit);
 
         }
     }
