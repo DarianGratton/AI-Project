@@ -99,15 +99,15 @@ public class GameFrame extends JFrame {
         setTitle("Abalone");
         
         this.spaceList = new ArrayList<Space>();
+        BoardPanel board = new BoardPanel(Game.germanDaisy);
 
-        BoardPanel board = new BoardPanel(Game.belgianDaisy);
         this.setLayout(new BorderLayout());
-        this.add(board, BorderLayout.CENTER);
+        this.add(createGamePanel(board), BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
 
         // For testing proposes
-        board.setBorder(BorderFactory.createLineBorder(Color.black));
+        // board.setBorder(BorderFactory.createLineBorder(Color.black));
         //options.setBorder(BorderFactory.createLineBorder(Color.black));
     }
 
@@ -140,24 +140,12 @@ public class GameFrame extends JFrame {
      * 
      * @return the game JPanel with all the swing elements
      */
-    private JPanel createGamePanel() {
+    private JPanel createGamePanel(BoardPanel  board) {
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(300, 600));
-        gameBoard.setLayout(new BoxLayout(gameBoard, BoxLayout.PAGE_AXIS));
+        gameBoard.setLayout(new BorderLayout());
         
-        moveToMake = new JTextArea(2, 20);
-        moveToMake.setMaximumSize(moveToMake.getPreferredSize());
-        
-        gameBoard.add(moveToMake);
-        
-        makeMove = new JButton("Make Move");
-        gameBoard.add(makeMove);
-        
-        JPanel console = new JPanel();
-        
-        vertical = new JScrollPane(console);
-        vertical.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        gameBoard.add(vertical);
+        gameBoard.add(board, BorderLayout.CENTER);
         
         JPanel gameLabels = new JPanel();
         gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
@@ -314,41 +302,4 @@ public class GameFrame extends JFrame {
     public ArrayList<Space> getSpaceList(){
         return this.spaceList;
     }
-
-    /*public void paint(Graphics g) {  
-        super.paint(g);
-        int y = 0;
-        int x = 0;
-        int blank = 500;
-        int c = 0;
-        g.setColor(Color.BLACK);
-        for(int j = 5; j <= 9; j++) {
-            x = blank;
-            y += 60;
-            for(int i = 1; i <= j; i ++) {
-                g.drawOval(x + 60, y, 65, 65);
-                c = (x + blank - 1000)/60;
-                x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
-
-            }
-            blank -= 30;
-        }
-        c =0;
-        blank = 410;
-        for(int j = 8; j >= 5; j--) {
-            x = blank;
-            y += 60;
-            for(int i = 0; i < j; i ++) {
-                g.drawOval(x + 60, y, 65, 65);
-                c = (x - blank - 1000)/60;
-                x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
-
-            }
-            blank += 30;
-        }
-    }
-*/
-
 }
