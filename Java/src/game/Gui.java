@@ -26,11 +26,11 @@ public abstract class Gui {
 	 * IDK if this needs to exist
 	 */
 	public static Game startGame(ArrayList<Marble> layout, boolean aiIsBlack, int aiMoveLimit, int humanMoveLimit,
-            long aiTimeLimit, long humanTimeLimit){
+			long aiTimeLimit, long humanTimeLimit){
 		turnStart = System.nanoTime();
-		
+
 		return new Game(layout, aiIsBlack, aiMoveLimit, humanMoveLimit,
-                aiTimeLimit, humanTimeLimit);
+				aiTimeLimit, humanTimeLimit);
 	}
 
 	/**
@@ -87,16 +87,16 @@ public abstract class Gui {
 	public static void drawBoard(ArrayList<Marble> board, GameFrame frame, Graphics g){    
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
-			
-			@Override
-			public void run() {
-				// TODO Auto-generated method stub
-				//g = frame.getGraphics();
-				frame.paint(g);
-				for(Marble m : board){
-					drawMarble(m, frame, g);
+
+				@Override
+				public void run() {
+					// TODO Auto-generated method stub
+					//g = frame.getGraphics();
+					frame.paint(g);
+					for(Marble m : board){
+						drawMarble(m, frame, g);
+					}
 				}
-			}
 			});
 		} catch (InvocationTargetException e) {
 			// TODO Auto-generated catch block
@@ -120,37 +120,34 @@ public abstract class Gui {
 					g.setColor(Color.BLACK);
 				else
 					g.setColor(Color.WHITE);
-				//g.fillOval(s.getX(), s.getY(), 65, 65);
 			}
 			else {
-				g.setColor(Color.BLACK);
-				//g.drawOval(s.getX(), s.getY(), 65, 65);
-			}
-				
+				g.setColor(Color.GRAY);
+			}			
 		}
 
 	}  
-    public static void putMarblesInShit(ArrayList<Marble> marbles){
-        char[][] board = new char[10][10];
+	public static void putMarblesInShit(ArrayList<Marble> marbles){
+		char[][] board = new char[10][10];
 
-        for(Marble m : marbles){
-            if(m.isBlack()){
-                board[m.getAlpha()][m.getNumeric()] = 'b';
-            } else {
-                board[m.getAlpha()][m.getNumeric()] = 'w';
-            }
-        }
-        
-        StringBuilder sb;
-        for(int i = 9; i > 0; i--){
-            for(int j = 1; j < 10; j++){
-                sb = new StringBuilder();
-                sb.append("[");
-                sb.append(board[i][j]);
-                sb.append("]");
-                System.out.print(sb.toString());
-            }
-            System.out.println();
-        }
-    }
+		for(Marble m : marbles){
+			if(m.isBlack()){
+				board[m.getAlpha()][m.getNumeric()] = 'b';
+			} else {
+				board[m.getAlpha()][m.getNumeric()] = 'w';
+			}
+		}
+
+		StringBuilder sb;
+		for(int i = 9; i > 0; i--){
+			for(int j = 1; j < 10; j++){
+				sb = new StringBuilder();
+				sb.append("[");
+				sb.append(board[i][j]);
+				sb.append("]");
+				System.out.print(sb.toString());
+			}
+			System.out.println();
+		}
+	}
 }
