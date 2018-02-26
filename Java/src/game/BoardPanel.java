@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import javax.swing.JComponent;
 import javax.swing.JPanel;
 
 /**
@@ -21,7 +20,11 @@ public class BoardPanel extends JPanel {
 
     private ArrayList<Space> spaceList;
     private ArrayList<Marble> marbles;
-    private ArrayList<DrawMarble> drawn;    
+    private ArrayList<DrawMarble> drawn;  
+    
+    private static Marble m1;
+    private static Marble m2;
+    private static Marble m3;
 
     protected BoardPanel(){
 
@@ -33,19 +36,72 @@ public class BoardPanel extends JPanel {
         initSpaces();
         this.drawn = new ArrayList<DrawMarble>();
         initMarbles();
+        m1 = null;
+        m2 = null;
+        m3 = null;
+        
 
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
+                
                 for (DrawMarble d : drawn) {
 
                     if (d.contains(me.getPoint())) {//check if mouse is clicked within shape
 
-                        //we can either just print out the object class name
-                        System.out.println("Clicked a "+d.getClass().getName());
+                        if(m1 == null){
+                            m1 = d.getMarble();
+                        } else if(m2 == null) {
+                            m2 = d.getMarble();
+                        } else {
+                            for(Space s : spaceList){
+                                if(s.contains(me.getPoint())){
+                                    Marble dir = TestDriver.game.searchBoard(s.getAlpha(), s.getNum());
 
 
+                                    if(dir != null){
+                                        int alphaDiff = m1.getAlpha() - dir.getAlpha();
+                                        int numDiff = m1.getNumeric() - dir.getNumeric();
+                                        int direction = 0;
+
+                                        if(alphaDiff == 0){
+                                            if(numDiff < 0){
+                                                direction = 3;
+                                            } else {
+                                                direction = 6;
+                                            }
+                                        } else if(numDiff == 0){
+                                            if(alphaDiff < 0){
+                                                direction = 4;
+                                            } else {
+                                                direction = 1;
+                                            }
+                                        } else if(alphaDiff == numDiff){
+                                            if(alphaDiff < 0){
+                                                direction = 5;
+                                            } else {
+                                                direction = 2;
+                                            }
+                                        }
+
+                                        if(direction != 0){
+
+                                        }
+
+
+
+
+
+                                    }
+                                }
+                            }
+
+                        }
+                        System.out.println(m1.toString());
+                        if(m2 != null){
+                            System.out.println(m2.toString());
+                        }
                     }
                 }
             }
@@ -95,7 +151,7 @@ public class BoardPanel extends JPanel {
             }
         }
     }
-    
+
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
@@ -105,17 +161,17 @@ public class BoardPanel extends JPanel {
         }
         for (DrawMarble d : drawn){
             System.out.println(d.toString());
-            
+
             if(d.getMarble().isBlack()){
                 g2d.setPaint(Color.BLACK);
             } else {
                 g2d.setPaint(Color.WHITE);
             }
-            
+
             g2d.draw(d);
             g2d.fill(d);
         }
     }
 
-    
+
 }
