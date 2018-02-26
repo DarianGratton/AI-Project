@@ -21,10 +21,11 @@ public class BoardPanel extends JPanel {
     private ArrayList<Space> spaceList;
     private ArrayList<Marble> marbles;
     private ArrayList<DrawMarble> drawn;  
-    
+
     private static Marble m1;
     private static Marble m2;
     private static Marble m3;
+    private static int direction;
 
     public BoardPanel(ArrayList<Marble> board){
         this.marbles = board;  
@@ -35,13 +36,71 @@ public class BoardPanel extends JPanel {
         m1 = null;
         m2 = null;
         m3 = null;
-        
 
+        // listener for spaces
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent me) {
                 super.mouseClicked(me);
-                
+
+                for(Space s : spaceList){
+                    if(s.contains(me.getPoint())){
+                        System.out.println(s.toString());
+                        
+                        if(s != null && m1 != null && m2 != null){
+                            int alphaDiff = m1.getAlpha() - s.getAlpha();
+                            int numDiff = m1.getNumeric() - s.getNum();
+                            direction = 0;
+                            
+                            System.out.println(m1.toString());
+                            System.out.println(alphaDiff);
+                            System.out.println(numDiff);
+
+                            if(alphaDiff == 0){
+                                if(numDiff < 0){
+                                    direction = 3;
+                                } else {
+                                    direction = 6;
+                                }
+                            } else if(numDiff == 0){
+                                if(alphaDiff < 0){
+                                    direction = 4;
+                                } else {
+                                    direction = 1;
+                                }
+                            } else if(alphaDiff == numDiff){
+                                if(alphaDiff < 0){
+                                    direction = 5;
+                                } else {
+                                    direction = 2;
+                                }
+                            }
+                            
+                            System.out.println(direction);
+
+                            if(direction != 0){
+                                Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, m2, direction);
+                                
+                                // INSERT BOARD REDRAW HERE
+                                
+                                m1 = null;
+                                m2 = null;
+                                m3 = null;
+                                direction = 0;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+
+        // listener for marbles
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+
                 for (DrawMarble d : drawn) {
 
                     if (d.contains(me.getPoint())) {//check if mouse is clicked within shape
@@ -85,10 +144,6 @@ public class BoardPanel extends JPanel {
 
                                         }
 
-
-
-
-
                                     }
                                 }
                             }
@@ -102,7 +157,8 @@ public class BoardPanel extends JPanel {
                 }
             }
         });
-    }
+
+            }
 
 
     public void initSpaces(){
@@ -163,6 +219,7 @@ public class BoardPanel extends JPanel {
                 g2d.setPaint(Color.BLACK);
             } else {
                 g2d.setPaint(Color.WHITE);
+
             }
 
             g2d.draw(d);
