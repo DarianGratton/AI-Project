@@ -219,11 +219,8 @@ public class BoardPanel extends JPanel {
                 g2d.setPaint(Color.BLACK);
             } else {
                 g2d.setPaint(Color.WHITE);
-<<<<<<< HEAD
-            } 
-=======
+
             }
->>>>>>> origin/mike_more
 
             g2d.draw(d);
             g2d.fill(d);
