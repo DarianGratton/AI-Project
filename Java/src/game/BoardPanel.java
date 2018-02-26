@@ -94,7 +94,7 @@ public class BoardPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
-        setBackground(Color.DARK_GRAY);
+        setBackground(new Color(218, 222, 229));
         Graphics2D g2d = (Graphics2D) grphcs;
         g2d.setPaint(Color.GRAY);
         for (Space s : spaceList) {
