@@ -25,7 +25,7 @@ public abstract class Gui {
 	/**
 	 * IDK if this needs to exist
 	 */
-	public static Game startGame(ArrayList<Marble> layout, boolean aiIsBlack, int aiMoveLimit, int humanMoveLimit,
+	public static Game startGame(Board layout, boolean aiIsBlack, int aiMoveLimit, int humanMoveLimit,
 			long aiTimeLimit, long humanTimeLimit){
 		turnStart = System.nanoTime();
 
@@ -84,7 +84,7 @@ public abstract class Gui {
 		}
 	}
 
-	public static void drawBoard(ArrayList<Marble> board, GameFrame frame, Graphics g){    
+	public static void drawBoard(Board board, GameFrame frame, Graphics g){    
 		try {
 			SwingUtilities.invokeAndWait(new Runnable() {
 
@@ -127,27 +127,4 @@ public abstract class Gui {
 		}
 
 	}  
-	public static void putMarblesInShit(ArrayList<Marble> marbles){
-		char[][] board = new char[10][10];
-
-		for(Marble m : marbles){
-			if(m.isBlack()){
-				board[m.getAlpha()][m.getNumeric()] = 'b';
-			} else {
-				board[m.getAlpha()][m.getNumeric()] = 'w';
-			}
-		}
-
-		StringBuilder sb;
-		for(int i = 9; i > 0; i--){
-			for(int j = 1; j < 10; j++){
-				sb = new StringBuilder();
-				sb.append("[");
-				sb.append(board[i][j]);
-				sb.append("]");
-				System.out.print(sb.toString());
-			}
-			System.out.println();
-		}
-	}
 }

@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 public class BoardPanel extends JPanel {
 
     private ArrayList<Space> spaceList;
-    private ArrayList<Marble> marbles;
+    private Board marbles;
     private ArrayList<DrawMarble> drawn;  
 
     private static Marble m1;
@@ -27,7 +27,7 @@ public class BoardPanel extends JPanel {
     private static Marble m3;
     private static int direction;
 
-    public BoardPanel(ArrayList<Marble> board){
+    public BoardPanel(Board board){
         this.marbles = board;  
         this.spaceList = new ArrayList<Space>();
         initSpaces();

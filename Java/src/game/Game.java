@@ -12,14 +12,14 @@ import java.util.ArrayList;
  */
 public class Game {
 
-    private ArrayList<Marble> board;
+    private Board board;
 
     // timer for total game; mostly for pausing purposes
     private long startTime;
     private long gameTime;
 
     // initial layouts to copy into game board; need to be filled in
-    public static final ArrayList<Marble> standardLayout = new ArrayList<Marble>() {
+    public static final Board standardLayout = new Board() {
         {
             add(new Marble(1, 1, true));
             add(new Marble(1, 2, true));
@@ -53,7 +53,7 @@ public class Game {
         }
     };
 
-    public static ArrayList<Marble> germanDaisy = new ArrayList<Marble>() {
+    public static Board germanDaisy = new Board() {
         {
             add(new Marble(2, 1, true));
             add(new Marble(2, 2, true));
@@ -87,7 +87,7 @@ public class Game {
         }
     };
     
-    public static final ArrayList<Marble> belgianDaisy = new ArrayList<Marble>() {
+    public static final Board belgianDaisy = new Board() {
         {
              add(new Marble(1, 1, true));
              add(new Marble(1, 2, true));
@@ -131,6 +131,8 @@ public class Game {
 
     // sets AI colour
     private boolean aiIsBlack;
+    
+    private boolean activePlayerIsBlack;
 
     // next move as recommended by AI
     private Move recommended;
@@ -159,6 +161,7 @@ public class Game {
         this.humanTimeLimit = this.aiTimeLimit;
         this.startTime = System.nanoTime();
         this.recommended = new Move();
+        this.activePlayerIsBlack = true;
     } 
 
     /**
@@ -171,7 +174,7 @@ public class Game {
      * @param aiTimeLimit
      * @param humanTimeLimit
      */
-    public Game(ArrayList<Marble> layout, boolean aiIsBlack,
+    public Game(Board layout, boolean aiIsBlack,
             int aiMoveLimit, int humanMoveLimit, long aiTimeLimit, long humanTimeLimit) {
         this.board = layout;
         this.blackLost = 0;
@@ -184,9 +187,10 @@ public class Game {
         this.aiTimeLimit = aiTimeLimit;
         this.humanTimeLimit = humanTimeLimit;
         this.startTime = System.nanoTime();
+        this.activePlayerIsBlack = true;
     }
 
-    public ArrayList<Marble> getBoard(){
+    public Board getBoard(){
         return this.board;
     }
     
@@ -230,6 +234,29 @@ public class Game {
      */
     public void setAiIsBlack(boolean aiIsBlack) {
         this.aiIsBlack = aiIsBlack;
+    }
+    
+    /**
+     * This method returns true when the acting player is playing black and false otherwise
+     * @return
+     */
+    public boolean activeIsBlack(){
+        return this.activePlayerIsBlack;
+    }
+    
+    /**
+     * This method switches the active side of play
+     */
+    public void switchSides(){
+        this.activePlayerIsBlack = !this.activePlayerIsBlack;
+    }
+    
+    /**
+     * I don't expect to use this method except for debug; changes the active player boolean to an input; use switchSides instead if possible
+     * @param isBlack
+     */
+    public void setActiveIsBlack(boolean isBlack){
+        this.activePlayerIsBlack = isBlack;
     }
 
     /**
@@ -511,6 +538,15 @@ public class Game {
     // white's score = number of black marbles knocked out
     public int getWhiteScore(){
         return this.blackLost;
+    }
+    
+    /**
+     * This method is responsible for checking a possible move for legality; i.e. within the board or knocking out a single enemy marble
+     * @return
+     */
+    public boolean moveIsLegal(){
+        
+        return true;
     }
 
 }
