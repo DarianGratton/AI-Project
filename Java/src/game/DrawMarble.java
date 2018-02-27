@@ -4,11 +4,13 @@
 package game;
 
 import java.awt.geom.Ellipse2D;
+import java.util.ArrayList;
 
 /**
  * @author Mike
  *
  */
+@SuppressWarnings("serial")
 public class DrawMarble extends Ellipse2D.Double {
 
     private Marble marble;
@@ -20,6 +22,13 @@ public class DrawMarble extends Ellipse2D.Double {
     
     public Marble getMarble(){
         return this.marble;
+    }
+    
+    public void updatePosition(Space s){
+        super.x = s.getX();
+        super.y = s.getY();
+        this.marble.setAlpha(s.getAlpha());
+        this.marble.setNumeric(s.getNum());
     }
     
 }
