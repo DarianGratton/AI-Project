@@ -24,7 +24,7 @@ public class TestDriver {
         
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
-        Gui.drawBoard(game.getBoard(), frame, g);
+        //Gui.drawBoard(game.getBoard(), frame, g);
 
 
 
