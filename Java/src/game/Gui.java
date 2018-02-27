@@ -84,47 +84,5 @@ public abstract class Gui {
 		}
 	}
 
-	public static void drawBoard(Board board, GameFrame frame, Graphics g){    
-		try {
-			SwingUtilities.invokeAndWait(new Runnable() {
-
-				@Override
-				public void run() {
-					// TODO Auto-generated method stub
-					//g = frame.getGraphics();
-					frame.paint(g);
-					for(Marble m : board){
-						drawMarble(m, frame, g);
-					}
-				}
-			});
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void drawMarble(Marble m, GameFrame frame, Graphics g) {
-
-		int alpha = m.getAlpha();
-		int numeric = m.getNumeric();
-		boolean isBlack = m.isBlack();
-
-		ArrayList<Space> list = frame.getSpaceList();
-		for(Space s : list) {
-			if(s.getAlpha() == alpha && s.getNum() == numeric) {
-				if(isBlack)
-					g.setColor(Color.BLACK);
-				else
-					g.setColor(Color.WHITE);
-			}
-			else {
-				g.setColor(Color.GRAY);
-			}			
-		}
-
-	}  
+	
 }

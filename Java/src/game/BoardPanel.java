@@ -33,9 +33,6 @@ public class BoardPanel extends JPanel {
         initSpaces();
         this.drawn = new ArrayList<DrawMarble>();
         initMarbles();
-        m1 = null;
-        m2 = null;
-        m3 = null;
 
         // listener for spaces
         addMouseListener(new MouseAdapter() {
@@ -46,13 +43,12 @@ public class BoardPanel extends JPanel {
                 for(Space s : spaceList){
                     if(s.contains(me.getPoint())){
                         System.out.println(s.toString());
-                        
+
                         if(s != null && m1 != null && m2 != null){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
                             int numDiff = m1.getNumeric() - s.getNum();
                             direction = 0;
-                            
-                            System.out.println(m1.toString());
+
                             System.out.println(alphaDiff);
                             System.out.println(numDiff);
 
@@ -75,14 +71,21 @@ public class BoardPanel extends JPanel {
                                     direction = 2;
                                 }
                             }
-                            
+
                             System.out.println(direction);
 
                             if(direction != 0){
                                 Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, m2, direction);
-                                
-                                // INSERT BOARD REDRAW HERE
-                                
+
+                                for(DrawMarble d : drawn){
+                                    if(d.getMarble() == m1 || d.getMarble() == m2 || (m3 != null && d.getMarble() == m3)){
+                                        d.updatePosition(getSpace(d.getMarble()));
+                                    }
+                                }
+
+
+                                repaint();
+
                                 m1 = null;
                                 m2 = null;
                                 m3 = null;
@@ -107,49 +110,16 @@ public class BoardPanel extends JPanel {
 
                         if(m1 == null){
                             m1 = d.getMarble();
+                            direction = 0;
                         } else if(m2 == null) {
                             m2 = d.getMarble();
-                        } else {
-                            for(Space s : spaceList){
-                                if(s.contains(me.getPoint())){
-                                    Marble dir = TestDriver.game.searchBoard(s.getAlpha(), s.getNum());
+                            direction = 0;
+                        } 
 
 
-                                    if(dir != null){
-                                        int alphaDiff = m1.getAlpha() - dir.getAlpha();
-                                        int numDiff = m1.getNumeric() - dir.getNumeric();
-                                        int direction = 0;
-
-                                        if(alphaDiff == 0){
-                                            if(numDiff < 0){
-                                                direction = 3;
-                                            } else {
-                                                direction = 6;
-                                            }
-                                        } else if(numDiff == 0){
-                                            if(alphaDiff < 0){
-                                                direction = 4;
-                                            } else {
-                                                direction = 1;
-                                            }
-                                        } else if(alphaDiff == numDiff){
-                                            if(alphaDiff < 0){
-                                                direction = 5;
-                                            } else {
-                                                direction = 2;
-                                            }
-                                        }
-
-                                        if(direction != 0){
-
-                                        }
-
-                                    }
-                                }
-                            }
-
+                        if(m1 != null){
+                            System.out.println(m1.toString());
                         }
-                        System.out.println(m1.toString());
                         if(m2 != null){
                             System.out.println(m2.toString());
                         }
@@ -158,7 +128,7 @@ public class BoardPanel extends JPanel {
             }
         });
 
-            }
+    }
 
 
     public void initSpaces(){
@@ -213,7 +183,6 @@ public class BoardPanel extends JPanel {
             g2d.fill(s);
         }
         for (DrawMarble d : drawn){
-            System.out.println(d.toString());
 
             if(d.getMarble().isBlack()){
                 g2d.setPaint(Color.BLACK);
@@ -221,11 +190,21 @@ public class BoardPanel extends JPanel {
                 g2d.setPaint(Color.WHITE);
 
             }
-
             g2d.draw(d);
             g2d.fill(d);
         }
     }
 
+    public ArrayList<Space> getSpaceList(){
+        return this.spaceList;
+    }
 
+    public Space getSpace(Marble m){
+        for(Space s : this.spaceList){
+            if(m.getAlpha() == s.getAlpha() && m.getNumeric() == s.getNum()){
+                return s;
+            }
+        }
+        return null;
+    }
 }
