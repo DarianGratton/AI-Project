@@ -3,10 +3,6 @@ package game;
 import java.util.ArrayList;
 
 /**
- * 
- */
-
-/**
  * @author Mike
  *
  */
@@ -129,7 +125,7 @@ public class Game {
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
 
-    // sets AI colour
+    // sets AI color
     private boolean aiIsBlack;
     
     private boolean activePlayerIsBlack;
@@ -143,7 +139,8 @@ public class Game {
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
-
+    
+    private GameTimer time;
 
     /**
      * Default constructor; uses standard layout
@@ -174,24 +171,26 @@ public class Game {
      * @param aiTimeLimit
      * @param humanTimeLimit
      */
-    public Game(Board layout, boolean aiIsBlack,
-            int aiMoveLimit, int humanMoveLimit, long aiTimeLimit, long humanTimeLimit) {
+    public Game(Board layout, boolean aiIsBlack, int moveLimit, 
+            long timeLimit, GameTimer timer) {
         this.board = layout;
         this.blackLost = 0;
         this.whiteLost = 0;
         this.blackMoves = new ArrayList<Move>();
         this.whiteMoves = new ArrayList<Move>();
         this.aiIsBlack = aiIsBlack;
-        this.aiMoveLimit = aiMoveLimit;
-        this.humanMoveLimit = humanMoveLimit;
-        this.aiTimeLimit = aiTimeLimit;
-        this.humanTimeLimit = humanTimeLimit;
+        this.aiMoveLimit = moveLimit;
+        this.humanMoveLimit = moveLimit;
+        this.aiTimeLimit = timeLimit;
+        this.humanTimeLimit = timeLimit;
         this.startTime = System.nanoTime();
+        this.recommended = new Move();
         this.activePlayerIsBlack = true;
+        this.time = timer;
     }
 
     public Board getBoard(){
-        return this.board;
+        return board;
     }
     
     /**
@@ -206,6 +205,20 @@ public class Game {
      */
     public void setStartTime() {
         this.startTime = System.nanoTime();
+    }
+
+    /**
+     * @return the time
+     */
+    public GameTimer getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(GameTimer time) {
+        this.time = time;
     }
 
     /**
