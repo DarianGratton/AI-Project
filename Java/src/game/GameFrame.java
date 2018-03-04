@@ -320,8 +320,7 @@ public class GameFrame extends JFrame {
             gameTimeLimit = Long.parseLong(gameTime.getText());
         }
         
-        return new Game(boardLayout, aiIsBlack, moveLimit, 
-                moveLimit, gameTimeLimit, gameTimeLimit);
+        return new Game(boardLayout, aiIsBlack, moveLimit, gameTimeLimit);
     }
     
     /**

@@ -170,18 +170,18 @@ public class Game {
      * @param aiTimeLimit
      * @param humanTimeLimit
      */
-    public Game(Board layout, boolean aiIsBlack,
-            int aiMoveLimit, int humanMoveLimit, long aiTimeLimit, long humanTimeLimit) {
+    public Game(Board layout, boolean aiIsBlack, int moveLimit, 
+            long timeLimit) {
         this.board = layout;
         this.blackLost = 0;
         this.whiteLost = 0;
         this.blackMoves = new ArrayList<Move>();
         this.whiteMoves = new ArrayList<Move>();
         this.aiIsBlack = aiIsBlack;
-        this.aiMoveLimit = aiMoveLimit;
-        this.humanMoveLimit = humanMoveLimit;
-        this.aiTimeLimit = aiTimeLimit;
-        this.humanTimeLimit = humanTimeLimit;
+        this.aiMoveLimit = moveLimit;
+        this.humanMoveLimit = moveLimit;
+        this.aiTimeLimit = timeLimit;
+        this.humanTimeLimit = timeLimit;
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
