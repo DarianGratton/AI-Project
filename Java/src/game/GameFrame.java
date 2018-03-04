@@ -74,12 +74,14 @@ public class GameFrame extends JFrame {
 
         this.game = initGame();
         this.spaceList = new ArrayList<Space>();
-
+        timer = new GameTimer();
+        
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(new BoardPanel(boardLayout)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
+        timer.startTimer();
     }
 
     /**
@@ -162,7 +164,8 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: " + game.getTime().toString()));
+        gameLabels.add(createLabel(new JLabel(), "Total game time: "));
+        gameLabels.add(timer);
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
                 + game.getRecommended().toString()));
 
@@ -369,12 +372,15 @@ public class GameFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent event) {
-            if (event.getSource() == stop) {
-                System.out.println("Stop");
+            if (event.getSource() == start) {
+                timer.startTimer();
+            } else if (event.getSource() == stop) {
+                timer.stopTimer();
+                timer.resetTimer();
             } else if (event.getSource() == reset) {
                 System.out.println("Reset");
             } else if (event.getSource() == pause) {
-                System.out.println("Pause");
+                timer.stopTimer();
             }
         }
     }

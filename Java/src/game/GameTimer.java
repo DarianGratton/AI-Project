@@ -3,6 +3,7 @@ package game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
@@ -17,7 +18,7 @@ import javax.swing.Timer;
  * @author A00965803
  * @version 1.0
  */
-public class GameTimer {
+public class GameTimer extends JLabel {
     
     /** serialVersionUID of this JPanel.*/
     private static final long serialVersionUID = 123489043809L;
@@ -36,9 +37,6 @@ public class GameTimer {
     
     /** Create an timer object. */
     private Timer timer;
-    
-    /** Label for the StopWatch time. */
-    private JLabel timeLabel;
     
     /** <p>Constructor for the StopWatchPanel, setting the position of 
      * the buttons and timer while setting up the ActionListener for
@@ -59,8 +57,8 @@ public class GameTimer {
                 if (seconds <= secmax) {
                     secs = "0" + secs;
                 }
-                System.out.println(seconds + "." + millisec);
-                timeLabel.setText(seconds + "." + millisec);
+                setFont(new Font("DIALOG_INPUT", Font.PLAIN, 15));
+                setText(seconds + "." + millisec);
             }
         });
     }
@@ -70,7 +68,7 @@ public class GameTimer {
     }
     
     public void stopTimer() {
-        timer.start();
+        timer.stop();
     }
     
     public void resetTimer() {
@@ -83,7 +81,7 @@ public class GameTimer {
             secs = "0" + secs;
         }
         System.out.println(seconds + "." + millisec);
-        timeLabel.setText(seconds + "." + millisec);
+        setText(seconds + "." + millisec);
     }
     
     public String toString() {

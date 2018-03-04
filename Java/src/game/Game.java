@@ -186,9 +186,6 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
-        
-        time = new GameTimer();
-        time.startTimer();
     }
 
     public Board getBoard(){
