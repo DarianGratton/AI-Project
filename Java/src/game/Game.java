@@ -139,7 +139,8 @@ public class Game {
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
-
+    
+    private GameTimer time;
 
     /**
      * Default constructor; uses standard layout
@@ -185,6 +186,9 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
+        
+        time = new GameTimer();
+        time.startTimer();
     }
 
     public Board getBoard(){
@@ -203,6 +207,20 @@ public class Game {
      */
     public void setStartTime() {
         this.startTime = System.nanoTime();
+    }
+
+    /**
+     * @return the time
+     */
+    public GameTimer getTime() {
+        return time;
+    }
+
+    /**
+     * @param time the time to set
+     */
+    public void setTime(GameTimer time) {
+        this.time = time;
     }
 
     /**

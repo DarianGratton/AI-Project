@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -39,15 +40,29 @@ public class GameFrame extends JFrame {
     // Declaring game object
     private Game game;
     
+    // Declaring board object
+    private Board boardLayout;
+    
     // For scrolling if JPanel in History gets to big
     private JScrollPane vertical;
+    
+    private JButton start;
+    private JButton stop;
+    private JButton reset;
+    private JButton pause;
+    
+    private GameTimer timer;
     
     // ArrayList to hold the spaces on the board
     private ArrayList<Space> spaceList;
     
-    private Board boardLayout;
+    // Move Limit for the game 
     private int moveLimit;
+    
+    // Time limit for the game
     private long gameTimeLimit;
+    
+    // Boolean to check if the player is black or white
     private boolean aiIsBlack;
 
     /**
@@ -147,15 +162,19 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: "));
+        gameLabels.add(createLabel(new JLabel(), "Total game time: " + game.getTime().toString()));
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
                 + game.getRecommended().toString()));
 
         ArrayList<JButton> buttons = new ArrayList<>();
-        buttons.add(new JButton("Start Game"));
-        buttons.add(new JButton("Stop Game"));
-        buttons.add(new JButton("Pause Game"));
-        buttons.add(new JButton("Reset Game"));
+        start = new JButton("Start Game");
+        buttons.add(start);
+        stop = new JButton("Stop Game");
+        buttons.add(stop);
+        pause = new JButton("Pause Game");
+        buttons.add(pause);
+        reset = new JButton("Reset Game");
+        buttons.add(reset);
         
         for (JButton btn : buttons) {
             btn.addActionListener(new ButtonListener());
@@ -286,12 +305,12 @@ public class GameFrame extends JFrame {
         initRadioButtons(modeButtons, new ButtonGroup(), startPanel);
         
         JLabel gameLimit = new JLabel("Set Game Time Limit: ");
-        JTextField gameTime = new JTextField(3);
+        JFormattedTextField gameTime = new JFormattedTextField();
         startPanel.add(gameLimit);
         startPanel.add(gameTime);
         
         JLabel moveTimeLimit = new JLabel("Set Move Time Limit: ");
-        JTextField moveTime = new JTextField(2);
+        JFormattedTextField moveTime = new JFormattedTextField();
         startPanel.add(moveTimeLimit);
         startPanel.add(moveTime);
 
@@ -350,7 +369,13 @@ public class GameFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent event) {
-            game = initGame();
+            if (event.getSource() == stop) {
+                System.out.println("Stop");
+            } else if (event.getSource() == reset) {
+                System.out.println("Reset");
+            } else if (event.getSource() == pause) {
+                System.out.println("Pause");
+            }
         }
     }
 }
