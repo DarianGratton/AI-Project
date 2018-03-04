@@ -172,7 +172,7 @@ public class Game {
      * @param humanTimeLimit
      */
     public Game(Board layout, boolean aiIsBlack, int moveLimit, 
-            long timeLimit) {
+            long timeLimit, GameTimer timer) {
         this.board = layout;
         this.blackLost = 0;
         this.whiteLost = 0;
@@ -186,6 +186,7 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
+        this.time = timer;
     }
 
     public Board getBoard(){

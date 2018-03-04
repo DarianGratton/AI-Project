@@ -26,10 +26,10 @@ public abstract class Gui {
 	 * IDK if this needs to exist
 	 */
 	public static Game startGame(Board layout, boolean aiIsBlack, 
-	        int humanMoveLimit, long humanTimeLimit) {
+	        int humanMoveLimit, long humanTimeLimit, GameTimer time) {
 		turnStart = System.nanoTime();
 
-		return new Game(layout, aiIsBlack, humanMoveLimit, humanTimeLimit);
+		return new Game(layout, aiIsBlack, humanMoveLimit, humanTimeLimit, time);
 	}
 
 	/**

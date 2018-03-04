@@ -51,7 +51,8 @@ public class GameFrame extends JFrame {
     private JButton reset;
     private JButton pause;
     
-    private GameTimer timer;
+    private GameTimer gameTimer;
+    private GameTimer turnTimer;
 
     // ArrayList to hold the spaces on the board
     private ArrayList<Space> spaceList;
@@ -74,14 +75,14 @@ public class GameFrame extends JFrame {
 
         this.game = initGame();
         this.spaceList = new ArrayList<Space>();
-        timer = new GameTimer();
+        gameTimer = new GameTimer();
         
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(new BoardPanel(boardLayout)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
-        timer.startTimer();
+        gameTimer.startTimer();
     }
 
     /**
@@ -165,7 +166,7 @@ public class GameFrame extends JFrame {
         options.add(gameLabels, BorderLayout.NORTH);
         
         gameLabels.add(createLabel(new JLabel(), "Total game time: "));
-        gameLabels.add(timer);
+        gameLabels.add(gameTimer);
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
                 + game.getRecommended().toString()));
 
@@ -342,7 +343,7 @@ public class GameFrame extends JFrame {
             gameTimeLimit = Long.parseLong(gameTime.getText());
         }
         
-        return new Game(boardLayout, aiIsBlack, moveLimit, gameTimeLimit);
+        return new Game(boardLayout, aiIsBlack, moveLimit, gameTimeLimit, gameTimer);
     }
     
     /**
@@ -372,14 +373,14 @@ public class GameFrame extends JFrame {
      * @return the timer
      */
     public GameTimer getTimer() {
-        return timer;
+        return gameTimer;
     }
 
     /**
      * @param timer the timer to set
      */
     public void setTimer(GameTimer timer) {
-        this.timer = timer;
+        this.gameTimer = timer;
     }
     
     private class ButtonListener implements ActionListener {    
@@ -387,14 +388,14 @@ public class GameFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == start) {
-                timer.startTimer();
+                gameTimer.startTimer();
             } else if (event.getSource() == stop) {
-                timer.stopTimer();
-                timer.resetTimer();
+                gameTimer.stopTimer();
+                gameTimer.resetTimer();
             } else if (event.getSource() == reset) {
                 System.out.println("Reset");
             } else if (event.getSource() == pause) {
-                timer.stopTimer();
+                gameTimer.stopTimer();
             }
         }
     }
