@@ -12,12 +12,15 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import game.Board;
 import game.Game;
 import game.Gui;
 import game.Marble;
-import game.TestDriver;public class StartListener implements ActionListener {    
+import game.TestDriver;
 
-    private ArrayList<Marble> layout;
+public class StartListener implements ActionListener {    
+
+    private Board boardLayout;
     private int moveLimit;
     private long gameTimeLimit;
     private boolean aiIsBlack;
@@ -98,13 +101,13 @@ import game.TestDriver;public class StartListener implements ActionListener {
         if (result == JOptionPane.OK_OPTION) {
 
             if (standardButton.isSelected()) {
-                layout = Game.standardLayout;
+                boardLayout = Game.standardLayout;
 
             } else if (germanButton.isSelected()) {
-                layout = Game.germanDaisy;
+                boardLayout = Game.germanDaisy;
 
             } else if (belgianButton.isSelected()) {
-                layout = Game.belgianDaisy;
+                boardLayout = Game.belgianDaisy;
             }
 
             if (blackButton.isSelected()) {
@@ -117,7 +120,8 @@ import game.TestDriver;public class StartListener implements ActionListener {
             moveLimit = Integer.parseInt(moveTime.getText());
             gameTimeLimit = Long.parseLong(gameTime.getText());
 
-            //TestDriver.game = Gui.startGame(layout, aiIsBlack, moveLimit, gameTimeLimit);
+            TestDriver m = new TestDriver();
+            m.setGame(new Game(boardLayout, aiIsBlack, 30, 30, (long) 10000, (long) 10000));
 
         }
     }

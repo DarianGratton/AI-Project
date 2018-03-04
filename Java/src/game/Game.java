@@ -3,10 +3,6 @@ package game;
 import java.util.ArrayList;
 
 /**
- * 
- */
-
-/**
  * @author Mike
  *
  */
@@ -129,7 +125,7 @@ public class Game {
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
 
-    // sets AI colour
+    // sets AI color
     private boolean aiIsBlack;
     
     private boolean activePlayerIsBlack;
@@ -187,11 +183,12 @@ public class Game {
         this.aiTimeLimit = aiTimeLimit;
         this.humanTimeLimit = humanTimeLimit;
         this.startTime = System.nanoTime();
+        this.recommended = new Move();
         this.activePlayerIsBlack = true;
     }
 
     public Board getBoard(){
-        return this.board;
+        return board;
     }
     
     /**
