@@ -56,12 +56,13 @@ public class GameFrame extends JFrame {
      */
     public GameFrame() {
         setTitle("Abalone");
-        
+
         this.game = initGame();
         this.spaceList = new ArrayList<Space>();
 
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(new BoardPanel(boardLayout)), BorderLayout.CENTER);
+        this.add(createGamePanel(new BoardPanel(boardLayout)),
+                BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
     }
@@ -150,14 +151,15 @@ public class GameFrame extends JFrame {
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
                 + game.getRecommended().toString()));
 
-        JButton start = new JButton("Start Game");
-        start.addActionListener(new StartListener());
-        JButton stop  = new JButton("Stop Game");
-        stop.addActionListener(null);
-        JButton reset = new JButton("Reset Game");
-        reset.addActionListener(null);
-        JButton pause = new JButton("Pause Game");
-        pause.addActionListener(null);
+        ArrayList<JButton> buttons = new ArrayList<>();
+        buttons.add(new JButton("Start Game"));
+        buttons.add(new JButton("Stop Game"));
+        buttons.add(new JButton("Pause Game"));
+        buttons.add(new JButton("Reset Game"));
+        
+        for (JButton btn : buttons) {
+            btn.addActionListener(new ButtonListener());
+        }
         
         JPanel optionButtons = new JPanel();
         options.add(optionButtons, BorderLayout.SOUTH);
@@ -165,17 +167,16 @@ public class GameFrame extends JFrame {
         optionButtons = new JPanel();
         options.add(optionButtons, BorderLayout.SOUTH);
 
-        optionButtons.add(start);
-        optionButtons.add(stop);
-        optionButtons.add(reset);
-        optionButtons.add(pause);
+        for (JButton btn : buttons) {
+            optionButtons.add(btn);
+        }
 
-        JPanel game = new JPanel();
-        game.setLayout(new BoxLayout(game, BoxLayout.PAGE_AXIS));
-        game.add(gameBoard);
-        game.add(options);
+        JPanel gamePanel = new JPanel();
+        gamePanel.setLayout(new BoxLayout(gamePanel, BoxLayout.PAGE_AXIS));
+        gamePanel.add(gameBoard);
+        gamePanel.add(options);
         
-        return game;
+        return gamePanel;
     }
 
     /**
@@ -251,62 +252,38 @@ public class GameFrame extends JFrame {
         return this.spaceList;
     }
     
+    /**
+     * Prompts the user to enter conditions for the game.
+     * 
+     * @return A new game based off the user input
+     */
     private Game initGame() {
         
         JPanel startPanel = new JPanel();
         startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.PAGE_AXIS));
         
-        JRadioButton standardButton = new JRadioButton("Standard");
-        standardButton.setActionCommand(standardButton.getText());
+        ArrayList<JRadioButton> boardButtons = new ArrayList<>();
+        boardButtons.add(new JRadioButton("Standard")); 
+        boardButtons.add(new JRadioButton("German Daisy"));
+        boardButtons.add(new JRadioButton("Belgian Daisy"));
+         
+        ArrayList<JRadioButton> playerButtons = new ArrayList<>();
+        playerButtons.add(new JRadioButton("Black"));
+        playerButtons.add(new JRadioButton("White"));
         
-        JRadioButton germanButton = new JRadioButton("German Daisy");
-        germanButton.setActionCommand(germanButton.getText());
+        ArrayList<JRadioButton> modeButtons = new ArrayList<>(); 
+        modeButtons.add(new JRadioButton("Human VS Human"));
+        modeButtons.add(new JRadioButton("Human VS Computer"));
+        modeButtons.add(new JRadioButton("Computer VS Computer"));
         
-        JRadioButton belgianButton = new JRadioButton("Belgian Daisy");
-        belgianButton.setActionCommand(standardButton.getText());
-        
-        JRadioButton blackButton = new JRadioButton("Black");
-        blackButton.setActionCommand(blackButton.getText());
-        
-        JRadioButton whiteButton = new JRadioButton("White");
-        whiteButton.setActionCommand(whiteButton.getText());
-        
-        JRadioButton humanVsHuman = new JRadioButton("Human VS Human");
-        humanVsHuman.setActionCommand(humanVsHuman.getText());
-        
-        JRadioButton humanVsComputer = new JRadioButton("Human VS Computer");
-        humanVsComputer.setActionCommand(humanVsComputer.getText());
-
-        JRadioButton comVsCom = new JRadioButton("Computer VS Computer");
-        comVsCom.setActionCommand(comVsCom.getText());
-        
-        ButtonGroup boardGroup = new ButtonGroup();
-        boardGroup.add(standardButton);
-        boardGroup.add(germanButton);
-        boardGroup.add(belgianButton);
-
-        ButtonGroup playerGroup = new ButtonGroup();
-        playerGroup.add(blackButton);
-        playerGroup.add(whiteButton);
-        
-        ButtonGroup modeGroup = new ButtonGroup();
-        modeGroup.add(humanVsHuman);
-        modeGroup.add(humanVsComputer);
-        modeGroup.add(comVsCom);
-
         startPanel.add(new JLabel("Choose your initial board state: "));
-        startPanel.add(standardButton);
-        startPanel.add(germanButton);
-        startPanel.add(belgianButton);
-        
+        initRadioButtons(boardButtons, new ButtonGroup(), startPanel);
+
         startPanel.add(new JLabel("Choose your color: "));
-        startPanel.add(blackButton);
-        startPanel.add(whiteButton);     
+        initRadioButtons(playerButtons, new ButtonGroup(), startPanel);
         
         startPanel.add(new JLabel("Choose mode: "));
-        startPanel.add(humanVsHuman);
-        startPanel.add(humanVsComputer);
-        startPanel.add(comVsCom);
+        initRadioButtons(modeButtons, new ButtonGroup(), startPanel);
         
         JLabel gameLimit = new JLabel("Set Game Time Limit: ");
         JTextField gameTime = new JTextField(3);
@@ -323,20 +300,19 @@ public class GameFrame extends JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
 
-            if (standardButton.isSelected()) {
+            if (boardButtons.get(0).isSelected()) {
                 boardLayout = Game.standardLayout;
-                System.out.println("standardButton isSelected");
 
-            } else if (germanButton.isSelected()) {
+            } else if (boardButtons.get(1).isSelected()) {
                 boardLayout = Game.germanDaisy;
 
-            } else if (belgianButton.isSelected()) {
+            } else if (boardButtons.get(2).isSelected()) {
                 boardLayout = Game.belgianDaisy;
             }
 
-            if (blackButton.isSelected()) {
+            if (playerButtons.get(0).isSelected()) {
                 aiIsBlack = true;
-            } else if (whiteButton.isSelected()) {
+            } else if (playerButtons.get(1).isSelected()) {
                 aiIsBlack = false;
             }
             
@@ -344,28 +320,38 @@ public class GameFrame extends JFrame {
             gameTimeLimit = Long.parseLong(gameTime.getText());
         }
         
-        return new Game(boardLayout, aiIsBlack, moveLimit, moveLimit, gameTimeLimit, gameTimeLimit);
+        return new Game(boardLayout, aiIsBlack, moveLimit, 
+                moveLimit, gameTimeLimit, gameTimeLimit);
     }
     
-    private class StartListener implements ActionListener {    
+    /**
+     * Adds buttons in the arraylist to the inputted button input
+     * and adds it to the panel. Made to help save lines of code on
+     * the gameInit method.
+     * 
+     * @param btns ArrayList of JRadioButtons
+     * @param group Button group for the JRadioButtons
+     * @param panel The panel to be added to
+     */
+    private void initRadioButtons(ArrayList<JRadioButton> btns, 
+            ButtonGroup group, JPanel panel) {
+        
+        for (int i = 0; i < btns.size(); ++i) {
+            btns.get(i).setActionCommand(btns.get(i).getText());
+        }
+        
+        for (int i = 0; i < btns.size(); ++i) {
+            group.add(btns.get(i));
+            panel.add(btns.get(i));
+        }
+        
+    }
+    
+    private class ButtonListener implements ActionListener {    
 
         @Override
         public void actionPerformed(ActionEvent event) {
             game = initGame();
         }
     }
-    
-//    ArrayList<JRadioButton> radiobuttons = new ArrayList<>();
-//    radiobuttons.add(new JRadioButton("Standard"));
-//    radiobuttons.add(new JRadioButton("German Daisy"));
-//    radiobuttons.add(new JRadioButton("Belgian Daisy"));
-//    radiobuttons.add(new JRadioButton("Black"));
-//    radiobuttons.add(new JRadioButton("White"));
-//    radiobuttons.add(new JRadioButton("Human VS Human"));
-//    radiobuttons.add(new JRadioButton("Human VS Computer"));
-//    radiobuttons.add(new JRadioButton("Computer VS Computer"));
-//    
-//    for (int i = 0; i < radiobuttons.size(); ++i) {
-//        radiobuttons.get(i).setActionCommand(radiobuttons.get(i).getText());
-//    }
 }

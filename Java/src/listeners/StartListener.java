@@ -120,9 +120,6 @@ public class StartListener implements ActionListener {
             moveLimit = Integer.parseInt(moveTime.getText());
             gameTimeLimit = Long.parseLong(gameTime.getText());
 
-            TestDriver m = new TestDriver();
-            m.setGame(new Game(boardLayout, aiIsBlack, 30, 30, (long) 10000, (long) 10000));
-
         }
     }
 }
