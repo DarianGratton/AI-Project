@@ -52,7 +52,7 @@ public class GameFrame extends JFrame {
     private JButton pause;
     
     private GameTimer timer;
-    
+
     // ArrayList to hold the spaces on the board
     private ArrayList<Space> spaceList;
     
@@ -366,6 +366,20 @@ public class GameFrame extends JFrame {
             panel.add(btns.get(i));
         }
         
+    }
+    
+    /**
+     * @return the timer
+     */
+    public GameTimer getTimer() {
+        return timer;
+    }
+
+    /**
+     * @param timer the timer to set
+     */
+    public void setTimer(GameTimer timer) {
+        this.timer = timer;
     }
     
     private class ButtonListener implements ActionListener {    

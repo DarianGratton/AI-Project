@@ -1,14 +1,9 @@
 package game;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JLabel;
-import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
@@ -63,14 +58,24 @@ public class GameTimer extends JLabel {
         });
     }
     
+    
+    /** 
+     * Starts the timer.
+     */
     public void startTimer() {
         timer.start();
     }
     
+    /**
+     * Stops the timer.
+     */
     public void stopTimer() {
         timer.stop();
     }
     
+    /**
+     * Resets the timer but doesn't stop it.
+     */
     public void resetTimer() {
         seconds = 0;
         millisec = 0;
@@ -80,11 +85,24 @@ public class GameTimer extends JLabel {
         if (seconds <= secmax) {
             secs = "0" + secs;
         }
-        System.out.println(seconds + "." + millisec);
         setText(seconds + "." + millisec);
     }
-    
-    public String toString() {
-        return seconds + "." + millisec;
+
+    /**
+     * Gets the seconds of the timer.
+     * 
+     * @return the seconds
+     */
+    public int getSeconds() {
+        return seconds;
+    }
+
+    /**
+     * Gets the millisecs of the timer.
+     * 
+     * @return the millisec
+     */
+    public int getMillisec() {
+        return millisec;
     }
 }
