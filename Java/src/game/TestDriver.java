@@ -1,5 +1,8 @@
 package game;
 import java.awt.Graphics;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -16,7 +19,7 @@ public class TestDriver {
     /**
      * @param args
      */
-    public static void main(String[] args) {
+    public static void main(String[] args){
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);

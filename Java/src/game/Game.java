@@ -1,6 +1,8 @@
 package game;
 
+import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 /**
  * 
@@ -17,6 +19,12 @@ public class Game {
     // timer for total game; mostly for pausing purposes
     private long startTime;
     private long gameTime;
+
+    /**************************************
+     *  File Reading for part 2 of Project Description
+     *  Reminder to self where code was added - UPDATE REGULARLY OK???!
+     *  Game.java, Line 180-ish - overloaded constructor
+     *************************************/
 
     // initial layouts to copy into game board; need to be filled in
     public static final Board standardLayout = new Board() {
@@ -119,7 +127,9 @@ public class Game {
              add(new Marble(9, 5, false));
              add(new Marble(9, 6, false));
         }
-    }; 
+    };
+
+    public static Board inputBoard;
 
     // marbles lost by each player, respectively
     private int blackLost;
@@ -162,7 +172,132 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
-    } 
+    }
+
+    /**
+     * @param turn - either 'w' or 'b'
+     * @param array - of inputs
+     * Constructor to place file input
+     */
+    public Game(String turn, String[] array) {
+        if(!(turn.equals('w') || turn.equals('b'))) {
+            System.out.println("Invalid input");
+        }
+        turnInputToMarbles(array);
+        this.board = inputBoard;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
+        this.aiMoveLimit = 100;
+        this.humanMoveLimit = this.aiMoveLimit;
+        this.aiTimeLimit = (long) 1000.0;
+        this.humanTimeLimit = this.aiTimeLimit;
+        this.startTime = System.nanoTime();
+        this.recommended = new Move();
+
+        if(turn.equals('w')) {
+            this.aiIsBlack = true;
+            this.activePlayerIsBlack = false;
+        } else {
+            this.aiIsBlack = false;
+            this.activePlayerIsBlack = true;
+        }
+    }
+
+    /**
+     * Turns String of coordinates into layout
+     * @param array
+     * @return board object
+     */
+    public void turnInputToMarbles(String[] array) {
+        for(int i = 0; i < array.length; ++i) {
+            inputBoard.add(new Marble(turnAlphaToDigit(array[i].charAt(0)), turnCharToInt(array[i].charAt(1)), turnAlphatoBool(array[i].charAt(2))));
+        }
+    }
+
+    /**
+     *  there's no error checking either for this one, asusming file input is done correctly
+     * @param alpha - chatAt input
+     * @return corresponding number coordiate to alpha character
+     */
+    public int turnAlphaToDigit(char alpha) {
+        int n = 0;
+        switch(alpha) {
+            case 'A':
+                n = 1;
+            case 'B':
+                n = 2;
+            case 'C':
+                n = 3;
+            case 'D':
+                n = 4;
+            case 'E':
+                n = 5;
+            case 'F':
+                n = 6;
+            case 'G':
+                n = 7;
+            case 'H':
+                n = 8;
+            case 'I':
+                n = 9;
+        }
+        return n;
+    }
+
+    /**
+     *  there's no error checking, assuming that file input is done correctly
+     * @param alpha - chatAt input
+     * @return true if isBlack() = true for marble
+     */
+    public boolean turnAlphatoBool(char alpha) {
+        boolean state = false;
+        switch(alpha) {
+            case 'w':
+                state = false;
+            case 'b':
+                state = true;
+        }
+        return state;
+    }
+
+    /**
+     * turns char '1' to integer 1... p sure there's a function for this but .
+     * @param alpha
+     * @return
+     */
+    public int turnCharToInt(char alpha) {
+        int n = 0;
+        switch(alpha) {
+            case '1':
+                n = 1;
+            case '2':
+                n = 2;
+            case '3':
+                n = 3;
+            case '4':
+                n = 4;
+            case '5':
+                n = 5;
+            case '6':
+                n = 6;
+            case '7':
+                n = 7;
+            case '8':
+                n = 8;
+            case '9':
+                n = 9;
+        }
+        return n;
+
+    }
+
+
+    public int[] getCoordinate(String[] array) {
+        int x[] = {0};
+        return x;
+    }
+
+
 
     /**
      * @param board
@@ -520,7 +655,7 @@ public class Game {
 
 
     /**
-     * @param the move to add to a move history list
+     * @param move to add to a move history list
      */
     public void addMoveToList(Move move){
         if(move.getMovedList().get(0).isBlack()){
