@@ -118,7 +118,10 @@ public class Game {
              add(new Marble(9, 5, false));
              add(new Marble(9, 6, false));
         }
-    }; 
+    };
+
+    //Board for Stage 2
+    public static Board inputBoard;
 
     // marbles lost by each player, respectively
     private int blackLost;
@@ -162,7 +165,171 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
-    } 
+    }
+
+    /**
+     * @param turn - either 'w' or 'b'
+     * @param array - of inputs
+     * Constructor to place file input
+     */
+    public Game(char turn, String[] array) {
+        if(!(turn == 'w' || turn == 'b')) {
+            System.out.println("Invalid input");
+        }
+        turnInputToMarbles(array);
+        this.board = inputBoard;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
+        this.aiMoveLimit = 100;
+        this.humanMoveLimit = this.aiMoveLimit;
+        this.aiTimeLimit = (long) 1000.0;
+        this.humanTimeLimit = this.aiTimeLimit;
+        this.startTime = System.nanoTime();
+        this.recommended = new Move();
+
+        if(turn == 'w') {
+            this.aiIsBlack = true;
+            this.activePlayerIsBlack = false;
+        } else {
+            this.aiIsBlack = false;
+            this.activePlayerIsBlack = true;
+        }
+    }
+
+    /**
+     * Turns String of coordinates into layout
+     * @param array
+     * @return board object
+     */
+    public void turnInputToMarbles(String[] array) {
+        inputBoard = new Board() {
+            {
+                add(new Marble(turnAlphaToDigit(array[0].charAt(0)), turnCharToInt(array[0].charAt(1)), turnAlphatoBool(array[0].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(1)), turnCharToInt(array[1].charAt(1)), turnAlphatoBool(array[1].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(2)), turnCharToInt(array[2].charAt(1)), turnAlphatoBool(array[2].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(3)), turnCharToInt(array[3].charAt(1)), turnAlphatoBool(array[3].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(4)), turnCharToInt(array[4].charAt(1)), turnAlphatoBool(array[4].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(5)), turnCharToInt(array[5].charAt(1)), turnAlphatoBool(array[5].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(6)), turnCharToInt(array[6].charAt(1)), turnAlphatoBool(array[6].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(7)), turnCharToInt(array[7].charAt(1)), turnAlphatoBool(array[7].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(8)), turnCharToInt(array[8].charAt(1)), turnAlphatoBool(array[8].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(9)), turnCharToInt(array[9].charAt(1)), turnAlphatoBool(array[9].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(10)), turnCharToInt(array[10].charAt(1)), turnAlphatoBool(array[10].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(11)), turnCharToInt(array[11].charAt(1)), turnAlphatoBool(array[11].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(12)), turnCharToInt(array[12].charAt(1)), turnAlphatoBool(array[12].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(13)), turnCharToInt(array[13].charAt(1)), turnAlphatoBool(array[13].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(14)), turnCharToInt(array[14].charAt(1)), turnAlphatoBool(array[14].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(15)), turnCharToInt(array[15].charAt(1)), turnAlphatoBool(array[15].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(16)), turnCharToInt(array[16].charAt(1)), turnAlphatoBool(array[16].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(17)), turnCharToInt(array[17].charAt(1)), turnAlphatoBool(array[17].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(18)), turnCharToInt(array[18].charAt(1)), turnAlphatoBool(array[18].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(19)), turnCharToInt(array[19].charAt(1)), turnAlphatoBool(array[19].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(20)), turnCharToInt(array[20].charAt(1)), turnAlphatoBool(array[20].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(21)), turnCharToInt(array[21].charAt(1)), turnAlphatoBool(array[21].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(22)), turnCharToInt(array[22].charAt(1)), turnAlphatoBool(array[22].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(23)), turnCharToInt(array[23].charAt(1)), turnAlphatoBool(array[23].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(24)), turnCharToInt(array[24].charAt(1)), turnAlphatoBool(array[24].charAt(2))));
+                add(new Marble(turnAlphaToDigit(array[0].charAt(25)), turnCharToInt(array[25].charAt(1)), turnAlphatoBool(array[25].charAt(2))));
+            }
+        };
+    }
+
+    /**
+     *  there's no error checking either for this one, asusming file input is done correctly
+     * @param alpha - chatAt input
+     * @return corresponding number coordiate to alpha character
+     */
+    public int turnAlphaToDigit(char alpha) {
+        int n = 0;
+        switch(alpha) {
+            case 'A':
+                n = 1;
+                break;
+            case 'B':
+                n = 2;
+                break;
+            case 'C':
+                n = 3;
+                break;
+            case 'D':
+                n = 4;
+                break;
+            case 'E':
+                n = 5;
+                break;
+            case 'F':
+                n = 6;
+                break;
+            case 'G':
+                n = 7;
+                break;
+            case 'H':
+                n = 8;
+                break;
+            case 'I':
+                n = 9;
+                break;
+        }
+        return n;
+    }
+
+    /**
+     *  there's no error checking, assuming that file input is done correctly
+     * @param alpha - chatAt input
+     * @return true if isBlack() = true for marble
+     */
+    public boolean turnAlphatoBool(char alpha) {
+        boolean state = false;
+        switch(alpha) {
+            case 'w':
+                state = false;
+                break;
+            case 'b':
+                state = true;
+                break;
+        }
+        return state;
+    }
+
+    /**
+     * turns char '1' to integer 1... p sure there's a function for this but .
+     * @param alpha
+     * @return
+     */
+    public int turnCharToInt(char alpha) {
+        int n = 0;
+        switch(alpha) {
+            case '1':
+                n = 1;
+                break;
+            case '2':
+                n = 2;
+                break;
+            case '3':
+                n = 3;
+                break;
+            case '4':
+                n = 4;
+                break;
+            case '5':
+                n = 5;
+                break;
+            case '6':
+                n = 6;
+                break;
+            case '7':
+                n = 7;
+                break;
+            case '8':
+                n = 8;
+                break;
+            case '9':
+                n = 9;
+                break;
+        }
+        return n;
+
+    }
 
     /**
      * @param board
