@@ -16,9 +16,10 @@ public class TestDriver {
      * @param args
      */
     public static void main(String[] args) {
-        final GameFrame frame;
-        
-        frame = new GameFrame();
+
+
+        GameFrame frame = new GameFrame(game);
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         frame.setVisible(true);  

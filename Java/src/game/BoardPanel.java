@@ -16,23 +16,66 @@ import javax.swing.JPanel;
  * @author Mike
  *
  */
+@SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
     private ArrayList<Space> spaceList;
-    private Board marbles;
     private ArrayList<DrawMarble> drawn;  
 
-    private static Marble m1;
-    private static Marble m2;
-    private static Marble m3;
-    private static int direction;
+    private Marble m1;
+    private Marble m2;
+    private Marble m3;
+    private int direction;
+    private boolean marbleClicked;
 
-    public BoardPanel(Board board){
-        this.marbles = board;  
+    
+    public BoardPanel(Game g){
         this.spaceList = new ArrayList<Space>();
         initSpaces();
         this.drawn = new ArrayList<DrawMarble>();
-        initMarbles();
+        Board b = g.getBoard();
+        drawMarbles(b);
+        marbleClicked = false;
+        m1 = null;
+        m2 = null;
+        m3 = null;
+        direction = 0;
+
+        // listener for marbles
+        addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent me) {
+                super.mouseClicked(me);
+
+                marbleClicked = false;
+
+                for (DrawMarble d : drawn) {
+
+                    if (d.contains(me.getPoint())) {//check if mouse is clicked within shape
+
+                        if(m1 == null){
+                            m1 = d.getMarble();
+                            direction = 0;
+                            marbleClicked = true;
+                        } else if(m2 == null) {
+                            m2 = d.getMarble();
+                            direction = 0;
+                            marbleClicked = true;
+                        } else {
+                            marbleClicked = false;
+                        }
+
+
+                        if(m1 != null){
+                            System.out.println(m1.toString());
+                        }
+                        if(m2 != null){
+                            System.out.println(m2.toString());
+                        }
+                    }
+                }
+            }
+        });
 
         // listener for spaces
         addMouseListener(new MouseAdapter() {
@@ -44,13 +87,10 @@ public class BoardPanel extends JPanel {
                     if(s.contains(me.getPoint())){
                         System.out.println(s.toString());
 
-                        if(s != null && m1 != null){
+                        if((s != null && m1 != null && !marbleClicked)){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
                             int numDiff = m1.getNumeric() - s.getNum();
                             direction = 0;
-
-                            System.out.println(alphaDiff);
-                            System.out.println(numDiff);
 
                             if(alphaDiff == 0){
                                 if(numDiff < 0){
@@ -72,62 +112,32 @@ public class BoardPanel extends JPanel {
                                 }
                             }
 
-                            System.out.println(direction);
-
                             if(direction != 0){
-                                if(Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, direction)){
-                                    for(DrawMarble d : drawn){
-                                        if(d.getMarble() == m1 || d.getMarble() == m2 || (m3 != null && d.getMarble() == m3)){
-                                            d.updatePosition(getSpace(d.getMarble()));
-                                        }
-                                    }
+                                if(m2 == null){
+                                    m2 = TestDriver.game.checkAdjacent(m1, direction);
+                                }
 
+                                // single marble move
+                                if((m2 == null && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, direction))
+                                        // double/triple marble move
+                                        || (m2 != null) && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, m2, direction)){
 
+                                    drawMarbles(b);
                                     repaint();
 
-                                    m1 = null;
-                                    m2 = null;
-                                    m3 = null;
-                                    direction = 0;
+                                    
                                 }
                             }
+                         // reset variables
+                            m1 = null;
+                            m2 = null;
+                            m3 = null;
+                            direction = 0;
                         }
                     }
                 }
             }
-        });
-
-
-        // listener for marbles
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent me) {
-                super.mouseClicked(me);
-
-                for (DrawMarble d : drawn) {
-
-                    if (d.contains(me.getPoint())) {//check if mouse is clicked within shape
-
-                        if(m1 == null){
-                            m1 = d.getMarble();
-                            direction = 0;
-                        } /*else if(m2 == null) {
-                            m2 = d.getMarble();
-                            direction = 0;
-                        } */
-
-
-                        if(m1 != null){
-                            System.out.println(m1.toString());
-                        }
-                        if(m2 != null){
-                            System.out.println(m2.toString());
-                        }
-                    }
-                }
-            }
-        });
-
+        });    
     }
 
 
@@ -162,8 +172,9 @@ public class BoardPanel extends JPanel {
     }
 
 
-    public void initMarbles(){
-        for(Marble m : marbles){
+    public void drawMarbles(Board b){
+        this.drawn = new ArrayList<DrawMarble>();
+        for(Marble m : b){
             for(Space s : spaceList){
                 if(m.getAlpha() == s.getAlpha() && m.getNumeric() == s.getNum()){
                     DrawMarble d = new DrawMarble(m, s);

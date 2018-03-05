@@ -70,8 +70,13 @@ public class GameFrame extends JFrame {
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
      */
-    public GameFrame() {
+
+
+    public GameFrame(Game g) {
         setTitle("Abalone");
+        
+        this.spaceList = new ArrayList<Space>();
+        BoardPanel board = new BoardPanel(g);
 
         this.game = initGame();
         this.spaceList = new ArrayList<Space>();
