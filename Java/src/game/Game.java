@@ -443,6 +443,7 @@ public class Game {
         // adjacent space is empty
         if(adjacent == null){
             moved.changePos(direction);
+            sumito(moved);
             return true;
         }  
         
@@ -457,7 +458,7 @@ public class Game {
         
         // pushing first enemy marble
         if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy <= pushedFriend){
-            pushedFriend++;
+            
             pushedEnemy++;
             System.out.println(pushedEnemy);
             if(this.move(adjacent, direction, pushedFriend, pushedEnemy)){
@@ -467,8 +468,8 @@ public class Game {
         }
         
         // if an enemy marble has already been pushed
-        if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy <= pushedFriend){
-            pushedFriend++;
+        if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy < pushedFriend){
+            
             pushedEnemy++;
             if(this.move(adjacent, direction, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
@@ -589,6 +590,30 @@ public class Game {
     public boolean moveIsLegal(){
 
         return true;
+    }
+    
+    public boolean sumito(Marble m){
+        int alpha = m.getAlpha();
+        int num = m.getNumeric();
+        
+        int numMin = Math.max(alpha-4, 1);
+        int numMax = Math.min(alpha+4, 9);
+        
+        /*int alphaMin = 1 + (num % 4);
+        int alphaMax = Math.min(num+4, 9);*/
+        System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
+        // || alpha < alphaMin || alpha > alphaMax
+        if(num < numMin || num > numMax){
+            System.out.println("You've activated my trap card Yugi");
+            if(m.isBlack()){
+                this.blackLost++;
+            } else {
+                this.whiteLost++;
+            }
+            this.getBoard().remove(m);
+            return true;
+        }
+        return false;
     }
 
 }
