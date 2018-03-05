@@ -68,13 +68,13 @@ public class BoardPanel extends JPanel {
                             marbleClicked = false;
                         }
 
-
+/*
                         if(m1 != null){
                             System.out.println(m1.toString());
                         }
                         if(m2 != null){
                             System.out.println(m2.toString());
-                        }
+                        }*/
                     }
                 }
             }
@@ -88,7 +88,7 @@ public class BoardPanel extends JPanel {
 
                 for(Space s : spaceList){
                     if(s.contains(me.getPoint())){
-                        System.out.println(s.toString());
+                        //System.out.println(s.toString());
 
                         if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
