@@ -95,11 +95,11 @@ public class GameFrame extends JFrame {
      * Populates the JFrame.
      */
 
-    public GameFrame() {
+    public GameFrame(Game g) {
         setTitle("Abalone");
         
         this.spaceList = new ArrayList<Space>();
-        BoardPanel board = new BoardPanel(Game.germanDaisy);
+        BoardPanel board = new BoardPanel(g);
 
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(board), BorderLayout.CENTER);

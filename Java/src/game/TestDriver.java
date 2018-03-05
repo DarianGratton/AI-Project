@@ -11,13 +11,14 @@ import javax.swing.JFrame;
 public class TestDriver {
 
     public static Game game = new Game();
-    public static final GameFrame frame = new GameFrame();
 
     /**
      * @param args
      */
     public static void main(String[] args) {
 
+        GameFrame frame = new GameFrame(game);
+        
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         frame.setVisible(true);  

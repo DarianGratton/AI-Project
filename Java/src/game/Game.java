@@ -19,6 +19,7 @@ public class Game {
     private long gameTime;
 
     // initial layouts to copy into game board; need to be filled in
+    @SuppressWarnings("serial")
     public static final Board standardLayout = new Board() {
         {
             add(new Marble(1, 1, true));
@@ -53,6 +54,7 @@ public class Game {
         }
     };
 
+    @SuppressWarnings("serial")
     public static Board germanDaisy = new Board() {
         {
             add(new Marble(2, 1, true));
@@ -87,6 +89,7 @@ public class Game {
         }
     };
     
+    @SuppressWarnings("serial")
     public static final Board belgianDaisy = new Board() {
         {
              add(new Marble(1, 1, true));
@@ -357,7 +360,7 @@ public class Game {
             if((m.getAlpha() == alpha) && (m.getNumeric() == numeric)){
                 return m;
             }
-        }       
+        }     
         return null;
     }
 
@@ -374,7 +377,7 @@ public class Game {
         // 5: bottom-left
         case 5: return this.searchBoard(m.getAlpha()-1, m.getNumeric()-1);
         // 6: left
-        case 6: return this.searchBoard(m.getAlpha()+1, m.getNumeric()-1);  
+        case 6: return this.searchBoard(m.getAlpha(), m.getNumeric()-1);  
         }
         // fallback to break if something weird happens
         return null;
@@ -456,7 +459,7 @@ public class Game {
 
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
-                m3 = this.searchBoard( (m1.getAlpha()+m2.getAlpha())/2 , (m1.getNumeric()+m2.getNumeric())/2);
+                m3 = this.searchBoard( Math.abs((m1.getAlpha()+m2.getAlpha()))/2 , Math.abs((m1.getNumeric()+m2.getNumeric()))/2 );
                 if(m3 == null){
                     return false;
                 }
@@ -469,11 +472,11 @@ public class Game {
                 if(m1.getAlpha() == m2.getAlpha()){
                     if(direction == 3){
                         rear = (m1.getNumeric() < m2.getNumeric()) ? m1 : m2;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                     if(direction == 6){
                         rear = (m1.getNumeric() < m2.getNumeric()) ? m2 : m1;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                 }
 
@@ -481,11 +484,11 @@ public class Game {
                 if(m1.getNumeric() == m2.getNumeric()){
                     if(direction == 1){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                     if(direction == 4){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                 }
 
@@ -493,11 +496,11 @@ public class Game {
                 if(diffAlpha == diffNumeric){
                     if(direction == 2){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                     if(direction == 5){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
-                        return this.move(rear, direction, 0);
+                        return this.move(rear, direction);
                     }
                 }
 
