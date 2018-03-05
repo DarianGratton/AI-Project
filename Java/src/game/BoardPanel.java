@@ -61,6 +61,9 @@ public class BoardPanel extends JPanel {
                             m2 = d.getMarble();
                             direction = 0;
                             marbleClicked = true;
+                        } else if(m3 == null){
+                            m3 = d.getMarble();
+                            marbleClicked = true;
                         } else {
                             marbleClicked = false;
                         }
@@ -87,7 +90,7 @@ public class BoardPanel extends JPanel {
                     if(s.contains(me.getPoint())){
                         System.out.println(s.toString());
 
-                        if((s != null && m1 != null && !marbleClicked)){
+                        if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
                             int numDiff = m1.getNumeric() - s.getNum();
                             direction = 0;
