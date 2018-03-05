@@ -55,13 +55,13 @@ public class GameFrame extends JFrame {
     private GameTimer turnTimer;
 
     // ArrayList to hold the spaces on the board
-    private ArrayList<Space> spaceList;
+    // private ArrayList<Space> spaceList;
     
     // Move Limit for the game 
     private int moveLimit;
     
     // Time limit for the game
-    private long gameTimeLimit;
+    private long timePerMove;
     
     // Boolean to check if the player is black or white
     private boolean aiIsBlack;
@@ -75,15 +75,15 @@ public class GameFrame extends JFrame {
     public GameFrame(Game g) {
         setTitle("Abalone");
         
-        this.spaceList = new ArrayList<Space>();
-        BoardPanel board = new BoardPanel(g);
+        //this.spaceList = new ArrayList<Space>();
+        //BoardPanel board = new BoardPanel(g);
 
-        this.game = initGame();
-        this.spaceList = new ArrayList<Space>();
+        this.game = new Game();
+        //this.spaceList = new ArrayList<Space>();
         gameTimer = new GameTimer();
         
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(new BoardPanel(boardLayout)),
+        this.add(createGamePanel(new BoardPanel(g)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
@@ -275,17 +275,17 @@ public class GameFrame extends JFrame {
      * Gets ArrayList of spaces.
      * 
      * @return an ArrayList of spaces
-     */
+     *//*
     public ArrayList<Space> getSpaceList(){
         return this.spaceList;
-    }
+    }*/
     
     /**
      * Prompts the user to enter conditions for the game.
      * 
      * @return A new game based off the user input
      */
-    private Game initGame() {
+    private void initGame() {
         
         JPanel startPanel = new JPanel();
         startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.PAGE_AXIS));
@@ -313,15 +313,17 @@ public class GameFrame extends JFrame {
         startPanel.add(new JLabel("Choose mode: "));
         initRadioButtons(modeButtons, new ButtonGroup(), startPanel);
         
-        JLabel gameLimit = new JLabel("Set Game Time Limit: ");
-        JFormattedTextField gameTime = new JFormattedTextField();
-        startPanel.add(gameLimit);
-        startPanel.add(gameTime);
-        
-        JLabel moveTimeLimit = new JLabel("Set Move Time Limit: ");
+        JLabel timeLimit = new JLabel("Set Time Limit per Move: ");
         JFormattedTextField moveTime = new JFormattedTextField();
-        startPanel.add(moveTimeLimit);
+        moveTime.setText("0");
+        startPanel.add(timeLimit);
         startPanel.add(moveTime);
+        
+        JLabel moveLimitLabel = new JLabel("Set Move Limit: ");
+        JFormattedTextField moveLimit = new JFormattedTextField();
+        moveLimit.setText("0");
+        startPanel.add(moveLimitLabel);
+        startPanel.add(moveLimit);
 
         int result = JOptionPane.showConfirmDialog(null, startPanel,
                 "Game Settings", JOptionPane.OK_CANCEL_OPTION);
@@ -344,11 +346,15 @@ public class GameFrame extends JFrame {
                 aiIsBlack = false;
             }
             
-            moveLimit = Integer.parseInt(moveTime.getText());
-            gameTimeLimit = Long.parseLong(gameTime.getText());
+            this.moveLimit = Integer.parseInt(moveLimit.getText());
+            this.timePerMove = Long.parseLong(moveTime.getText());
         }
         
-        return new Game(boardLayout, aiIsBlack, moveLimit, gameTimeLimit, gameTimer);
+        Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, timePerMove, gameTimer);
+        if(g != null){
+            this.game = g;
+            repaint();
+        }
     }
     
     /**
@@ -393,6 +399,9 @@ public class GameFrame extends JFrame {
         @Override
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == start) {
+                gameTimer.stopTimer();
+                initGame();
+                repaint();
                 gameTimer.startTimer();
             } else if (event.getSource() == stop) {
                 gameTimer.stopTimer();
