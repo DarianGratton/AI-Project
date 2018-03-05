@@ -17,18 +17,15 @@ public class TestDriver {
      */
     public static void main(String[] args) {
 
+
         GameFrame frame = new GameFrame(game);
-        
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
         frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
-        //Gui.drawBoard(game.getBoard(), frame, g);
-
-
-
 
         //Gui.drawBoard(test.getBoard(), frame, g);
 
