@@ -26,9 +26,31 @@ public class Move {
      * @param movedList
      * @param direction
      */
+    public Move(Marble moved, int direction) {
+        this.movedList = new ArrayList<Marble>();
+        this.movedList.add(moved);
+        this.direction = direction;
+    }
+    
+    /**
+     * @param moved
+     * @param movedList
+     * @param direction
+     */
     public Move(Marble moved, int direction, long time) {
         this.movedList = new ArrayList<Marble>();
         this.movedList.add(moved);
+        this.direction = direction;
+    }
+    
+    /**
+     * @param movedList
+     * @param direction
+     */
+    public Move(Marble m1, Marble m2, int direction) {
+        this.movedList = new ArrayList<Marble>();
+        this.movedList.add(m1);
+        this.movedList.add(m2);
         this.direction = direction;
     }
     
