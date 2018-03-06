@@ -1,3 +1,5 @@
+
+
 package game;
 /**
  * 
@@ -14,6 +16,10 @@ public class Marble {
     
     // position along numbered axis
     private int numeric;
+    
+    //Color = b if marble is black
+    // Else color = w
+    private char color;
     
     // default to true, set to false when knocked out
     private boolean isActive;
@@ -33,7 +39,7 @@ public class Marble {
         this.isActive = true;
         this.isBlack = isBlack;
     }
-
+    
     /**
      * @return the alpha
      */
@@ -87,6 +93,18 @@ public class Marble {
 
 
     /**
+     *  Return b if color of the marble is black
+     *  otherwise returns white
+     * @return color
+     */
+    public char getColor() {
+    	if(isBlack())
+    		color = 'b';
+    	else
+    		color = 'w';
+    	return color;
+    }
+    /**
      * @param isBlack the isBlack to set
      */
     public void setBlack(boolean isBlack) {
@@ -127,8 +145,7 @@ public class Marble {
      */
     @Override
     public String toString() {
-        return "Marble [alpha=" + alpha + ", numeric=" + numeric + ", isActive=" + isActive + ", isBlack=" + isBlack
-                + "]";
+        return "Marble [Color=" + getColor() + "alpha=" + alpha + ", numeric=" + numeric + ", isActive=" + isActive +  "]";
     }
     
 
