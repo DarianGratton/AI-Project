@@ -402,17 +402,39 @@ public class GameFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent event) {
+            
+            /**
+             *  Start game button, stops timer and creates a new game as per the
+             *  game settings input. 
+             */
             if (event.getSource() == start) {
                 gameTimer.stopTimer();
                 gameTimer.resetTimer();
                 initGame();
                 gameTimer.startTimer();
-            } else if (event.getSource() == stop) {
+            } 
+            
+            /**
+             * Stop game button, stops game in current state and declares a winner
+             * (probably not necessary to declare winner). All it does now is stop 
+             * the game timer.
+             */
+            if (event.getSource() == stop) {
                 gameTimer.stopTimer();
-            } else if (event.getSource() == reset) {
+            }
+            
+            /**
+             * Reset game button, resets the game based on the last game's settings. 
+             */
+            if (event.getSource() == reset) {
                 gameTimer.resetTimer();
                 game = new Game(boardLayout, aiIsBlack, moveLimit, timePerMove, gameTimer);
-            } else if (event.getSource() == pause) {
+            }
+            
+            /**
+             * Pause game button, pauses the game in it's current state.
+             */
+            if (event.getSource() == pause) {
                 gameTimer.stopTimer();
             }
         }
