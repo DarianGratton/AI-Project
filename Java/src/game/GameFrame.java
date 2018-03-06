@@ -79,12 +79,12 @@ public class GameFrame extends JFrame {
         //this.spaceList = new ArrayList<Space>();
         //BoardPanel board = new BoardPanel(g);
 
-        this.game = new Game();
+        this.game = g;
         //this.spaceList = new ArrayList<Space>();
         gameTimer = new GameTimer();
         
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(new BoardPanel(g)),
+        this.add(createGamePanel(new BoardPanel(this.game)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);

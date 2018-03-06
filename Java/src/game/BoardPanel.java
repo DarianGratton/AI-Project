@@ -27,9 +27,11 @@ public class BoardPanel extends JPanel {
     private Marble m3;
     private int direction;
     private boolean marbleClicked;
+    private Game game;
 
     
     public BoardPanel(Game g){
+        this.game = g;
         this.spaceList = new ArrayList<Space>();
         initSpaces();
         this.drawn = new ArrayList<DrawMarble>();
@@ -114,13 +116,13 @@ public class BoardPanel extends JPanel {
 
                             if(direction != 0){
                                 if(m2 == null){
-                                    m2 = TestDriver.game.checkAdjacent(m1, direction);
+                                    m2 = game.checkAdjacent(m1, direction);
                                 }
 
                                 // single marble move
-                                if((m2 == null && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, direction))
+                                if((m2 == null && Gui.moveMarbles(game, m1.isBlack(), m1, direction))
                                         // double/triple marble move
-                                        || (m2 != null) && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, m2, direction)){
+                                        || (m2 != null) && Gui.moveMarbles(game, m1.isBlack(), m1, m2, direction)){
 
                                     drawMarbles(b);
                                     repaint();
