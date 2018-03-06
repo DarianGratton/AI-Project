@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
@@ -210,7 +210,7 @@ public class BoardPanel extends JPanel {
     }
 
     public ArrayList<Space> getSpaceList(){
-        return this.spaceList;
+        return spaceList;
     }
 
     public Space getSpace(Marble m){
