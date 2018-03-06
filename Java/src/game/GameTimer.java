@@ -7,8 +7,7 @@ import javax.swing.JLabel;
 import javax.swing.Timer;
 
 /**
- * <p>This class creates an Panel of an StopWatch, which has 3 JButtons
- * that start, pause, and reset the timer.</p>
+ * <p>Timer class which is a JLabel, this shows the time.</p>
  *
  * @author A00965803
  * @version 1.0
@@ -17,12 +16,6 @@ public class GameTimer extends JLabel {
     
     /** serialVersionUID of this JPanel.*/
     private static final long serialVersionUID = 123489043809L;
-    
-    /** Width of the JPanel.*/
-    private final int width = 500;
-    
-    /** Height of the JPanel.*/
-    private final int height = 60;
     
     /** Time of seconds in the StopWatch. */
     private int seconds;
@@ -48,7 +41,6 @@ public class GameTimer extends JLabel {
                     seconds++;
                 }
                 String secs = Integer.toString(seconds);
-                String mil = Integer.toString(millisec);
                 if (seconds <= secmax) {
                     secs = "0" + secs;
                 }
@@ -81,7 +73,6 @@ public class GameTimer extends JLabel {
         millisec = 0;
         final int secmax = 10;
         String secs = Integer.toString(seconds);
-        String mil = Integer.toString(millisec);
         if (seconds <= secmax) {
             secs = "0" + secs;
         }
