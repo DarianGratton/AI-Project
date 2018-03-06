@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 /**
  * The GameFrame class is an JFrame that displays all the 
@@ -65,6 +64,8 @@ public class GameFrame extends JFrame {
     
     // Boolean to check if the player is black or white
     private boolean aiIsBlack;
+    
+    private JPanel gameBoard;
 
     /**
      * Constructor that creates the initial state of the board.
@@ -158,7 +159,7 @@ public class GameFrame extends JFrame {
      */
     private JPanel createGamePanel(BoardPanel board) {
         
-        JPanel gameBoard = new JPanel();
+        gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(0, BOARD_HEIGHT));
         gameBoard.setLayout(new BorderLayout());
         gameBoard.add(board, BorderLayout.CENTER);
@@ -351,8 +352,11 @@ public class GameFrame extends JFrame {
         }
         
         Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, timePerMove, gameTimer);
-        if(g != null){
+        
+        if (g != null) {
             this.game = g;
+            gameBoard.removeAll();
+            gameBoard.add(new BoardPanel(g));
             repaint();
         }
     }
@@ -400,14 +404,14 @@ public class GameFrame extends JFrame {
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == start) {
                 gameTimer.stopTimer();
+                gameTimer.resetTimer();
                 initGame();
-                repaint();
                 gameTimer.startTimer();
             } else if (event.getSource() == stop) {
                 gameTimer.stopTimer();
-                gameTimer.resetTimer();
             } else if (event.getSource() == reset) {
-                System.out.println("Reset");
+                gameTimer.resetTimer();
+                game = new Game(boardLayout, aiIsBlack, moveLimit, timePerMove, gameTimer);
             } else if (event.getSource() == pause) {
                 gameTimer.stopTimer();
             }
