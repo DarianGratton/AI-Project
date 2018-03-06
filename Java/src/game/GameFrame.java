@@ -352,6 +352,7 @@ public class GameFrame extends JFrame {
         }
         
         Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, timePerMove, gameTimer);
+        
         if (g != null) {
             this.game = g;
             gameBoard.removeAll();
