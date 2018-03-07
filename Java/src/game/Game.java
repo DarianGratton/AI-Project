@@ -118,7 +118,7 @@ public class Game {
             add(new Marble(9, 5, false));
             add(new Marble(9, 6, false));
         }
-    }; 
+    };
 
     // marbles lost by each player, respectively
     private int blackLost;
@@ -162,8 +162,7 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
-    } 
-
+    }
     /**
      * @param board
      * @param blackMoves
