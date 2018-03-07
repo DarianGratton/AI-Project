@@ -67,7 +67,7 @@ public class Game {
             add(new Marble(7, 9, true));
             add(new Marble(8, 8, true));
             add(new Marble(8, 9, true));        
-    
+
             add(new Marble(2, 5, false));
             add(new Marble(2, 6, false));
             add(new Marble(3, 5, false));
@@ -84,39 +84,39 @@ public class Game {
             add(new Marble(8, 5, false));
         }
     };
-    
+
     @SuppressWarnings("serial")
     public static final Board belgianDaisy = new Board() {
         {
-             add(new Marble(1, 1, true));
-             add(new Marble(1, 2, true));
-             add(new Marble(2, 1, true));
-             add(new Marble(2, 2, true));
-             add(new Marble(2, 3, true));
-             add(new Marble(3, 2, true));
-             add(new Marble(3, 3, true));
-             add(new Marble(7, 7, true));
-             add(new Marble(7, 8, true));
-             add(new Marble(8, 7, true));
-             add(new Marble(8, 8, true));
-             add(new Marble(8, 9, true));
-             add(new Marble(9, 8, true));
-             add(new Marble(9, 9, true));
+            add(new Marble(1, 1, true));
+            add(new Marble(1, 2, true));
+            add(new Marble(2, 1, true));
+            add(new Marble(2, 2, true));
+            add(new Marble(2, 3, true));
+            add(new Marble(3, 2, true));
+            add(new Marble(3, 3, true));
+            add(new Marble(7, 7, true));
+            add(new Marble(7, 8, true));
+            add(new Marble(8, 7, true));
+            add(new Marble(8, 8, true));
+            add(new Marble(8, 9, true));
+            add(new Marble(9, 8, true));
+            add(new Marble(9, 9, true));
 
-             add(new Marble(1, 4, false));
-             add(new Marble(1, 5, false));
-             add(new Marble(2, 4, false));
-             add(new Marble(2, 5, false));
-             add(new Marble(2, 6, false));
-             add(new Marble(3, 5, false));
-             add(new Marble(3, 6, false));
-             add(new Marble(7, 4, false));
-             add(new Marble(7, 5, false));
-             add(new Marble(8, 4, false));
-             add(new Marble(8, 5, false));
-             add(new Marble(8, 6, false));
-             add(new Marble(9, 5, false));
-             add(new Marble(9, 6, false));
+            add(new Marble(1, 4, false));
+            add(new Marble(1, 5, false));
+            add(new Marble(2, 4, false));
+            add(new Marble(2, 5, false));
+            add(new Marble(2, 6, false));
+            add(new Marble(3, 5, false));
+            add(new Marble(3, 6, false));
+            add(new Marble(7, 4, false));
+            add(new Marble(7, 5, false));
+            add(new Marble(8, 4, false));
+            add(new Marble(8, 5, false));
+            add(new Marble(8, 6, false));
+            add(new Marble(9, 5, false));
+            add(new Marble(9, 6, false));
         }
     };
 
@@ -130,7 +130,7 @@ public class Game {
 
     // sets AI color
     private boolean aiIsBlack;
-    
+
     private boolean activePlayerIsBlack;
 
     // next move as recommended by AI
@@ -142,7 +142,7 @@ public class Game {
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
-    
+
     private GameTimer time;
 
     /**
@@ -194,7 +194,7 @@ public class Game {
     public Board getBoard(){
         return board;
     }
-    
+
     /**
      * @return the startTime
      */
@@ -250,7 +250,7 @@ public class Game {
     public void setAiIsBlack(boolean aiIsBlack) {
         this.aiIsBlack = aiIsBlack;
     }
-    
+
     /**
      * This method returns true when the acting player is playing black and false otherwise
      * @return
@@ -258,14 +258,14 @@ public class Game {
     public boolean activeIsBlack(){
         return this.activePlayerIsBlack;
     }
-    
+
     /**
      * This method switches the active side of play
      */
     public void switchSides(){
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
     }
-    
+
     /**
      * I don't expect to use this method except for debug; changes the active player boolean to an input; use switchSides instead if possible
      * @param isBlack
@@ -400,11 +400,17 @@ public class Game {
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
-    public boolean move(Marble moved, int direction){
+    public boolean move(Marble moved, int direction, boolean activeIsBlack){
 
         Marble adjacent = null;
-        boolean isBlack = moved.isBlack();
+        boolean isBlack = activeIsBlack;
         int pushedFriend = 0;
+        int pushedEnemy = 0;
+
+        // cut off the method if player attempts to move other player's marbles directly
+        if(moved.isBlack() != isBlack){
+            return false;
+        }
 
         adjacent = this.checkAdjacent(moved, direction);
 
@@ -414,7 +420,7 @@ public class Game {
         } 
         else if(adjacent.isBlack() == isBlack && pushedFriend < 2){
             pushedFriend++;
-            if(this.move(adjacent, direction, pushedFriend)){
+            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
                 return true;
             }
@@ -429,21 +435,49 @@ public class Game {
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
-    public boolean move(Marble moved, int direction, int pushedFriendly){
+    public boolean move(Marble moved, int direction, boolean activeIsBlack, int pushedFriendly, int pushedOpponent){
 
         Marble adjacent = null;
-        boolean isBlack = moved.isBlack();
+        boolean isBlack = activeIsBlack;
         int pushedFriend = pushedFriendly;
+        int pushedEnemy = pushedOpponent;
+
+
 
         adjacent = this.checkAdjacent(moved, direction);
 
+        // adjacent space is empty
         if(adjacent == null){
             moved.changePos(direction);
+            sumito(moved, isBlack);
             return true;
-        } 
-        else if(adjacent.isBlack() == isBlack && pushedFriend < 2){
+        }  
+
+        // pushing friendly marble(s)
+        if(adjacent.isBlack() == isBlack && pushedFriend < 2){
             pushedFriend++;
-            if(this.move(adjacent, direction, pushedFriend)){
+            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
+                moved.changePos(direction);
+                return true;
+            }
+        }
+
+        // pushing first enemy marble
+        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy <= pushedFriend){
+
+            pushedEnemy++;
+            System.out.println(pushedEnemy);
+            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
+                moved.changePos(direction);
+                return true;
+            }
+        }
+
+        // if an enemy marble has already been pushed
+        if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy < pushedFriend){
+
+            pushedEnemy++;
+            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
                 return true;
             }
@@ -459,12 +493,18 @@ public class Game {
      * @param m2 the last marble to move
      * @param direction the direction of the move
      */
-    public boolean move(Marble m1, Marble m2, int direction) {
+    public boolean move(Marble m1, Marble m2, int direction, boolean activeIsBlack) {
 
         int diffAlpha = Math.abs(m1.getAlpha() - m2.getAlpha());
         int diffNumeric = Math.abs(m1.getNumeric() - m2.getNumeric());
+        boolean isBlack = activeIsBlack;
         Marble m3 = null;
         Marble rear = null;
+
+        // cut method short if the marbles selected do not match player colour
+        if(m1.isBlack() != isBlack || m2.isBlack() != isBlack){
+            return false;
+        }
 
         // broad conditions that the move MIGHT be legal
         if((diffAlpha <= 2) && diffNumeric <= 2){
@@ -472,7 +512,7 @@ public class Game {
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
                 m3 = this.searchBoard( Math.abs((m1.getAlpha()+m2.getAlpha()))/2 , Math.abs((m1.getNumeric()+m2.getNumeric()))/2 );
-                if(m3 == null){
+                if(m3 == null || m3.isBlack() != m1.isBlack()){
                     return false;
                 }
             } 
@@ -484,11 +524,11 @@ public class Game {
                 if(m1.getAlpha() == m2.getAlpha()){
                     if(direction == 3){
                         rear = (m1.getNumeric() < m2.getNumeric()) ? m1 : m2;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                     if(direction == 6){
                         rear = (m1.getNumeric() < m2.getNumeric()) ? m2 : m1;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                 }
 
@@ -496,11 +536,11 @@ public class Game {
                 if(m1.getNumeric() == m2.getNumeric()){
                     if(direction == 1){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                     if(direction == 4){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                 }
 
@@ -508,11 +548,11 @@ public class Game {
                 if(diffAlpha == diffNumeric){
                     if(direction == 2){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m1 : m2;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                     if(direction == 5){
                         rear = (m1.getAlpha() < m2.getAlpha()) ? m2 : m1;
-                        return this.move(rear, direction);
+                        return this.move(rear, direction, isBlack);
                     }
                 }
 
@@ -554,14 +594,49 @@ public class Game {
     public int getWhiteScore(){
         return this.blackLost;
     }
-    
+
     /**
      * This method is responsible for checking a possible move for legality; i.e. within the board or knocking out a single enemy marble
      * @return
      */
-    public boolean moveIsLegal(){
-        
-        return true;
+    public static boolean moveIsLegal(Board b, Move m){
+        boolean isLegal = false;
+        Board dummy = new Board(b);
+
+
+        if(true){ // replace this statement with move legality checking, probably butchered from other functions
+
+
+        }
+
+        return isLegal;
+    }
+
+    /**
+     * this move checks for sumito and removes the knocked out marble from the board collection
+     * @param m
+     * @return
+     */
+    public boolean sumito(Marble m, boolean activeIsBlack){
+        //this is to prevent you from booting out your own marbles, though as is it needs to be called elsewhere to validate
+
+        int alpha = m.getAlpha();
+        int num = m.getNumeric();
+        int numMin = Math.max(alpha - 4, 1);
+        int numMax = Math.min(alpha + 4, 9);
+        System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
+        if (num < numMin || num > numMax) {
+            System.out.println("You've activated my trap card Yugi");
+            if (m.isBlack()) {
+                this.blackLost++;
+            } else {
+                this.whiteLost++;
+            }
+            this.getBoard().remove(m);
+            return true;
+        }
+
+        return false;
     }
 
 }

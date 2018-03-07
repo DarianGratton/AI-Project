@@ -18,7 +18,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 /**
  * The GameFrame class is an JFrame that displays all the 
@@ -65,6 +64,8 @@ public class GameFrame extends JFrame {
     
     // Boolean to check if the player is black or white
     private boolean aiIsBlack;
+    
+    private JPanel gameBoard;
 
     /**
      * Constructor that creates the initial state of the board.
@@ -78,12 +79,12 @@ public class GameFrame extends JFrame {
         //this.spaceList = new ArrayList<Space>();
         //BoardPanel board = new BoardPanel(g);
 
-        this.game = new Game();
+        this.game = g;
         //this.spaceList = new ArrayList<Space>();
         gameTimer = new GameTimer();
         
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(new BoardPanel(g)),
+        this.add(createGamePanel(new BoardPanel(this.game)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
@@ -158,7 +159,7 @@ public class GameFrame extends JFrame {
      */
     private JPanel createGamePanel(BoardPanel board) {
         
-        JPanel gameBoard = new JPanel();
+        gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(0, BOARD_HEIGHT));
         gameBoard.setLayout(new BorderLayout());
         gameBoard.add(board, BorderLayout.CENTER);
@@ -351,8 +352,11 @@ public class GameFrame extends JFrame {
         }
         
         Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, timePerMove, gameTimer);
-        if(g != null){
+        
+        if (g != null) {
             this.game = g;
+            gameBoard.removeAll();
+            gameBoard.add(new BoardPanel(g));
             repaint();
         }
     }
@@ -398,17 +402,39 @@ public class GameFrame extends JFrame {
 
         @Override
         public void actionPerformed(ActionEvent event) {
+            
+            /**
+             *  Start game button, stops timer and creates a new game as per the
+             *  game settings input. 
+             */
             if (event.getSource() == start) {
                 gameTimer.stopTimer();
-                initGame();
-                repaint();
-                gameTimer.startTimer();
-            } else if (event.getSource() == stop) {
-                gameTimer.stopTimer();
                 gameTimer.resetTimer();
-            } else if (event.getSource() == reset) {
-                System.out.println("Reset");
-            } else if (event.getSource() == pause) {
+                initGame();
+                gameTimer.startTimer();
+            } 
+            
+            /**
+             * Stop game button, stops game in current state and declares a winner
+             * (probably not necessary to declare winner). All it does now is stop 
+             * the game timer.
+             */
+            if (event.getSource() == stop) {
+                gameTimer.stopTimer();
+            }
+            
+            /**
+             * Reset game button, resets the game based on the last game's settings. 
+             */
+            if (event.getSource() == reset) {
+                gameTimer.resetTimer();
+                game = new Game(boardLayout, aiIsBlack, moveLimit, timePerMove, gameTimer);
+            }
+            
+            /**
+             * Pause game button, pauses the game in it's current state.
+             */
+            if (event.getSource() == pause) {
                 gameTimer.stopTimer();
             }
         }

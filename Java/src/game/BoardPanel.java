@@ -7,7 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
-
+import java.util.Collections;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
@@ -27,9 +27,11 @@ public class BoardPanel extends JPanel {
     private Marble m3;
     private int direction;
     private boolean marbleClicked;
+    private Game game;
 
     
     public BoardPanel(Game g){
+        this.game = g;
         this.spaceList = new ArrayList<Space>();
         initSpaces();
         this.drawn = new ArrayList<DrawMarble>();
@@ -61,17 +63,20 @@ public class BoardPanel extends JPanel {
                             m2 = d.getMarble();
                             direction = 0;
                             marbleClicked = true;
+                        } else if(m3 == null){
+                            m3 = d.getMarble();
+                            marbleClicked = true;
                         } else {
                             marbleClicked = false;
                         }
 
-
+/*
                         if(m1 != null){
                             System.out.println(m1.toString());
                         }
                         if(m2 != null){
                             System.out.println(m2.toString());
-                        }
+                        }*/
                     }
                 }
             }
@@ -85,9 +90,9 @@ public class BoardPanel extends JPanel {
 
                 for(Space s : spaceList){
                     if(s.contains(me.getPoint())){
-                        System.out.println(s.toString());
+                        //System.out.println(s.toString());
 
-                        if((s != null && m1 != null && !marbleClicked)){
+                        if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
                             int numDiff = m1.getNumeric() - s.getNum();
                             direction = 0;
@@ -114,13 +119,13 @@ public class BoardPanel extends JPanel {
 
                             if(direction != 0){
                                 if(m2 == null){
-                                    m2 = TestDriver.game.checkAdjacent(m1, direction);
+                                    m2 = game.checkAdjacent(m1, direction);
                                 }
 
                                 // single marble move
-                                if((m2 == null && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, direction))
+                                if((m2 == null && Gui.moveMarbles(game, m1.isBlack(), m1, direction))
                                         // double/triple marble move
-                                        || (m2 != null) && Gui.moveMarbles(TestDriver.game, m1.isBlack(), m1, m2, direction)){
+                                        || (m2 != null) && Gui.moveMarbles(game, m1.isBlack(), m1, m2, direction)){
 
                                     drawMarbles(b);
                                     repaint();
@@ -187,7 +192,7 @@ public class BoardPanel extends JPanel {
     @Override
     protected void paintComponent(Graphics grphcs) {
         super.paintComponent(grphcs);
-        setBackground(Color.DARK_GRAY);
+        setBackground(new Color(218, 222, 229));
         Graphics2D g2d = (Graphics2D) grphcs;
         g2d.setPaint(Color.GRAY);
         for (Space s : spaceList) {
@@ -207,7 +212,7 @@ public class BoardPanel extends JPanel {
     }
 
     public ArrayList<Space> getSpaceList(){
-        return this.spaceList;
+        return spaceList;
     }
 
     public Space getSpace(Marble m){

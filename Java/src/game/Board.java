@@ -1,6 +1,4 @@
-/**
- * 
- */
+
 package game;
 
 import java.util.ArrayList;
@@ -115,5 +113,12 @@ public class Board extends ArrayList<Marble>{
         }
         return n;
 
+    
+    public Board(){
+        
+    }
+    
+    public Board (Board b){
+        super(b);
     }
 }

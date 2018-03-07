@@ -10,14 +10,12 @@ import javax.swing.JFrame;
  */
 public class TestDriver {
 
-    public static Game game = new Game();
-
     /**
      * @param args
      */
     public static void main(String[] args) {
 
-
+        Game game = new Game();
         GameFrame frame = new GameFrame(game);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
