@@ -21,30 +21,28 @@ public class Stage2Driver {
      */
     public static void main(String[] args) throws FileNotFoundException {
         String input1[] = {"", ""};
-        String input2[] = {"", ""};
-        int i = 0;
-        File firstTestInput = new File("Test1.input.txt");
-        File secondTestInput = new File("Test2.input.txt");
+        boolean AIBlack;
+        int moveCount;
+        long time;
 
-        //Put contents of Test1.input.txt into an array input1
-        Scanner inputScanner = new Scanner(firstTestInput);
+        int i = 0;
+        File testInput = new File("Test1.input.txt");
+
+        //Put contents of input.txt into an array input1
+        Scanner inputScanner = new Scanner(testInput);
         while (inputScanner.hasNextLine()) {
             input1[i] = inputScanner.nextLine();
             i++;
         }
 
-        //Put contents of Test2.input.txt into an array input2
-        i = 0;
-        inputScanner = new Scanner(secondTestInput);
-        while (inputScanner.hasNextLine()) {
-            input2[i] = inputScanner.nextLine();
-            i++;
+        //establish whose turn it is, if AI is black, etc.
+        if(input1[0].equals('w')) {
+            boole
         }
-        //Split the layout of the board by the commas
-        String[] input1ToCoord = input1[1].split(",");
-        String[] input2ToCoord = input2[1].split(",");
 
-        game = new Game(input1[0].charAt(0), input1ToCoord);
+        Board boardFromFile = Board.inputBoard(input1[1]);
+        game = new Game(boardFromFile, )
+
         GameFrame frame = new GameFrame(game);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
