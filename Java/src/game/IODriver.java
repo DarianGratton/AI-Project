@@ -14,6 +14,7 @@ public class IODriver {
         String readFile[] = {"", ""};
         int tracker = 0;
         ArrayList<Marble> inputMarbles = new ArrayList<Marble>();
+        Board inputBoard = new Board();
 
 
         //Check that only one file was specified
@@ -29,7 +30,7 @@ public class IODriver {
                 readFile[tracker] = scan.nextLine();
                 tracker++;
             }
-            Board inputBoard = new Board();
+
             String[] splitInput = readFile[1].split(",");
 
             //Make marbles from input
@@ -42,6 +43,7 @@ public class IODriver {
 
             for(int i = 0; i < inputMarbles.size(); ++i) {
                 inputBoard.add(inputMarbles.get(i));
+                //inputMarbles.get(i).toString();
             }
 
         } catch (FileNotFoundException e) {
