@@ -125,7 +125,7 @@ public class GameFrame extends JFrame {
         panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         panel.setBackground(backgroundColor);
         panel.setLayout(new BorderLayout());
-        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
+        panel.setBorder(new EmptyBorder(20, 15, 15, 15));
         
         JLabel teamLabel = createLabel(new JLabel(), teamColor, 24, fontColor);
         panel.add(teamLabel, BorderLayout.NORTH);

@@ -14,17 +14,40 @@ public class aiPlayer {
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
     
+    private Game game;
+    
+    public aiPlayer() {
+        game = new Game();
+    }
+    
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
      */
-    public static ArrayList<Move> genPossibleMoves(Board currentBoard, boolean aiIsBlack){
+    public ArrayList<Move> genPossibleMoves(Board currentBoard, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
         
+        // Generates moves for a single marble for each marbles in the ArrayList
+        for (int i = 0; i < currentBoard.size(); ++i) {
+            for (int j = DIRECTION_MIN; j <= DIRECTION_MAX; ++j) {
+                if (game.move(currentBoard.get(i), j, aiIsBlack)) {
+                    //moves.add(new Move());
+                }
+            }
+        }
         
+        // Generates moves for 2 or more marbles
+        for (int i = 0; i < currentBoard.size(); ++i) {
+            for (int j = 1; j < currentBoard.size(); ++j) {
+                for (int k = DIRECTION_MIN; k <= DIRECTION_MAX; ++k) {
+                    if (game.move(currentBoard.get(i), k, aiIsBlack, j, i)) {
+                        
+                    }
+                }
+            }
+        }
         
-        
-        return null;
+        return moves;
     }
     
     /**
