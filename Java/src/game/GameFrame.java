@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.border.EmptyBorder;
 
 /**
  * The GameFrame class is an JFrame that displays all the 
@@ -102,10 +103,10 @@ public class GameFrame extends JFrame {
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
        
         players.add(createMarblePanel("Team White: ", 
-                game.getWhiteScore()));
+                game.getWhiteScore(), Color.WHITE, Color.BLACK));
         
         players.add(createMarblePanel("Team Black: ", 
-                game.getBlackScore()));
+                game.getBlackScore(), Color.BLACK, Color.WHITE));
         
         return players;
     }
@@ -118,30 +119,31 @@ public class GameFrame extends JFrame {
      * @param score The team's current score
      * @return a new player panel
      */
-    private JPanel createMarblePanel(String teamColor, int score) {
+    private JPanel createMarblePanel(String teamColor, int score, Color backgroundColor, Color fontColor) {
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-
+        panel.setBackground(backgroundColor);
         panel.setLayout(new BorderLayout());
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+        panel.setBorder(new EmptyBorder(20, 20, 20, 20));
         
-        JLabel teamLabel = createLabel(new JLabel(), teamColor);
+        JLabel teamLabel = createLabel(new JLabel(), teamColor, 24, fontColor);
         panel.add(teamLabel, BorderLayout.NORTH);
         
         JPanel playerInfo = new JPanel();
+        playerInfo.setBackground(backgroundColor);
         playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
         
         // Display game score
-        playerInfo.add(createLabel(new JLabel(), "Total score: " + score));
+        playerInfo.add(createLabel(new JLabel(), Integer.toString(score), 60, fontColor));
         
         // Display number of moves taken per player
-        playerInfo.add(createLabel(new JLabel(), "Total # of Moves: " 
+        playerInfo.add(createLabel(new JLabel(), "Total # of Moves: ", 20, fontColor
                 /*+ move.getMovedList().size()*/));
         
         // Display time taken per move
         playerInfo.add(createLabel(new JLabel(), "Turn Time: " 
-                + game.getGameTime()));
+                + game.getGameTime(), 20, fontColor));
         
         panel.add(playerInfo, BorderLayout.CENTER);
         
@@ -171,10 +173,10 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: "));
+        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 15, Color.BLACK));
         gameLabels.add(gameTimer);
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
-                + game.getRecommended().toString()));
+                + game.getRecommended().toString(), 15, Color.BLACK));
 
         ArrayList<JButton> buttons = new ArrayList<>();
         start = new JButton("Start Game");
@@ -264,10 +266,10 @@ public class GameFrame extends JFrame {
      * @param text to be added to the label
      * @return A JLabel with text
      */
-    public JLabel createLabel(JLabel label, String text) {
-        label = new JLabel();
-        label.setText(text);
-        label.setFont(new Font("DIALOG_INPUT", Font.PLAIN, 15));
+    public JLabel createLabel(JLabel label, String text, int fontSize, Color fontColor) {
+        label = new JLabel(text);
+        label.setFont(new Font("SANS_SERIF", Font.PLAIN, fontSize));
+        label.setForeground(fontColor);
         
         return label;
     }
