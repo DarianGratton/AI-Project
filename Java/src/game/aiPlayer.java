@@ -30,8 +30,9 @@ public class aiPlayer {
         // Generates moves for a single marble for each marbles in the ArrayList
         for (int i = 0; i < currentBoard.size(); ++i) {
             for (int j = DIRECTION_MIN; j <= DIRECTION_MAX; ++j) {
-                if (game.move(currentBoard.get(i), j, aiIsBlack)) {
-                    //moves.add(new Move());
+                Move move = generateMove(currentBoard, currentBoard.get(i), j);
+                if (move != null) {
+                    moves.add(move);
                 }
             }
         }
@@ -40,12 +41,16 @@ public class aiPlayer {
         for (int i = 0; i < currentBoard.size(); ++i) {
             for (int j = 1; j < currentBoard.size(); ++j) {
                 for (int k = DIRECTION_MIN; k <= DIRECTION_MAX; ++k) {
-                    if (game.move(currentBoard.get(i), k, aiIsBlack, j, i)) {
-                        
+                    Move move = generateMove(currentBoard, currentBoard.get(i), currentBoard.get(j), k);
+                    
+                    if (move != null) {
+                        moves.add(move);
                     }
                 }
             }
         }
+        
+        System.out.println(moves.toString());
         
         return moves;
     }
@@ -54,8 +59,9 @@ public class aiPlayer {
      * This method is responsible for generating a single legal move of one marble based on a given board state
      * @return
      */
-    public static Move generateMove(Board currentBoard, Marble m, int direction){
+    public Move generateMove(Board currentBoard, Marble m, int direction){
         Move move = new Move(m, direction);
+        
         if(Game.moveIsLegal(currentBoard, move)){
             return move;
         }      
@@ -70,6 +76,7 @@ public class aiPlayer {
      */
     public static Move generateMove(Board currentBoard, Marble m1, Marble m2, int direction){
         Move move = new Move(m1, m2, direction);
+        
         if(Game.moveIsLegal(currentBoard, move)){
             return move;
         }      

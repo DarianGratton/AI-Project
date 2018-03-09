@@ -33,7 +33,7 @@ public class GameFrame extends JFrame {
      */
     private static final long serialVersionUID = 2986344142823166606L;
     
-    private static final int PANEL_WIDTH = 200;
+    private static final int PANEL_WIDTH = 205;
     private static final int PANEL_HEIGHT = 300;
     private static final int BOARD_HEIGHT = 600;
     
@@ -102,10 +102,10 @@ public class GameFrame extends JFrame {
         JPanel players = new JPanel();
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
        
-        players.add(createMarblePanel("Team White: ", 
+        players.add(createMarblePanel("Team White", 
                 game.getWhiteScore(), Color.WHITE, Color.BLACK));
         
-        players.add(createMarblePanel("Team Black: ", 
+        players.add(createMarblePanel("Team Black", 
                 game.getBlackScore(), Color.BLACK, Color.WHITE));
         
         return players;
