@@ -69,6 +69,8 @@ public class BoardPanel extends JPanel {
                         } else {
                             marbleClicked = false;
                         }
+                        
+                        
 
 /*
                         if(m1 != null){
