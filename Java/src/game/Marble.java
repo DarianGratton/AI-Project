@@ -27,8 +27,6 @@ public class Marble {
     // quicker than using ints to assign ownership; this may not be required depending on final state
     private boolean isBlack;
     
-    // privatized default constructor to prevent its use
-    private Marble(){}
     
     /**
      * @param isBlack
@@ -38,6 +36,13 @@ public class Marble {
         this.numeric = numeric;
         this.isActive = true;
         this.isBlack = isBlack;
+    }
+    
+    public Marble(Marble m){
+        this.alpha = m.getAlpha();
+        this.numeric = m.getNumeric();
+        this.isActive = true;
+        this.isBlack = m.isBlack();
     }
     
     /**

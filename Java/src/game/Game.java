@@ -51,7 +51,7 @@ public class Game {
     };
 
     @SuppressWarnings("serial")
-    public static Board germanDaisy = new Board() {
+    public static final Board germanDaisy = new Board() {
         {
             add(new Marble(2, 1, true));
             add(new Marble(2, 2, true));
@@ -149,7 +149,8 @@ public class Game {
      * Default constructor; uses standard layout
      */
     public Game(){
-        this.board = standardLayout;
+        this.board = new Board();
+        board = Board.copyBoard(standardLayout);
         this.blackLost = 0;
         this.whiteLost = 0;
         this.blackMoves = new ArrayList<Move>();
@@ -601,17 +602,24 @@ public class Game {
      */
     public boolean moveIsLegal(Move m){
         boolean isLegal = false;
-        Board dummy = new Board(this.getBoard());
+        Board dummy = new Board();
+        dummy = Board.copyBoard(this.getBoard());
         
         Marble m1 = null;
         Marble m2 = null;
         
         m1 = m.getMovedList().get(0);
-        m1 = searchBoard(dummy, m1.getAlpha(), m1.getNumeric());
+        m1 = new Marble(searchBoard(dummy, m1.getAlpha(), m1.getNumeric()));
+        
+        System.out.print("Marble 1: ");
+        System.out.println(m1.toString());
+        
         
         if(m.getMovedList().size() > 1){
             m2 = m.getMovedList().get(1);
-            m2 = searchBoard(dummy, m2.getAlpha(), m2.getNumeric());
+            m2 = new Marble(searchBoard(dummy, m2.getAlpha(), m2.getNumeric()));
+            System.out.print("Marble 2: ");
+            System.out.println(m2.toString());
         }
 
         if(m2 == null && move(m1, m.getDirection(), m1.isBlack()) // single marble move

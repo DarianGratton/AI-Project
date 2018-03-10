@@ -14,7 +14,11 @@ public class Board extends ArrayList<Marble>{
         
     }
     
-    public Board (Board b){
-        super(b);
+    public static Board copyBoard(Board b){
+        Board nb = new Board();
+        for(Marble m : b){
+            nb.add(new Marble(m));
+        }
+        return nb;
     }
 }

@@ -24,8 +24,11 @@ public class TestDriver {
         
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
-        
+
+
         aiPlayer.genPossibleMoves(game, game.activeIsBlack());
+        System.out.println("left thing");
+
 
         //Gui.drawBoard(test.getBoard(), frame, g);
 
