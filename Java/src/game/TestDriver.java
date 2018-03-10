@@ -17,7 +17,6 @@ public class TestDriver {
 
         Game game = new Game();
         GameFrame frame = new GameFrame(game);
-
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
@@ -25,11 +24,11 @@ public class TestDriver {
         
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
-        
 
 
         aiPlayer.genPossibleMoves(game, game.activeIsBlack());
         System.out.println("left thing");
+
 
         //Gui.drawBoard(test.getBoard(), frame, g);
 

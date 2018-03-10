@@ -13,8 +13,7 @@ public class aiPlayer {
 
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
-
-
+    
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
@@ -28,7 +27,6 @@ public class aiPlayer {
 
             int j = DIRECTION_MIN;
             while (j <= DIRECTION_MAX) {
-
 
                 if (currentBoard.get(i).isBlack() == aiIsBlack) {
                     Move move = generateMove(g, currentBoard.get(i), j);
@@ -88,6 +86,7 @@ public class aiPlayer {
         }      
 
         // return null if move was illegal   
+
         return null;
     }
 
