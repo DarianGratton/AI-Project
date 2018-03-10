@@ -21,10 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 /**
- * The GameFrame class is an JFrame that displays all the 
+ * The GameFrame class is an JFrame that displays all the different
+ * game board components. It creates and displays the player panels and 
+ * stats, the different game options and buttons, and the player history.
  * 
- * @author skull
- *
+ * @author A00965803
+ * @version 2018/03/10
  */
 public class GameFrame extends JFrame {
 
@@ -35,6 +37,8 @@ public class GameFrame extends JFrame {
     
     private static final int PANEL_WIDTH = 205;
     private static final int PANEL_HEIGHT = 300;
+    
+    // Board panel height
     private static final int BOARD_HEIGHT = 600;
     
     // Declaring game object
@@ -43,16 +47,26 @@ public class GameFrame extends JFrame {
     // Declaring board object
     private Board boardLayout;
     
+    // Declaring GameTimer object to keep track of the game time
+    private GameTimer gameTimer;
+    
+    // Declaring TurnTimer object to keep track of the turn tiem
+    private GameTimer turnTimer;
+    
     // For scrolling if JPanel in History gets to big
     private JScrollPane vertical;
     
+    // JButton to start the game
     private JButton start;
-    private JButton stop;
-    private JButton reset;
-    private JButton pause;
     
-    private GameTimer gameTimer;
-    private GameTimer turnTimer;
+    // JButton to stop the game
+    private JButton stop;
+    
+    // JButton to reset the game
+    private JButton reset;
+    
+    // JButton to pause the game
+    private JButton pause;
 
     // ArrayList to hold the spaces on the board
     // private ArrayList<Space> spaceList;
@@ -72,8 +86,6 @@ public class GameFrame extends JFrame {
      * Constructor that creates the initial state of the board.
      * Populates the JFrame.
      */
-
-
     public GameFrame(Game g) {
         setTitle("Abalone");
         
