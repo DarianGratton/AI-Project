@@ -611,15 +611,10 @@ public class Game {
         m1 = m.getMovedList().get(0);
         m1 = new Marble(searchBoard(dummy, m1.getAlpha(), m1.getNumeric()));
         
-        System.out.print("Marble 1: ");
-        System.out.println(m1.toString());
-        
         
         if(m.getMovedList().size() > 1){
             m2 = m.getMovedList().get(1);
             m2 = new Marble(searchBoard(dummy, m2.getAlpha(), m2.getNumeric()));
-            System.out.print("Marble 2: ");
-            System.out.println(m2.toString());
         }
 
         if(m2 == null && move(m1, m.getDirection(), m1.isBlack()) // single marble move
@@ -628,6 +623,7 @@ public class Game {
             isLegal = true;
         }
 
+        System.out.println(isLegal);
         return isLegal;
     }
 
@@ -641,10 +637,17 @@ public class Game {
 
         int alpha = m.getAlpha();
         int num = m.getNumeric();
+        
+        // numeric constraints based on alpha values
         int numMin = Math.max(alpha - 4, 1);
         int numMax = Math.min(alpha + 4, 9);
+        
+        // alpha constraints based on numeric values
+        int alphaMin = Math.max(num - 4, 1);
+        int alphaMax = Math.min(num + 4, 1);
+        
         System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
-        if (num < numMin || num > numMax) {
+        if (num < numMin || num > numMax || alpha < alphaMin || alpha > alphaMax) {
             System.out.println("You've activated my trap card Yugi");
             if (m.isBlack()) {
                 this.blackLost++;
