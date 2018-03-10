@@ -356,7 +356,7 @@ public class GameFrame extends JFrame {
         if (g != null) {
             this.game = g;
             gameBoard.removeAll();
-            gameBoard.add(new BoardPanel(g));
+            gameBoard.add(new BoardPanel(game));
             repaint();
         }
     }
