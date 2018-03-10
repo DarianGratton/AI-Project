@@ -9,9 +9,11 @@ import java.util.Scanner;
 /**
  * Created by Akemi on 3/6/2018.
  *
- * Run this in command line and specify one input file. The file's format must match the example given by the instructor upon release of Stage 2.
+ * Run this in command line and specify one input file. The file's format must 
+ * match the example given by the instructor upon release of Stage 2.
  */
 public class IODriver {
+    
     public static void main(String[] args) {
         Scanner scan;
         String readFile[] = {"", ""};                               //[0] = 'w' or 'b' ;;   [1] = 'A1b, B3b ....., F3w' etc
@@ -49,7 +51,7 @@ public class IODriver {
             }
             System.out.println(inputMarbles);
             //For each Marble object in inputMarbles, put into inputBoard  Board object.
-            for(int i = 0; i < inputMarbles.size(); ++i) {
+            for (int i = 0; i < inputMarbles.size(); ++i) {
                 inputBoard.add(inputMarbles.get(i));
                 //inputMarbles.get(i).toString();
             }
