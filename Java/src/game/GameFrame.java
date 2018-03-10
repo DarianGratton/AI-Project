@@ -25,8 +25,6 @@ import javax.swing.border.EmptyBorder;
  * game board components. It creates and displays the player panels and 
  * stats, the different game options and buttons, and the player history.
  * 
- *  
- * 
  * @author A00965803
  * @version 2018/03/10
  */
