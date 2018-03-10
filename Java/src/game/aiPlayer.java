@@ -24,8 +24,9 @@ public class aiPlayer {
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
      */
-    public ArrayList<Move> genPossibleMoves(Board currentBoard, boolean aiIsBlack){
+    public ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
+        Board currentBoard = g.getBoard();
         
         // Generates moves for a single marble for each marbles in the ArrayList
         for (int i = 0; i < currentBoard.size(); ++i) {
@@ -33,9 +34,10 @@ public class aiPlayer {
             int j = DIRECTION_MIN;
             while (j <= DIRECTION_MAX) {
                 
+
                 if (currentBoard.get(i).isBlack() == aiIsBlack) {
                     Board dummyBoard = new Board(currentBoard);
-                    Move move = generateMove(dummyBoard, currentBoard.get(i), j);
+                    Move move = generateMove(g, currentBoard.get(i), j);
                     
                     if (move != null) {
                         moves.add(move);
@@ -76,10 +78,10 @@ public class aiPlayer {
      * This method is responsible for generating a single legal move of one marble based on a given board state
      * @return
      */
-    public Move generateMove(Board currentBoard, Marble m, int direction){
+    public Move generateMove(Game g, Marble m, int direction){
         Move move = new Move(m, direction);
         
-        if(Game.moveIsLegal(currentBoard, move)){
+        if(g.moveIsLegal(move)){
             return move;
         }      
         
@@ -92,10 +94,10 @@ public class aiPlayer {
      * This method is responsible for generating a single legal move of multiple marble based on a given board state
      * @return
      */
-    public static Move generateMove(Board currentBoard, Marble m1, Marble m2, int direction){
+    public static Move generateMove(Game g, Marble m1, Marble m2, int direction){
         Move move = new Move(m1, m2, direction);
         
-        if(Game.moveIsLegal(currentBoard, move)){
+        if(g.moveIsLegal(move)){
             return move;
         }      
         

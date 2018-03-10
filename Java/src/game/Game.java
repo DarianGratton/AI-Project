@@ -367,8 +367,8 @@ public class Game {
      * @param alpha the lettered coordinate to search for
      * @param numeric the numeric coordinate to search for
      */
-    public Marble searchBoard(int alpha, int numeric){
-        for(Marble m : this.board){
+    public Marble searchBoard(Board b, int alpha, int numeric){
+        for(Marble m : b){
             if((m.getAlpha() == alpha) && (m.getNumeric() == numeric)){
                 return m;
             }
@@ -379,17 +379,17 @@ public class Game {
     public Marble checkAdjacent(Marble m, int direction){
         switch (direction) {
         // 1: top-left
-        case 1: return this.searchBoard(m.getAlpha()+1, m.getNumeric());
+        case 1: return searchBoard(this.getBoard(), m.getAlpha()+1, m.getNumeric());
         // 2: top-right
-        case 2: return this.searchBoard(m.getAlpha()+1, m.getNumeric()+1);
+        case 2: return searchBoard(this.getBoard(), m.getAlpha()+1, m.getNumeric()+1);
         // 3: right
-        case 3:return this.searchBoard(m.getAlpha(), m.getNumeric()+1);
+        case 3:return searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric()+1);
         // 4: bottom-right
-        case 4: return this.searchBoard(m.getAlpha()-1, m.getNumeric());
+        case 4: return searchBoard(this.getBoard(), m.getAlpha()-1, m.getNumeric());
         // 5: bottom-left
-        case 5: return this.searchBoard(m.getAlpha()-1, m.getNumeric()-1);
+        case 5: return searchBoard(this.getBoard(), m.getAlpha()-1, m.getNumeric()-1);
         // 6: left
-        case 6: return this.searchBoard(m.getAlpha(), m.getNumeric()-1);  
+        case 6: return searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric()-1);  
         }
         // fallback to break if something weird happens
         return null;
@@ -511,7 +511,7 @@ public class Game {
 
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
-                m3 = this.searchBoard( Math.abs((m1.getAlpha()+m2.getAlpha()))/2 , Math.abs((m1.getNumeric()+m2.getNumeric()))/2 );
+                m3 = searchBoard(this.getBoard(),  Math.abs((m1.getAlpha()+m2.getAlpha()))/2 , Math.abs((m1.getNumeric()+m2.getNumeric()))/2 );
                 if(m3 == null || m3.isBlack() != m1.isBlack()){
                     return false;
                 }
@@ -599,14 +599,25 @@ public class Game {
      * This method is responsible for checking a possible move for legality; i.e. within the board or knocking out a single enemy marble
      * @return
      */
-    public static boolean moveIsLegal(Board b, Move m){
+    public boolean moveIsLegal(Move m){
         boolean isLegal = false;
-        Board dummy = new Board(b);
+        Board dummy = new Board(this.getBoard());
+        
+        Marble m1 = null;
+        Marble m2 = null;
+        
+        m1 = m.getMovedList().get(0);
+        m1 = searchBoard(dummy, m1.getAlpha(), m1.getNumeric());
+        
+        if(m.getMovedList().size() > 1){
+            m2 = m.getMovedList().get(1);
+            m2 = searchBoard(dummy, m2.getAlpha(), m2.getNumeric());
+        }
 
-
-        if(true){ // replace this statement with move legality checking, probably butchered from other functions
-
-
+        if(m2 == null && move(m1, m.getDirection(), m1.isBlack()) // single marble move
+                // multiple marble move
+                || m2 != null && move(m1, m2, m.getDirection(), m1.isBlack())){ 
+            isLegal = true;
         }
 
         return isLegal;

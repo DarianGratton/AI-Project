@@ -19,7 +19,7 @@ public class TestDriver {
         GameFrame frame = new GameFrame(game);
         aiPlayer ai = new aiPlayer();
 
-        ai.genPossibleMoves(game.getBoard(), game.activeIsBlack());
+        ai.genPossibleMoves(game, game.activeIsBlack());
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
