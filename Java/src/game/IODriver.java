@@ -2,6 +2,7 @@ package game;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -17,6 +18,7 @@ public class IODriver {
         int tracker = 0;
         ArrayList<Marble> inputMarbles = new ArrayList<Marble>();   //readFile[1] will eventually be put into this
         ArrayList<Move> outputMoves = new ArrayList<Move>();        // return from sort function
+        ArrayList<Marble> outputMarbles = new ArrayList<Marble>();  // marbles representing all possible moves
         Board inputBoard = new Board();                             //inputMarbles<Marble> will eventually go in here
 
 
@@ -38,9 +40,6 @@ public class IODriver {
 
 
             //Make marble objects by taking in values from splitInput. Goes in ArrayList<Marble> inputMarbles
-            //turnAlphaToDigit = from 'A' - 'I', assign them numbers
-            //turnCharToInt = turn char '1' to integer 1.    Is there an easier way to do this?
-            //turn AlphaToBool = turn 'b' to   Marble.isBlack() = true ; w = false
             int count = 0;
             for(String s: splitInput) {
                 inputMarbles.add(new Marble(turnAlphaToDigit(splitInput[count].charAt(0)),
@@ -48,7 +47,7 @@ public class IODriver {
                         turnAlphaToBool(splitInput[count].charAt(2))));
                 count++;
             }
-
+            System.out.println(inputMarbles);
             //For each Marble object in inputMarbles, put into inputBoard  Board object.
             for(int i = 0; i < inputMarbles.size(); ++i) {
                 inputBoard.add(inputMarbles.get(i));
@@ -58,7 +57,29 @@ public class IODriver {
             /**
              * Code to get ArrayList<Moves> goes here:
              * outputMoves = genPossibleMoves(inputBoard);
+             * returns ArrayList of Move objects.
              */
+
+            //Create file for printing to
+            PrintWriter moveWriter = new PrintWriter("Results.move");
+            PrintWriter boardWriter = new PrintWriter("Results.board");
+
+
+            // write to Results.move the list of moves possible for current layout
+            for (Move m : outputMoves) {
+                moveWriter.println(m);
+
+
+
+                //for each Marble array in a move,
+                for(int i = 0; i < m.getMovedList().size(); ++i) {
+                    outputMarbles = m.getMovedList();
+
+                    //someString = some converting from num to letter etc.
+                    // boardWriter.print( someString)
+                }
+            }
+
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -66,7 +87,6 @@ public class IODriver {
 
     }
 
-    // Turn n
     // 'A' = 1; 'B' = 2; 'C' = 3; 'D' = 4; ........., 'I' = 9
     public static int turnAlphaToDigit(char alpha) {
         int n = 0;
@@ -102,6 +122,7 @@ public class IODriver {
         return n;
     }
 
+    // '1' = 1; '2' = 2; ......
     public static boolean turnAlphaToBool(char alpha) {
         boolean state = false;
         switch (alpha) {
@@ -115,6 +136,7 @@ public class IODriver {
         return state;
     }
 
+    // 'w' = black ; 'b' = true
     public static int turnCharToInt(char alpha) {
         int n = 0;
         switch (alpha) {
