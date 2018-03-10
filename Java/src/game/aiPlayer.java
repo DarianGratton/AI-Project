@@ -29,28 +29,44 @@ public class aiPlayer {
         
         // Generates moves for a single marble for each marbles in the ArrayList
         for (int i = 0; i < currentBoard.size(); ++i) {
-            for (int j = DIRECTION_MIN; j <= DIRECTION_MAX; ++j) {
-                Move move = generateMove(currentBoard, currentBoard.get(i), j);
-                if (move != null) {
-                    moves.add(move);
+            
+            int j = DIRECTION_MIN;
+            while (j <= DIRECTION_MAX) {
+                
+                if (game.move(currentBoard.get(i), j, aiIsBlack)) {
+         
+                    Move move = generateMove(currentBoard, currentBoard.get(i), j);
+                    
+                    if (move != null) {
+                        moves.add(move);
+                    }  
                 }
+                
+                ++j;
             }
         }
         
         // Generates moves for 2 or more marbles
-        for (int i = 0; i < currentBoard.size(); ++i) {
+        for (int i = 0; i < currentBoard.size() - 1; ++i) {
             for (int j = 1; j < currentBoard.size(); ++j) {
-                for (int k = DIRECTION_MIN; k <= DIRECTION_MAX; ++k) {
-                    Move move = generateMove(currentBoard, currentBoard.get(i), currentBoard.get(j), k);
+                
+                int k = DIRECTION_MIN;
+                while (k <= DIRECTION_MAX) {
                     
-                    if (move != null) {
-                        moves.add(move);
+                    if (game.move(currentBoard.get(i), j, aiIsBlack, 0, 0)) {
+                        Move move = generateMove(currentBoard, currentBoard.get(i), currentBoard.get(j), k);
+                    
+                        if (move != null) {
+                            moves.add(move);
+                        }
                     }
+                    
+                    ++k;
                 }
             }
         }
-        
-        System.out.println(moves.toString());
+     
+//        System.out.println(moves.toString());
         
         return moves;
     }
