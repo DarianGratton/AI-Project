@@ -345,14 +345,16 @@ public class GameFrame extends JFrame {
 
         if (result == JOptionPane.OK_OPTION) {
 
-            if (boardButtons.get(0).isSelected()) {
-                boardLayout = Game.standardLayout;
+            boardLayout = new Board();
+            
+            if (boardButtons.get(0).isSelected()) {                
+                boardLayout = Board.copyBoard(Game.standardLayout);
 
             } else if (boardButtons.get(1).isSelected()) {
-                boardLayout = Game.germanDaisy;
+                boardLayout = Board.copyBoard(Game.germanDaisy);
 
             } else if (boardButtons.get(2).isSelected()) {
-                boardLayout = Game.belgianDaisy;
+                boardLayout = Board.copyBoard(Game.belgianDaisy);
             }
 
             if (playerButtons.get(0).isSelected()) {
