@@ -14,17 +14,13 @@ public class aiPlayer {
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
     
-    private Game game;
-    
-    public aiPlayer() {
-        game = new Game();
-    }
+    private aiPlayer() { }
     
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
      */
-    public ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
+    public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
         Board currentBoard = g.getBoard();
         
@@ -34,9 +30,7 @@ public class aiPlayer {
             int j = DIRECTION_MIN;
             while (j <= DIRECTION_MAX) {
                 
-
                 if (currentBoard.get(i).isBlack() == aiIsBlack) {
-                    Board dummyBoard = new Board(currentBoard);
                     Move move = generateMove(g, currentBoard.get(i), j);
                     
                     if (move != null) {
@@ -78,7 +72,7 @@ public class aiPlayer {
      * This method is responsible for generating a single legal move of one marble based on a given board state
      * @return
      */
-    public Move generateMove(Game g, Marble m, int direction){
+    public static Move generateMove(Game g, Marble m, int direction){
         Move move = new Move(m, direction);
         
         if(g.moveIsLegal(move)){
@@ -86,8 +80,8 @@ public class aiPlayer {
         }      
         
         // return null if move was illegal   
-        return move;
-        // return null;
+        // return move;
+        return null;
     }
     
     /**
