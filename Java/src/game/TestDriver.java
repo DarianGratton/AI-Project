@@ -1,5 +1,6 @@
 package game;
 import java.awt.Graphics;
+import java.util.ArrayList;
 
 import javax.swing.JFrame;
 
@@ -15,8 +16,16 @@ public class TestDriver {
      */
     public static void main(String[] args) {
 
+        
+        
         Game game = new Game();
+        
+        for(Marble m : game.getBoard()){
+            System.out.println(m.toString());
+            
+        }
         GameFrame frame = new GameFrame(game);
+        
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 700);
@@ -25,9 +34,10 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-
-        aiPlayer.genPossibleMoves(game, game.activeIsBlack());
-        System.out.println("left thing");
+        ArrayList<Move> moves = aiPlayer.genPossibleMoves(game, game.activeIsBlack());
+        for(int i = 0; i < moves.size(); i++){
+            System.out.println(moves.get(i).toString());
+        }
 
 
         //Gui.drawBoard(test.getBoard(), frame, g);

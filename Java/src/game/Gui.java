@@ -55,12 +55,13 @@ public abstract class Gui {
      */
     public static boolean moveMarbles(Game g, boolean playerIsBlack, Marble m1, int direction){
 
+        Move mv = new Move(m1, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
         if(g.move(m1, direction, playerIsBlack)){
-            g.addMoveToList(new Move(m1, direction, System.nanoTime() - turnStart));
+            g.addMoveToList(mv);
+            g.move(m1, direction, playerIsBlack);
             turnStart = System.nanoTime();
             return true;
-
         }
         return false;
     }
@@ -75,9 +76,11 @@ public abstract class Gui {
      */
     public static boolean moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction){
 
+
+        Move mv = new Move(m1, m2, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
         if(g.move(m1, m2, direction, playerIsBlack)){
-            g.addMoveToList(new Move(m1, m2, direction, System.nanoTime() - turnStart));
+            g.addMoveToList(mv);
             turnStart = System.nanoTime();
             return true;
         }

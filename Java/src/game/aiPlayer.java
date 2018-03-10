@@ -13,7 +13,7 @@ public class aiPlayer {
 
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
-    
+
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
@@ -21,33 +21,42 @@ public class aiPlayer {
     public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
         Board currentBoard = g.getBoard();
+        Marble mOrig = null;
 
         // Generates moves for a single marble for each marbles in the ArrayList
-        /*for (int i = 0; i < currentBoard.size(); ++i) {
+        for (int i = 0; i < currentBoard.size(); i++) {
 
-            int j = DIRECTION_MIN;
-            while (j <= DIRECTION_MAX) {
+            mOrig = currentBoard.get(i);
+            Marble mNew = new Marble(mOrig);
+            if (mOrig.isBlack() == aiIsBlack) {
+                int j = DIRECTION_MIN;
+                while (j <= DIRECTION_MAX) {
 
-                if (currentBoard.get(i).isBlack() == aiIsBlack) {
-                    Move move = generateMove(g, currentBoard.get(i), j);
+
+                    Move move = generateMove(g, mNew, j);
 
                     if (move != null) {
+                        System.out.println("before: " + move.toString());
                         moves.add(move);
-                        System.out.println(move.toString());
+                        System.out.println("after: " + move.toString());
                     }
 
-                    ++j;
-                }
-            }
-        }*/
-
-        for(Marble m : currentBoard){
-            if(m.isBlack() == aiIsBlack){
-                for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++){
-                    Move mv = generateMove(g, m, i);
+                    j++;
                 }
             }
         }
+
+        /*for(Marble m : currentBoard){
+            if(m.isBlack() == aiIsBlack){
+                for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++){
+                    Move mv = generateMove(g, m, i);
+                    if(mv != null){
+                        moves.add(mv);
+                        System.out.println(mv.toString());
+                    }
+                }
+            }
+        }*/
 
         // Generates moves for 2 or more marbles
         //        for (int i = 0; i < currentBoard.size() - 1; ++i) {
@@ -70,7 +79,6 @@ public class aiPlayer {
         //                }
         //            }
         //        }
-
         return moves;
     }
 
@@ -81,7 +89,11 @@ public class aiPlayer {
     public static Move generateMove(Game g, Marble m, int direction){
         Move move = new Move(m, direction);
 
+       /* System.out.print("before");
+        System.out.println(move);*/
         if(g.moveIsLegal(move)){
+           /* System.out.print("after");
+            System.out.println(move);*/
             return move;
         }      
 
@@ -109,8 +121,9 @@ public class aiPlayer {
      * This method is responsible for generating a single board state that results from a legal move
      * @return
      */
-    public static ArrayList<Marble> genResultState(boolean aiIsBlack, Board b, Move mv){
-        Board dummy = b;
+    public static ArrayList<Marble> genResultState(Game g, Move mv, boolean aiIsBlack){
+        Board dummy = new Board();
+        
 
 
 
