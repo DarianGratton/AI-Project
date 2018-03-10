@@ -13,6 +13,7 @@ import java.util.Scanner;
  * match the example given by the instructor upon release of Stage 2.
  */
 public class IODriver {
+    private final int ASCII_CONSTANT = 64;
     
     public static void main(String[] args) {
         Scanner scan;
@@ -23,6 +24,7 @@ public class IODriver {
         ArrayList<Marble> outputMarbles = new ArrayList<Marble>();  // marbles representing all possible moves
         Board inputBoard = new Board();                             //inputMarbles<Marble> will eventually go in here
         boolean isBlack = false;                                    //aiIsBlack() from input file first line
+        GameTimer timer = new GameTimer();                          //to put into Game object
 
 
         //Check that only one file was specified
@@ -35,7 +37,7 @@ public class IODriver {
             File file = new File(args[0]);                          //grab the only argument i.e. file name and put it in file
             scan = new Scanner(file);
             while (scan.hasNextLine()) {                            //file now read into readFile
-                readFile[tracker] = scan.nextLine();
+                readFile[tracker] = scan.nextLine().toUpperCase();
                 tracker++;
             }
 
@@ -50,9 +52,9 @@ public class IODriver {
             //Make marble objects by taking in values from splitInput. Goes in ArrayList<Marble> inputMarbles
             int count = 0;
             for(String s: splitInput) {
-                inputMarbles.add(new Marble(turnAlphaToDigit(splitInput[count].charAt(0)),
-                        Character.getNumericValue((splitInput[count].charAt(1))),
-                        turnAlphaToBool(splitInput[count].charAt(2))));
+                int c1 = (int)splitInput[count].charAt(0);
+                int c2 = Character.getNumericValue((splitInput[count].charAt(1)));
+                inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(splitInput[count].charAt(2))));
                 count++;
             }
 
@@ -61,7 +63,8 @@ public class IODriver {
                 inputBoard.add(inputMarbles.get(i));
             }
 
-            outputMoves = aiPlayer.genPossibleMoves(inputBoard, isBlack);
+            Game game = new Game(inputBoard, isBlack, 100, 100, timer);
+            outputMoves = aiPlayer.genPossibleMoves(game, isBlack);
 
 
             //Create file for printing to
@@ -91,86 +94,14 @@ public class IODriver {
 
     }
 
-    //Turns char alphabet to corsdresponding integer number
-    // 'A' = 1; 'B' = 2; 'C' = 3; 'D' = 4; ........., 'I' = 9
-    private static int turnAlphaToDigit(char alpha) {
-        int n = 0;
-        switch (alpha) {
-            case 'A':
-                n = 1;
-                break;
-            case 'B':
-                n = 2;
-                break;
-            case 'C':
-                n = 3;
-                break;
-            case 'D':
-                n = 4;
-                break;
-            case 'E':
-                n = 5;
-                break;
-            case 'F':
-                n = 6;
-                break;
-            case 'G':
-                n = 7;
-                break;
-            case 'H':
-                n = 8;
-                break;
-            case 'I':
-                n = 9;
-                break;
-        }
-        return n;
-    }
-
-    //turns  1  to 'A'
-    // for output to file
-    private static int turnDigitToAlpha(int digit) {
-        int n = 0;
-        switch (digit) {
-            case 1:
-                n = 'A';
-                break;
-            case 2:
-                n = 'B';
-                break;
-            case 3:
-                n = 'C';
-                break;
-            case 4:
-                n = 'D';
-                break;
-            case 5:
-                n = 'E';
-                break;
-            case 6:
-                n = 'F';
-                break;
-            case 7:
-                n = 'G';
-                break;
-            case 8:
-                n = 'H';
-                break;
-            case 9:
-                n = 'I';
-                break;
-        }
-        return n;
-    }
-
-    // 'w' = black ; 'b' = true
+      // 'w' = black ; 'b' = true
     private static boolean turnAlphaToBool(char alpha) {
         boolean state = false;
         switch (alpha) {
-            case 'w':
+            case 'W':
                 state = false;
                 break;
-            case 'b':
+            case 'B':
                 state = true;
                 break;
         }
