@@ -6,10 +6,8 @@ package game;
 import java.util.ArrayList;
 
 /**
- * The aiPlayer class. 
- * 
- * @author Mike and A00965803 (and Akemi a little bit)
- * @version 2018-03-10
+ * @author Mike
+ *
  */
 public class aiPlayer {
 
@@ -17,14 +15,10 @@ public class aiPlayer {
     private static final int DIRECTION_MAX = 6;
 
     /**
-     * This method is responsible for generating a list of possible 
-     * moves given the current board state.
-     * 
-     * @param g The game state to be checked for possible moves
-     * @param aiIsBlack the color that the ai is
-     * @return an ArrayList of possible moves.
+     * This method is responsible for generating a list of possible moves given the current board state
+     * @return
      */
-    public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack) {
+    public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
         Board currentBoard = g.getBoard();
         Marble mOrig = null;
@@ -61,8 +55,7 @@ public class aiPlayer {
                 mOrig2 = currentBoard.get(j);
                 Marble mNew1 = new Marble(mOrig);
                 Marble mNew2 = new Marble(mOrig2);
-                if (mOrig.isBlack() == aiIsBlack 
-                        && mOrig2.isBlack() == aiIsBlack) {
+                if (mOrig.isBlack() == aiIsBlack && mOrig2.isBlack() == aiIsBlack) {
                     int k = DIRECTION_MIN;
                     while (k <= DIRECTION_MAX) {
                         
@@ -84,20 +77,15 @@ public class aiPlayer {
     }
 
     /**
-     * This method is responsible for generating a single legal move 
-     * of one marble based on a given board state.
-     * 
-     * @param g the current game
-     * @param m the marble to be moved
-     * @param direction the direction for the marble to be moved
-     * @return a legal move object of one marble
+     * This method is responsible for generating a single legal move of one marble based on a given board state
+     * @return
      */
     public static Move generateMove(Game g, Marble m, int direction){
         Move move = new Move(m, direction);
 
        /* System.out.print("before");
         System.out.println(move);*/
-        if (g.moveIsLegal(move)) {
+        if(g.moveIsLegal(move)){
            /* System.out.print("after");
             System.out.println(move);*/
             return move;
@@ -108,20 +96,13 @@ public class aiPlayer {
     }
 
     /**
-     * This method is responsible for generating a single legal move 
-     * of multiple marble based on a given board state.
-     * 
-     * @param g the current game
-     * @param m1 the first marble to be moved
-     * @param m2 the second marble to be moved
-     * @param direction the direction for the marble to be moved
-     * @return a legal move object
+     * This method is responsible for generating a single legal move of multiple marble based on a given board state
+     * @return
      */
-    public static Move generateMove(Game g, Marble m1, 
-            Marble m2, int direction){
+    public static Move generateMove(Game g, Marble m1, Marble m2, int direction){
         Move move = new Move(m1, m2, direction);
 
-        if (g.moveIsLegal(move)) {
+        if(g.moveIsLegal(move)){
             return move;
         }      
 
@@ -130,17 +111,10 @@ public class aiPlayer {
     }
 
     /**
-<<<<<<< HEAD
      * Takes a suggested move and executes it on the specified board.
      * @param inputGameState - The game object generated from the .input file. From this we can pull the Board.
      * @param suggestedMove - Moves suggested by the genPossibleMoves method
      * @return resultingMarbles - The new board
-=======
-     * This method is responsible for generating a single board 
-     * state that results from a legal move.
-     * 
-     * @return
->>>>>>> 96a8778bbde3f2781b36afdc7bb40be710ff57db
      */
     public static ArrayList<Marble> genResultState(Game inputGameState, Move suggestedMove, boolean aiIsBlack){
         Board dummyBoard = inputGameState.getBoard();
