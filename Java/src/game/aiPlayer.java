@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * The aiPlayer class. 
  * 
- * @author Mike and A00965803
+ * @author Mike and A00965803 (and Akemi a little bit)
  * @version 2018-03-10
  */
 public class aiPlayer {
@@ -130,18 +130,45 @@ public class aiPlayer {
     }
 
     /**
+<<<<<<< HEAD
+     * Takes a suggested move and executes it on the specified board.
+     * @param inputGameState - The game object generated from the .input file. From this we can pull the Board.
+     * @param suggestedMove - Moves suggested by the genPossibleMoves method
+     * @return resultingMarbles - The new board
+=======
      * This method is responsible for generating a single board 
      * state that results from a legal move.
      * 
      * @return
+>>>>>>> 96a8778bbde3f2781b36afdc7bb40be710ff57db
      */
-    public static ArrayList<Marble> genResultState(Game g, Move mv, boolean aiIsBlack){
-        Board dummy = new Board();
-        
+    public static ArrayList<Marble> genResultState(Game inputGameState, Move suggestedMove, boolean aiIsBlack){
+        Board dummyBoard = inputGameState.getBoard();
+        ArrayList<Marble> marblesMoved = suggestedMove.getMovedList();
+        ArrayList<Marble> resultingMarbles = new ArrayList<Marble>();
+        int directionMoved = suggestedMove.getDirection();
 
+        //For when 1 marble moves
+        if( marblesMoved.size() == 1) {
+            inputGameState.move(marblesMoved.get(0), directionMoved, aiIsBlack);            //trigger Game.move method
+            dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
 
+            for(int i = 0; i < dummyBoard.size(); ++i) {
+                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
+            }
 
-        return dummy;
+        }
+
+        //For when 2 marbles move
+        if(marblesMoved.size() == 2) {
+            inputGameState.move(marblesMoved.get(0), marblesMoved.get(1),
+                    directionMoved, aiIsBlack);
+            dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
+            for(int i = 0; i < dummyBoard.size(); ++i) {
+                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
+            }
+        }
+        return resultingMarbles;
     }
 
 }
