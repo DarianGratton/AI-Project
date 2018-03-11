@@ -77,10 +77,8 @@ public class IODriver {
                 moveWriter.println(m);
                 //Write to Results.board the board state space
                 for(int i = 0; i < m.getMovedList().size(); ++i) {
-                    outputMarbles = m.getMovedList();
-
-                    //someString = some converting from num to letter etc.
-                    // boardWriter.print( someString)
+                    outputMarbles = aiPlayer.genResultState(game, m, isBlack);
+                    boardWriter.println(outputMarbles);
                 }
             }
 
