@@ -22,9 +22,10 @@ public class aiPlayer {
         ArrayList<Move> moves = new ArrayList<Move>();
         Board currentBoard = g.getBoard();
         Marble mOrig = null;
+        Marble mOrig2 = null;
 
         // Generates moves for a single marble for each marbles in the ArrayList
-        for (int i = 0; i < currentBoard.size(); i++) {
+        for (int i = 0; i < currentBoard.size(); ++i) {
 
             mOrig = currentBoard.get(i);
             Marble mNew = new Marble(mOrig);
@@ -46,39 +47,32 @@ public class aiPlayer {
             }
         }
 
-        /*for(Marble m : currentBoard){
-            if(m.isBlack() == aiIsBlack){
-                for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++){
-                    Move mv = generateMove(g, m, i);
-                    if(mv != null){
-                        moves.add(mv);
-                        System.out.println(mv.toString());
+        // Generates moves for 2 or more marbles
+        for (int i = 0; i < currentBoard.size() - 1; ++i) {
+            for (int j = i + 1; j < currentBoard.size(); ++j) {
+                        
+                mOrig = currentBoard.get(i);
+                mOrig2 = currentBoard.get(j);
+                Marble mNew1 = new Marble(mOrig);
+                Marble mNew2 = new Marble(mOrig2);
+                if (mOrig.isBlack() == aiIsBlack && mOrig2.isBlack() == aiIsBlack) {
+                    int k = DIRECTION_MIN;
+                    while (k <= DIRECTION_MAX) {
+                        
+                        Move move = generateMove(g, mNew1, mNew2, k);
+                                
+                        if (move != null) {
+                            System.out.println("before: " + move.toString());
+                            moves.add(move);
+                            System.out.println("after: " + move.toString());
+                        }
+
+                        k++;
                     }
                 }
             }
-        }*/
-
-        // Generates moves for 2 or more marbles
-        //        for (int i = 0; i < currentBoard.size() - 1; ++i) {
-        //            for (int j = 1; j < currentBoard.size(); ++j) {
-        //                
-        //                int k = DIRECTION_MIN;
-        //                while (k <= DIRECTION_MAX) {
-        //                    
-        //                    if (currentBoard.get(i).isBlack() == aiIsBlack) {
-        //                        Board dummyBoard = new Board(currentBoard);
-        //                        Move move = generateMove(dummyBoard, currentBoard.get(i), currentBoard.get(j), k);
-        //                        
-        //                        if (move != null) {
-        //                            moves.add(move);  
-        //                        }
-        //                        
-        //                    }
-        //                    
-        //                    ++k;
-        //                }
-        //            }
-        //        }
+        }
+        
         return moves;
     }
 
@@ -98,7 +92,6 @@ public class aiPlayer {
         }      
 
         // return null if move was illegal   
-
         return null;
     }
 

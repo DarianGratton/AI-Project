@@ -599,7 +599,9 @@ public class Game {
     }
 
     /**
-     * This method is responsible for checking a possible move for legality; i.e. within the board or knocking out a single enemy marble
+     * This method is responsible for checking a possible move for legality; i.e. 
+     * within the board or knocking out a single enemy marble
+     * 
      * @return
      */
     public boolean moveIsLegal(Move m){
@@ -609,14 +611,13 @@ public class Game {
 
         Marble m1 = null;
         Marble m2 = null;
-
-        m1 = m.getMovedList().get(0);
-        m1 = new Marble(searchBoard(dummy, m1.getAlpha(), m1.getNumeric()));
-
-
-        if(m.getMovedList().size() > 1){
-            m2 = m.getMovedList().get(1);
-            m2 = new Marble(searchBoard(dummy, m2.getAlpha(), m2.getNumeric()));
+        
+        m1 = new Marble(m.getMovedList().get(0));
+        //m1 = new Marble(searchBoard(dummy, m1.getAlpha(), m1.getNumeric()));
+        
+        if (m.getMovedList().size() > 1) {
+            m2 = new Marble(m.getMovedList().get(1));
+            //m2 = new Marble(searchBoard(dummy, m2.getAlpha(), m2.getNumeric()));
         }
 
         if(m2 == null && move(m1, m.getDirection(), m1.isBlack()) // single marble move

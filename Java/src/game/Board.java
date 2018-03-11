@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class Board extends ArrayList<Marble>{
 
-    public Board(){
+    public Board() {
         
     }
     
