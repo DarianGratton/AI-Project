@@ -466,7 +466,7 @@ public class Game {
         }
 
         // pushing first enemy marble
-        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy <= pushedFriend){
+        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
             System.out.println(pushedEnemy);
@@ -480,7 +480,7 @@ public class Game {
         if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
-            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
+            if(moved.isBlack() == adjacent.isBlack() && this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
                 return true;
             }
@@ -635,10 +635,10 @@ public class Game {
      * @return
      */
     public boolean sumito(Marble m){
-        //this is to prevent you from booting out your own marbles, though as is it needs to be called elsewhere to validate
 
         int alpha = m.getAlpha();
         int num = m.getNumeric();
+        System.out.println("alpha: " + alpha + " num: " + num);
 
         // numeric constraints based on alpha values
         int numMin = Math.max(alpha - 4, 1);
@@ -646,7 +646,7 @@ public class Game {
 
         // alpha constraints based on numeric values
         int alphaMin = Math.max(num - 4, 1);
-        int alphaMax = Math.min(num + 4, 1);
+        int alphaMax = Math.min(num + 4, 9);
 
         System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
         System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);

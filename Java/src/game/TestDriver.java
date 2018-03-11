@@ -24,6 +24,13 @@ public class TestDriver {
             System.out.println(m.toString());
             
         }
+        
+        ArrayList<Move> moves = aiPlayer.genPossibleMoves(game, game.activeIsBlack());
+        for(int i = 0; i < moves.size(); i++){
+            System.out.println(moves.get(i).toString());
+        }
+        
+        
         GameFrame frame = new GameFrame(game);
         
         
@@ -34,10 +41,7 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-        ArrayList<Move> moves = aiPlayer.genPossibleMoves(game, game.activeIsBlack());
-        for(int i = 0; i < moves.size(); i++){
-            System.out.println(moves.get(i).toString());
-        }
+        
 
 
         //Gui.drawBoard(test.getBoard(), frame, g);
