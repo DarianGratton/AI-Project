@@ -30,6 +30,7 @@ public class GameTimer extends JLabel {
      * the buttons and timer while setting up the ActionListener for
      * the timer when called.</p>*/
     public GameTimer() {
+        final int fontSizeTime = 15;
         final int delay = 100;
         timer = new Timer(delay, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -44,7 +45,7 @@ public class GameTimer extends JLabel {
                 if (seconds <= secmax) {
                     secs = "0" + secs;
                 }
-                setFont(new Font("DIALOG_INPUT", Font.PLAIN, 15));
+                setFont(new Font("DIALOG_INPUT", Font.PLAIN, fontSizeTime));
                 setText(seconds + "." + millisec);
             }
         });
