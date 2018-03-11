@@ -59,7 +59,6 @@ public abstract class Gui {
         // check to see if move is valid
         if(g.move(m1, direction, playerIsBlack)){
             g.addMoveToList(mv);
-            g.move(m1, direction, playerIsBlack);
             turnStart = System.nanoTime();
             return true;
         }
