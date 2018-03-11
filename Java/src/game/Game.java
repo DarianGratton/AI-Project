@@ -450,7 +450,9 @@ public class Game {
         // adjacent space is empty
         if(adjacent == null){
             moved.changePos(direction);
-            sumito(moved, isBlack);
+            if(moved.isBlack() != isBlack){
+                sumito(moved);
+            }
             return true;
         }  
 
@@ -606,7 +608,7 @@ public class Game {
         boolean isLegal = false;
         Board dummy = new Board();
         dummy = Board.copyBoard(this.getBoard());
-        
+
         Marble m1 = null;
         Marble m2 = null;
         
@@ -633,21 +635,22 @@ public class Game {
      * @param m
      * @return
      */
-    public boolean sumito(Marble m, boolean activeIsBlack){
+    public boolean sumito(Marble m){
         //this is to prevent you from booting out your own marbles, though as is it needs to be called elsewhere to validate
 
         int alpha = m.getAlpha();
         int num = m.getNumeric();
-        
+
         // numeric constraints based on alpha values
         int numMin = Math.max(alpha - 4, 1);
         int numMax = Math.min(alpha + 4, 9);
-        
+
         // alpha constraints based on numeric values
         int alphaMin = Math.max(num - 4, 1);
         int alphaMax = Math.min(num + 4, 1);
-        
+
         System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
+        System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);
         if (num < numMin || num > numMax || alpha < alphaMin || alpha > alphaMax) {
             System.out.println("You've activated my trap card Yugi");
             if (m.isBlack()) {
