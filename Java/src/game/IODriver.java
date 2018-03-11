@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 /**
@@ -17,14 +18,16 @@ public class IODriver {
     
     public static void main(String[] args) {
         Scanner scan;
-        String readFile[] = {"", ""};                               //[0] = 'w' or 'b' ;;   [1] = 'A1b, B3b ....., F3w' etc
+        String readFile[] = {"", ""};                                   //[0] = 'w' or 'b' ;;   [1] = 'A1b, B3b ....., F3w' etc
         int tracker = 0;
-        ArrayList<Marble> inputMarbles = new ArrayList<Marble>();   //readFile[1] will eventually be put into this
-        ArrayList<Move> outputMoves = new ArrayList<Move>();        // return from sort function
-        ArrayList<Marble> outputMarbles = new ArrayList<Marble>();  // marbles representing all possible moves
-        Board inputBoard = new Board();                             //inputMarbles<Marble> will eventually go in here
-        boolean isBlack = false;                                    //aiIsBlack() from input file first line
-        GameTimer timer = new GameTimer();                          //to put into Game object
+        ArrayList<Marble> inputMarbles = new ArrayList<Marble>();       //readFile[1] will eventually be put into this
+        ArrayList<Move> outputMoves = new ArrayList<Move>();            // return from sort function
+        ArrayList<Marble> outputMarbles = new ArrayList<Marble>();      // marbles representing all possible moves
+        ArrayList<Marble> copyOutputMarbles = new ArrayList<Marble>();  // new array for sorting results to go in
+        Board inputBoard = new Board();                                 //inputMarbles<Marble> will eventually go in here
+        boolean isBlack = false;                                        //aiIsBlack() from input file first line
+        GameTimer timer = new GameTimer();                              //to put into Game object
+        ArrayList<String> boardOutput = new ArrayList<String>();        //this String will be written to the Results.board.
 
 
         //Check that only one file was specified
@@ -78,7 +81,17 @@ public class IODriver {
                 //Write to Results.board the board state space
                 for(int i = 0; i < m.getMovedList().size(); ++i) {
                     outputMarbles = aiPlayer.genResultState(game, m, isBlack);
-                    boardWriter.println(outputMarbles);
+                    Collections.sort(outputMarbles, new ArrayList<Marble>());
+
+                    //Now convert each marble to its original format e.g. A1w , B9b.. etc
+                    for(Marble n : outputMarbles) {
+                        char c1 = (char)(n.getAlpha() + ASCII_CONSTANT);
+                        int c2 = n.getNumeric();
+                        char c3 = n.getColor();
+
+                        boardOutput.add(c1 + "" + c2 + c3 );
+                    }
+                    boardWriter.println(boardOutput);
                 }
             }
 
@@ -106,8 +119,6 @@ public class IODriver {
         }
         return state;
     }
-
-
 
     public static void writeOutput(ArrayList<Move> moves) {
 

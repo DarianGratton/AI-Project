@@ -126,15 +126,21 @@ public class aiPlayer {
         if( marblesMoved.size() == 1) {
             inputGameState.move(marblesMoved.get(0), directionMoved, aiIsBlack);            //trigger Game.move method
             dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
-            resultingMarbles.add(dummyBoard.get(0));                                        //Add the new marbles(board layout) to an array.
+
+            for(int i = 0; i < dummyBoard.size(); ++i) {
+                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
+            }
+
         }
 
         //For when 2 marbles move
         if(marblesMoved.size() == 2) {
-            inputGameState.move(marblesMoved.get(0), marblesMoved.get(1), directionMoved, aiIsBlack);
+            inputGameState.move(marblesMoved.get(0), marblesMoved.get(1),
+                    directionMoved, aiIsBlack);
             dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
-            resultingMarbles.add(dummyBoard.get(0));                                        //this time invoke method for two marbles
-            resultingMarbles.add(dummyBoard.get(1));
+            for(int i = 0; i < dummyBoard.size(); ++i) {
+                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
+            }
         }
         return resultingMarbles;
     }
