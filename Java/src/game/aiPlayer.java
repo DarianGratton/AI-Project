@@ -20,7 +20,7 @@ public class aiPlayer {
      */
     public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
-        Board currentBoard = g.getBoard();
+        Board currentBoard = Board.copyBoard(g.getBoard());
         Marble mOrig = null;
         Marble mOrig2 = null;
 
@@ -37,9 +37,9 @@ public class aiPlayer {
                     Move move = generateMove(g, mNew, j);
 
                     if (move != null) {
-                        System.out.println("before: " + move.toString());
+                        //System.out.println("before: " + move.toString());
                         moves.add(move);
-                        System.out.println("after: " + move.toString());
+                        //System.out.println("after: " + move.toString());
                     }
 
                     j++;
@@ -62,9 +62,7 @@ public class aiPlayer {
                         Move move = generateMove(g, mNew1, mNew2, k);
                                 
                         if (move != null) {
-                            System.out.println("before: " + move.toString());
                             moves.add(move);
-                            System.out.println("after: " + move.toString());
                         }
 
                         k++;
@@ -81,16 +79,22 @@ public class aiPlayer {
      * @return
      */
     public static Move generateMove(Game g, Marble m, int direction){
-        Move move = new Move(m, direction);
+        Board gameState = Board.copyBoard(g.getBoard());
+        Move displayMove = new Move(m, direction);
+        Marble dummy = new Marble(m);
+        Move move = new Move(dummy, direction);
 
-       /* System.out.print("before");
+        /*System.out.print("before");
         System.out.println(move);*/
-        if(g.moveIsLegal(move)){
-           /* System.out.print("after");
+        if(Game.moveIsLegal(g, move)){
+            g.getBoard().remove(dummy);
+            // resets the board state so that the marbles in the move display origin coordinates
+            g.setBoard(gameState);
+            /*System.out.print("after");
             System.out.println(move);*/
-            return move;
+            return displayMove;
         }      
-
+        
         // return null if move was illegal   
         return null;
     }
@@ -100,10 +104,18 @@ public class aiPlayer {
      * @return
      */
     public static Move generateMove(Game g, Marble m1, Marble m2, int direction){
-        Move move = new Move(m1, m2, direction);
+        Board gameState = Board.copyBoard(g.getBoard());
+        Move displayMove = new Move(m1, m2, direction);
+        Marble dummy1 = new Marble(m1);
+        Marble dummy2 = new Marble(m2);
+        Move move = new Move(dummy1, dummy2, direction);
 
-        if(g.moveIsLegal(move)){
-            return move;
+        if(Game.moveIsLegal(g, move)){
+            g.getBoard().remove(dummy1);
+            g.getBoard().remove(dummy2);
+            // resets the board state so that the marbles in the move display origin coordinates
+            g.setBoard(gameState);
+            return displayMove;
         }      
 
         // return null if move was illegal

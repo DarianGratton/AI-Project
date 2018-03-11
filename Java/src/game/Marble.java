@@ -41,7 +41,7 @@ public class Marble {
     public Marble(Marble m){
         this.alpha = m.getAlpha();
         this.numeric = m.getNumeric();
-        this.isActive = true;
+        this.isActive = m.isActive();
         this.isBlack = m.isBlack();
     }
     

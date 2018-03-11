@@ -195,6 +195,10 @@ public class Game {
     public Board getBoard(){
         return board;
     }
+    
+    public void setBoard(Board b){
+        this.board = Board.copyBoard(b);
+    }
 
     /**
      * @return the startTime
@@ -368,7 +372,7 @@ public class Game {
      * @param alpha the lettered coordinate to search for
      * @param numeric the numeric coordinate to search for
      */
-    public Marble searchBoard(Board b, int alpha, int numeric){
+    public static Marble searchBoard(Board b, int alpha, int numeric){
         for(Marble m : b){
             if((m.getAlpha() == alpha) && (m.getNumeric() == numeric)){
                 return m;
@@ -466,7 +470,7 @@ public class Game {
         }
 
         // pushing first enemy marble
-        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy <= pushedFriend){
+        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
             System.out.println(pushedEnemy);
@@ -480,7 +484,7 @@ public class Game {
         if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
-            if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
+            if(moved.isBlack() == adjacent.isBlack() && this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
                 return true;
             }
@@ -604,29 +608,32 @@ public class Game {
      * 
      * @return
      */
-    public boolean moveIsLegal(Move m){
+    public static boolean moveIsLegal(Game g, Move m){
         boolean isLegal = false;
-        Board dummy = new Board();
-        dummy = Board.copyBoard(this.getBoard());
+        //Board gameState = Board.copyBoard(g.getBoard());
 
         Marble m1 = null;
         Marble m2 = null;
         
-        m1 = new Marble(m.getMovedList().get(0));
-        //m1 = new Marble(searchBoard(dummy, m1.getAlpha(), m1.getNumeric()));
+        m1 = m.getMovedList().get(0);
+        //m1 = new Marble(searchBoard(g.getBoard(), m1.getAlpha(), m1.getNumeric()));
         
         if (m.getMovedList().size() > 1) {
-            m2 = new Marble(m.getMovedList().get(1));
-            //m2 = new Marble(searchBoard(dummy, m2.getAlpha(), m2.getNumeric()));
+            m2 = m.getMovedList().get(1);
+            //System.out.println(m2.toString());
+            /*if (m2 != null) {
+                m2 = new Marble(searchBoard(g.getBoard(), m2.getAlpha(), m2.getNumeric()));
+            }*/
         }
 
-        if(m2 == null && move(m1, m.getDirection(), m1.isBlack()) // single marble move
+        if(m2 == null && g.move(m1, m.getDirection(), m1.isBlack()) // single marble move
                 // multiple marble move
-                || m2 != null && move(m1, m2, m.getDirection(), m1.isBlack())){ 
+                || m2 != null && g.move(m1, m2, m.getDirection(), m1.isBlack())){ 
             isLegal = true;
         }
 
-        System.out.println(isLegal);
+        //g.setBoard(gameState);
+        //System.out.println(isLegal);
         return isLegal;
     }
 
@@ -636,10 +643,10 @@ public class Game {
      * @return
      */
     public boolean sumito(Marble m){
-        //this is to prevent you from booting out your own marbles, though as is it needs to be called elsewhere to validate
 
         int alpha = m.getAlpha();
         int num = m.getNumeric();
+        System.out.println("alpha: " + alpha + " num: " + num);
 
         // numeric constraints based on alpha values
         int numMin = Math.max(alpha - 4, 1);
@@ -647,7 +654,7 @@ public class Game {
 
         // alpha constraints based on numeric values
         int alphaMin = Math.max(num - 4, 1);
-        int alphaMax = Math.min(num + 4, 1);
+        int alphaMax = Math.min(num + 4, 9);
 
         System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
         System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);
@@ -664,5 +671,19 @@ public class Game {
 
         return false;
     }
+    
+/*    *//**
+     * Making a stupid method to reverse a stupid move rabble rabble
+     * @param currentBoard
+     * @param lastMove
+     * @return
+     *//*
+    public static Board rewind(Board currentBoard, Move lastMove){
+        Marble m1 = lastMove.getMovedList().get(0);
+        int direction = lastMove.getDirection();      
+        int reverse = (direction > 3) ? direction-3 : direction +3;
+        
+        return null;
+    }*/
 
 }
