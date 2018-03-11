@@ -30,7 +30,7 @@ public class TestDriver {
             System.out.println(moves.get(i).toString());
         }
         
-        
+        /*
         GameFrame frame = new GameFrame(game);
         
         
@@ -39,7 +39,7 @@ public class TestDriver {
         frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
-        frame.paintComponents(g);
+        frame.paintComponents(g);*/
 
         
 

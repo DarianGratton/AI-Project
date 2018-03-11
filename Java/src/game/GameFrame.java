@@ -23,7 +23,8 @@ import javax.swing.border.EmptyBorder;
 /**
  * The GameFrame class is an JFrame that displays all the different
  * game board components. It creates and displays the player panels and 
- * stats, the different game options and buttons, and the player history.
+ * stats, the different game options and buttons, and the player 
+ * move history. It also contains listeners for the buttons.
  * 
  * @author A00965803
  * @version 2018/03/10
@@ -50,7 +51,7 @@ public class GameFrame extends JFrame {
     // Declaring GameTimer object to keep track of the game time
     private GameTimer gameTimer;
     
-    // Declaring TurnTimer object to keep track of the turn tiem
+    // Declaring TurnTimer object to keep track of the turn time
     private GameTimer turnTimer;
     
     // For scrolling if JPanel in History gets to big
@@ -83,8 +84,10 @@ public class GameFrame extends JFrame {
     private JPanel gameBoard;
 
     /**
-     * Constructor that creates the initial state of the board.
+     * Constructor that creates the initial state of the game.
      * Populates the JFrame.
+     * 
+     * @param g the current game being played
      */
     public GameFrame(Game g) {
         setTitle("Abalone");
@@ -129,17 +132,26 @@ public class GameFrame extends JFrame {
      * 
      * @param teamColor Team color
      * @param score The team's current score
+     * @param backgroundColor the background color of the player panel
+     * @param fontColor the color of the font in the player panel 
      * @return a new player panel
      */
-    private JPanel createMarblePanel(String teamColor, int score, Color backgroundColor, Color fontColor) {
+    private JPanel createMarblePanel(String teamColor, int score, 
+            Color backgroundColor, Color fontColor) {
+        final int paddingTop = 20;
+        final int padding = 15;
+        final int fontSizeTeam = 24;
+        final int fontSizeScore = 60;
+        final int fontSizeStats = 20;
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         panel.setBackground(backgroundColor);
         panel.setLayout(new BorderLayout());
-        panel.setBorder(new EmptyBorder(20, 15, 15, 15));
+        panel.setBorder(new EmptyBorder(paddingTop, padding, padding, padding));
         
-        JLabel teamLabel = createLabel(new JLabel(), teamColor, 24, fontColor);
+        JLabel teamLabel = createLabel(new JLabel(), teamColor, 
+                fontSizeTeam, fontColor);
         panel.add(teamLabel, BorderLayout.NORTH);
         
         JPanel playerInfo = new JPanel();
@@ -147,15 +159,16 @@ public class GameFrame extends JFrame {
         playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
         
         // Display game score
-        playerInfo.add(createLabel(new JLabel(), Integer.toString(score), 60, fontColor));
+        playerInfo.add(createLabel(new JLabel(), Integer.toString(score), 
+                fontSizeScore, fontColor));
         
         // Display number of moves taken per player
-        playerInfo.add(createLabel(new JLabel(), "Total # of Moves: ", 20, fontColor
-                /*+ move.getMovedList().size()*/));
+        playerInfo.add(createLabel(new JLabel(), "Total # of Moves: ", 
+                fontSizeStats, fontColor));
         
         // Display time taken per move
         playerInfo.add(createLabel(new JLabel(), "Turn Time: " 
-                + game.getGameTime(), 20, fontColor));
+                + game.getGameTime(), fontSizeStats, fontColor));
         
         panel.add(playerInfo, BorderLayout.CENTER);
         
@@ -166,12 +179,13 @@ public class GameFrame extends JFrame {
      * Creates a JPanel containing the game-board itself and options pertaining
      * to game-board. 
      * 
-     * Note in the future could use ArrayList
+     * Note in the future could use ArrayList.
      * 
      * @param board the board layout 
      * @return the game JPanel with all the swing elements
      */
     private JPanel createGamePanel(BoardPanel board) {
+        final int fontSizeGameStats = 15;
         
         gameBoard = new JPanel();
         gameBoard.setPreferredSize(new Dimension(0, BOARD_HEIGHT));
@@ -185,10 +199,12 @@ public class GameFrame extends JFrame {
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 15, Color.BLACK));
+        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
+                fontSizeGameStats, Color.BLACK));
         gameLabels.add(gameTimer);
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
-                + game.getRecommended().toString(), 15, Color.BLACK));
+                + game.getRecommended().toString(), 
+                fontSizeGameStats, Color.BLACK));
 
         ArrayList<JButton> buttons = new ArrayList<>();
         start = new JButton("Start Game");
@@ -276,29 +292,22 @@ public class GameFrame extends JFrame {
      * 
      * @param label to display on the GUI
      * @param text to be added to the label
+     * @param fontSize size of the font
+     * @param fontColor color of the font
      * @return A JLabel with text
      */
-    public JLabel createLabel(JLabel label, String text, int fontSize, Color fontColor) {
+    public JLabel createLabel(JLabel label, String text, 
+            int fontSize, Color fontColor) {
         label = new JLabel(text);
         label.setFont(new Font("SANS_SERIF", Font.PLAIN, fontSize));
         label.setForeground(fontColor);
         
         return label;
     }
-
-    /**
-     * Gets ArrayList of spaces.
-     * 
-     * @return an ArrayList of spaces
-     *//*
-    public ArrayList<Space> getSpaceList(){
-        return this.spaceList;
-    }*/
     
     /**
-     * Prompts the user to enter conditions for the game.
-     * 
-     * @return A new game based off the user input
+     * Prompts the user to enter conditions for the game and reloads
+     * the game based on the results.
      */
     private void initGame() {
         
@@ -335,10 +344,10 @@ public class GameFrame extends JFrame {
         startPanel.add(moveTime);
         
         JLabel moveLimitLabel = new JLabel("Set Move Limit: ");
-        JFormattedTextField moveLimit = new JFormattedTextField();
-        moveLimit.setText("0");
+        JFormattedTextField moveLimitNum = new JFormattedTextField();
+        moveLimitNum.setText("0");
         startPanel.add(moveLimitLabel);
-        startPanel.add(moveLimit);
+        startPanel.add(moveLimitNum);
 
         int result = JOptionPane.showConfirmDialog(null, startPanel,
                 "Game Settings", JOptionPane.OK_CANCEL_OPTION);
@@ -363,11 +372,12 @@ public class GameFrame extends JFrame {
                 aiIsBlack = false;
             }
             
-            this.moveLimit = Integer.parseInt(moveLimit.getText());
+            this.moveLimit = Integer.parseInt(moveLimitNum.getText());
             this.timePerMove = Long.parseLong(moveTime.getText());
         }
         
-        Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, timePerMove, gameTimer);
+        Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, 
+                timePerMove, gameTimer);
         
         if (g != null) {
             this.game = g;
@@ -401,6 +411,8 @@ public class GameFrame extends JFrame {
     }
     
     /**
+     * Gets the game timer.
+     * 
      * @return the timer
      */
     public GameTimer getTimer() {
@@ -408,6 +420,8 @@ public class GameFrame extends JFrame {
     }
 
     /**
+     * Sets the game timer.
+     * 
      * @param timer the timer to set
      */
     public void setTimer(GameTimer timer) {
@@ -431,20 +445,25 @@ public class GameFrame extends JFrame {
             } 
             
             /**
-             * Stop game button, stops game in current state and declares a winner
-             * (probably not necessary to declare winner). All it does now is stop 
-             * the game timer.
+             * Stop game button, stops game in current state and declares 
+             * a winner (probably not necessary to declare winner). 
+             * All it does now is stop the game timer.
              */
             if (event.getSource() == stop) {
                 gameTimer.stopTimer();
             }
             
             /**
-             * Reset game button, resets the game based on the last game's settings. 
+             * Reset game button, resets the game based on the last game's 
+             * settings. 
              */
             if (event.getSource() == reset) {
                 gameTimer.resetTimer();
-                game = new Game(boardLayout, aiIsBlack, moveLimit, timePerMove, gameTimer);
+                game = new Game(boardLayout, aiIsBlack, moveLimit, 
+                        timePerMove, gameTimer);
+                gameBoard.removeAll();
+                gameBoard.add(new BoardPanel(game));
+                repaint();
             }
             
             /**
