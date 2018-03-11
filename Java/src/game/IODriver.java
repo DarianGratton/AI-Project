@@ -13,7 +13,7 @@ import java.util.Scanner;
  * match the example given by the instructor upon release of Stage 2.
  */
 public class IODriver {
-    private final int ASCII_CONSTANT = 64;
+    private static final int ASCII_CONSTANT = 64;
     
     public static void main(String[] args) {
         Scanner scan;
@@ -52,7 +52,7 @@ public class IODriver {
             //Make marble objects by taking in values from splitInput. Goes in ArrayList<Marble> inputMarbles
             int count = 0;
             for(String s: splitInput) {
-                int c1 = (int)splitInput[count].charAt(0);
+                int c1 = ((int)splitInput[count].charAt(0)) - ASCII_CONSTANT;
                 int c2 = Character.getNumericValue((splitInput[count].charAt(1)));
                 inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(splitInput[count].charAt(2))));
                 count++;
@@ -63,6 +63,7 @@ public class IODriver {
                 inputBoard.add(inputMarbles.get(i));
             }
 
+            System.out.println(inputMarbles);
             Game game = new Game(inputBoard, isBlack, 100, 100, timer);
             outputMoves = aiPlayer.genPossibleMoves(game, isBlack);
 
