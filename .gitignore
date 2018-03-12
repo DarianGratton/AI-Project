@@ -1,2 +1,7 @@
 /.metadata/
 /Java/bin/
+*.board
+*.class
+Java/bin/game/Move.class
+*.class
+Java/bin/game/IODriver.class
