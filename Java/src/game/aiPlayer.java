@@ -5,6 +5,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * @author Mike
@@ -177,6 +178,22 @@ public class aiPlayer {
             singleState = genResultState(g, mv);
             //System.out.println(singleState.toString());
             states.put(singleState, 0.0);
+        }
+
+        return states;
+    }
+    
+    public static HashSet<Board> genAllResultsTest(Game g, ArrayList<Move> moves){
+        HashSet<Board> states = new HashSet<Board>();
+        Board singleState = null;
+
+        for(Move mv : moves){
+            singleState = genResultState(g, mv);
+            //System.out.println(singleState.toString());
+            
+            if (!Board.checkIfSetContains(states, singleState)) {
+                states.add(singleState);
+            }
         }
 
         return states;
