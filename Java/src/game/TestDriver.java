@@ -16,9 +16,41 @@ public class TestDriver {
      */
     public static void main(String[] args) {
 
-        
+        Board test = new Board(){
+            {
+                add(new Marble(1, 3, true));
+                add(new Marble(2, 2, true));
+                add(new Marble(2, 3, true));
+                add(new Marble(3, 3, true));
+                add(new Marble(3, 4, true));
+                add(new Marble(7, 7, true));
+                add(new Marble(7, 8, true));
+                add(new Marble(8, 7, true));
+                add(new Marble(8, 8, true));
+                add(new Marble(8, 9, true));
+                add(new Marble(9, 8, true));
+                add(new Marble(9, 9, true));      
+
+                add(new Marble(1, 4, false));
+                add(new Marble(1, 5, false));
+                add(new Marble(2, 4, false));
+                add(new Marble(2, 5, false));
+                add(new Marble(2, 6, false));
+                add(new Marble(3, 5, false));
+                add(new Marble(3, 6, false));
+                add(new Marble(7, 4, false));
+                add(new Marble(7, 5, false));
+                add(new Marble(8, 4, false));
+                add(new Marble(8, 5, false));
+                add(new Marble(8, 6, false));
+                add(new Marble(9, 5, false));
+                add(new Marble(9, 6, false));
+            }
+        };
+
         
         Game game = new Game();
+        game.setBoard(test);
         
         for(Marble m : game.getBoard()){
             System.out.println(m.toString());
@@ -30,7 +62,7 @@ public class TestDriver {
             System.out.println(moves.get(i).toString());
         }
         
-        /*
+        
         GameFrame frame = new GameFrame(game);
         
         
@@ -39,7 +71,7 @@ public class TestDriver {
         frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
-        frame.paintComponents(g);*/
+        frame.paintComponents(g);
 
         
 

@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.HashMap;
 
 /**
  * Created by Akemi on 3/6/2018.
@@ -19,11 +20,12 @@ public class IODriver {
         Scanner scan;
         String readFile[] = {"", ""};                                   //[0] = 'w' or 'b' ;;   [1] = 'A1b, B3b ....., F3w' etc
         int tracker = 0;
-        ArrayList<Marble> inputMarbles = new ArrayList<Marble>();       //readFile[1] will eventually be put into this
+        Board inputMarbles = new Board();       //readFile[1] will eventually be put into this
         ArrayList<Move> outputMoves = new ArrayList<Move>();            // return from sort function
-        ArrayList<Marble> outputMarbles = new ArrayList<Marble>();      // marbles representing all possible moves
-        ArrayList<Marble> copyOutputMarbles = new ArrayList<Marble>();  // new array for sorting results to go in
-        Board inputBoard = new Board();                                 //inputMarbles<Marble> will eventually go in here
+
+
+        HashMap<Board, Double> output = new HashMap<Board, Double>();
+        
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
         GameTimer timer = new GameTimer();                              //to put into Game object
         ArrayList<String> boardOutput = new ArrayList<String>();        //this String will be written to the Results.board.
@@ -59,41 +61,58 @@ public class IODriver {
                 inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(splitInput[count].charAt(2))));
                 count++;
             }
-
-            //For each Marble object in inputMarbles, put into inputBoard  Board object.
-            for (int i = 0; i < inputMarbles.size(); ++i) {
-                inputBoard.add(inputMarbles.get(i));
+            
+            for(Marble m : inputMarbles){
+                System.out.println(m.toString());
             }
 
-            System.out.println(inputMarbles);
-            Game game = new Game(inputBoard, isBlack, 100, 100, timer);
+            Game game = new Game(inputMarbles, isBlack, 100, 100, timer);
             outputMoves = aiPlayer.genPossibleMoves(game, isBlack);
 
 
             //Create file for printing to
             PrintWriter moveWriter = new PrintWriter("Results.move");
             PrintWriter boardWriter = new PrintWriter("Results.board");
-
-            // write to Results.move the list of moves possible for current layout
-            for (Move m : outputMoves) {
+            
+            
+            int i = 0;
+            
+            for(Move m : outputMoves){
                 moveWriter.println(m);
-                //Write to Results.board the board state space
-                for(int i = 0; i < m.getMovedList().size(); ++i) {
-                    outputMarbles = aiPlayer.genResultState(game, m, isBlack);
-//                    Collections.sort(outputMarbles, new ArrayList<Marble>());
+                System.out.println(i + " " + m.toString());
+                ++i;
+            }
+            
+            output = aiPlayer.genAllResults(game, outputMoves);
+            
+            StringBuilder mrbl;
+            StringBuilder line;
+            
+            i = 0;
+            
+            for(Board b : output.keySet()){
+                line = new StringBuilder();
+                for(Marble m : b){
+                    mrbl = new StringBuilder();
+                    char c1 = (char)(m.getAlpha() + ASCII_CONSTANT);
+                    int c2 = m.getNumeric();
+                    char c3 = m.getColor();
 
-                    //Now convert each marble to its original format e.g. A1w , B9b.. etc
-                    for(Marble n : outputMarbles) {
-                        char c1 = (char)(n.getAlpha() + ASCII_CONSTANT);
-                        int c2 = n.getNumeric();
-                        char c3 = n.getColor();
-
-                        boardOutput.add(c1 + "" + c2 + c3 );
-                    }
-                    boardWriter.println(boardOutput);
-                }
+                    mrbl.append(c1);                    
+                    mrbl.append(c2);
+                    mrbl.append(c3);
+                    mrbl.append(',');
+                    line.append(mrbl.toString());
+                }  
+                
+                boardOutput.add(line.toString());
+                System.out.println(i + " " + line.toString());
+                ++i;
             }
 
+            for(String s : boardOutput){
+                boardWriter.println(s);
+            }
             //The file will not update until this is done
             boardWriter.close();
             moveWriter.close();
@@ -105,18 +124,14 @@ public class IODriver {
 
     }
 
-      // 'w' = black ; 'b' = true
+      // 'w' = false ; 'b' = true
     private static boolean turnAlphaToBool(char alpha) {
-        boolean state = false;
-        switch (alpha) {
-            case 'W':
-                state = false;
-                break;
-            case 'B':
-                state = true;
-                break;
+        char upper = Character.toUpperCase(alpha);
+        if(upper == 'B'){
+            return true;
+        } else {
+            return false;
         }
-        return state;
     }
 
     public static void writeOutput(ArrayList<Move> moves) {

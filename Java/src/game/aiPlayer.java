@@ -4,6 +4,7 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * @author Mike
@@ -50,7 +51,7 @@ public class aiPlayer {
         // Generates moves for 2 or more marbles
         for (int i = 0; i < currentBoard.size() - 1; ++i) {
             for (int j = i + 1; j < currentBoard.size(); ++j) {
-                        
+
                 mOrig = currentBoard.get(i);
                 mOrig2 = currentBoard.get(j);
                 Marble mNew1 = new Marble(mOrig);
@@ -58,9 +59,9 @@ public class aiPlayer {
                 if (mOrig.isBlack() == aiIsBlack && mOrig2.isBlack() == aiIsBlack) {
                     int k = DIRECTION_MIN;
                     while (k <= DIRECTION_MAX) {
-                        
+
                         Move move = generateMove(g, mNew1, mNew2, k);
-                                
+
                         if (move != null) {
                             moves.add(move);
                         }
@@ -70,7 +71,7 @@ public class aiPlayer {
                 }
             }
         }
-        
+
         return moves;
     }
 
@@ -94,7 +95,7 @@ public class aiPlayer {
             System.out.println(move);*/
             return displayMove;
         }      
-        
+
         // return null if move was illegal   
         return null;
     }
@@ -124,37 +125,60 @@ public class aiPlayer {
 
     /**
      * Takes a suggested move and executes it on the specified board.
-     * @param inputGameState - The game object generated from the .input file. From this we can pull the Board.
-     * @param suggestedMove - Moves suggested by the genPossibleMoves method
-     * @return resultingMarbles - The new board
+     * @param g the current state of the game
+     * 
      */
-    public static ArrayList<Marble> genResultState(Game inputGameState, Move suggestedMove, boolean aiIsBlack){
-        Board dummyBoard = inputGameState.getBoard();
-        ArrayList<Marble> marblesMoved = suggestedMove.getMovedList();
-        ArrayList<Marble> resultingMarbles = new ArrayList<Marble>();
-        int directionMoved = suggestedMove.getDirection();
+    public static Board genResultState(Game g, Move mv){
+        Board current = g.getBoard(); // the current game's active board
+        Board original = Board.copyBoard(current); // the layout of the board as it stands
+        Board output; // to be returned at the end
+        boolean success;
 
-        //For when 1 marble moves
-        if( marblesMoved.size() == 1) {
-            inputGameState.move(marblesMoved.get(0), directionMoved, aiIsBlack);            //trigger Game.move method
-            dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
+        Marble m1 = mv.getMovedList().get(0);
+        Marble m2 = null;
+        /*System.out.println(current.toString());
+        System.out.println("old: " + original.toString());*/
 
-            for(int i = 0; i < dummyBoard.size(); ++i) {
-                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
-            }
-
+        if (mv.getMovedList().size() > 1) {
+            m2 = mv.getMovedList().get(1);
         }
 
-        //For when 2 marbles move
-        if(marblesMoved.size() == 2) {
-            inputGameState.move(marblesMoved.get(0), marblesMoved.get(1),
-                    directionMoved, aiIsBlack);
-            dummyBoard = inputGameState.getBoard();                                         //Update the Board after moving
-            for(int i = 0; i < dummyBoard.size(); ++i) {
-                resultingMarbles.add(dummyBoard.get(i));                                               //Add the new marbles(board layout) to an array.
-            }
+        if(m2 == null){// single marble move 
+            success = g.move(m1, mv.getDirection(), m1.isBlack());             
+        } else {// multiple marble move
+            success = g.move(m1, m2, mv.getDirection(), m1.isBlack());   
         }
-        return resultingMarbles;
+        
+        output = Board.copyBoard(current);
+        
+        
+        
+        if (success) {
+            //System.out.println("new: " + output.toString());
+            System.out.println("butts");
+        }
+        // reset original game state
+        g.setBoard(original);
+        return output;
     }
 
+    /**
+     * Returns resulting states from an arraylist of moves (which must already be checked for legality) as a HashMap; 
+     * evaluation function values will be added later as the double values in the map
+     * @param g
+     * @param moves
+     * @return
+     */
+    public static HashMap<Board, Double> genAllResults(Game g, ArrayList<Move> moves){
+        HashMap<Board, Double> states = new HashMap<Board, Double>();
+        Board singleState = null;
+
+        for(Move mv : moves){
+            singleState = genResultState(g, mv);
+            //System.out.println(singleState.toString());
+            states.put(singleState, 0.0);
+        }
+
+        return states;
+    }
 }
