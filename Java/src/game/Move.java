@@ -125,7 +125,7 @@ public class Move {
         sb.append("Move [");
         
         for(Marble m: movedList) {
-            sb.append("Marble [alpha=" + m.getAlpha() + ", numeric=" + m.getNumeric() + "] ");
+            sb.append("Marble [alpha=" + IODriver.getAlphaChar(m) + ", numeric=" + m.getNumeric() + "] ");
         }
         
         sb.append("direction=" + direction + ", time=" + time + "]");

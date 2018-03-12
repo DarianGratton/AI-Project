@@ -140,6 +140,33 @@ public class IODriver {
         } else {
             return false;
         }
+    }    /**
+     * Return Alpha character equivalent to the numbers
+     * @return 1 = 'A', 2 = 'B' .
+     */
+
+    public static char getAlphaChar(Marble m) {
+        switch(m.getAlpha()) {
+            case 1:
+                return 'A';
+            case 2:
+                return 'B';
+            case 3:
+                return 'C';
+            case 4:
+                return 'D';
+            case 5:
+                return 'E';
+            case 6:
+                return 'F';
+            case 7:
+                return 'G';
+            case 8:
+                return 'H';
+            case 9:
+                return 'I';
+        }
+        return 'Z';
     }
 
     public static void writeOutput(ArrayList<Move> moves) {
