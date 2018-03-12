@@ -195,7 +195,7 @@ public class Game {
     public Board getBoard(){
         return board;
     }
-    
+
     public void setBoard(Board b){
         this.board = Board.copyBoard(b);
     }
@@ -459,19 +459,15 @@ public class Game {
                 moved.changePos(direction);
                 return true;
             }
-            
+
             return false;
         }  
-        
+
         if(adjacent == null && moved.isBlack() != isBlack){
-            Marble dummy = new Marble(moved);
-            dummy.changePos(direction);
-            if(sumito(dummy, isBlack)){
-                moved.changePos(direction);
-                return true;
-            }
-            
-            return false;
+
+            moved.changePos(direction);
+            sumito(moved, isBlack);
+            return true;
         }
 
         // pushing friendly marble(s)
@@ -581,12 +577,22 @@ public class Game {
                 if((checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && m3 == null) 
                         // second case: 3 marbles involved
                         || checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && checkAdjacent(m3, direction) == null){
-                    m1.changePos(direction);
-                    m2.changePos(direction);
-                    if(m3 != null){
-                        m3.changePos(direction);
-                    }   
-                    return true;
+                    Marble dummy1 = new Marble(m1);
+                    Marble dummy2 = new Marble(m2);
+                    dummy1.changePos(direction);
+                    dummy2.changePos(direction);
+                    if(!sumito(dummy1, isBlack) && !sumito(dummy2, isBlack)){
+                        m1.changePos(direction);
+                        m2.changePos(direction);
+                        if(m3 != null){
+                            m3.changePos(direction);
+                        }   
+                        return true;
+                    }
+
+
+                    return false;
+
                 }      
             } 
         }
@@ -628,10 +634,10 @@ public class Game {
 
         Marble m1 = null;
         Marble m2 = null;
-        
+
         m1 = m.getMovedList().get(0);
         //m1 = new Marble(searchBoard(g.getBoard(), m1.getAlpha(), m1.getNumeric()));
-        
+
         if (m.getMovedList().size() > 1) {
             m2 = m.getMovedList().get(1);
             //System.out.println(m2.toString());
@@ -658,10 +664,10 @@ public class Game {
      */
     public boolean sumito(Marble m, boolean activeIsBlack){
 
-        if(m.isBlack() == activeIsBlack){ // break the method to prevent suicide
+        /*if(m.isBlack() == activeIsBlack){ // break the method to prevent suicide
             return false;
-        }
-        
+        }*/
+
         int alpha = m.getAlpha();
         int num = m.getNumeric();
         System.out.println("alpha: " + alpha + " num: " + num);
@@ -689,8 +695,8 @@ public class Game {
 
         return false;
     }
-    
-/*    *//**
+
+    /*    *//**
      * Making a stupid method to reverse a stupid move rabble rabble
      * @param currentBoard
      * @param lastMove
@@ -700,10 +706,10 @@ public class Game {
         Marble m1 = lastMove.getMovedList().get(0);
         int direction = lastMove.getDirection();      
         int reverse = (direction > 3) ? direction-3 : direction +3;
-        
+
         return null;
     }*/
-    
-    
+
+
 
 }

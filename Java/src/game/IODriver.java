@@ -54,12 +54,12 @@ public class IODriver {
             }
 
             //Make marble objects by taking in values from splitInput. Goes in ArrayList<Marble> inputMarbles
-            int count = 0;
+            
             for(String s: splitInput) {
-                int c1 = ((int)splitInput[count].charAt(0)) - ASCII_CONSTANT;
-                int c2 = Character.getNumericValue((splitInput[count].charAt(1)));
-                inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(splitInput[count].charAt(2))));
-                count++;
+                int c1 = ((int)s.charAt(0)) - ASCII_CONSTANT;
+                int c2 = Character.getNumericValue(s.charAt(1));
+                inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(s.charAt(2))));
+                
             }
             
             for(Marble m : inputMarbles){
