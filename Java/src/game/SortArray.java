@@ -7,16 +7,16 @@ public class SortArray implements Comparator {
 	//To sort use: Collections.sort(nameOfList, new SortArray());
 	public int compare(Marble m1, Marble m2) {
 
-		if (m1.getColor() <= (m2.getColor())) {
-			return m1.getColor();
+	    int diff = (int)m1.getColor() - (int)m2.getColor();
+		if (diff != 0) {
+			return diff;
 		}
-		if (m1.getAlpha() <= (m2.getAlpha())) {
-			return m1.getAlpha();
+		diff = m1.getAlpha() - m2.getAlpha();
+		if (diff != 0) {
+			return diff;
 		}
-		if (m1.getNumeric() <= (m2.getNumeric())) {
-			return m1.getNumeric();
-		}
-		return 0;
+		diff = m1.getNumeric() - m2.getNumeric();
+		return diff;
 	}
 
 	@Override

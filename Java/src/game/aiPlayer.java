@@ -4,8 +4,9 @@
 package game;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 
 /**
  * @author Mike
@@ -137,15 +138,17 @@ public class aiPlayer {
 
         Marble m1 = mv.getMovedList().get(0);
         Marble m2 = null;
-        /*System.out.println(current.toString());
-        System.out.println("old: " + original.toString());*/
+        System.out.println(current.toString());
+        System.out.println("old: " + original.toString());
 
         if (mv.getMovedList().size() > 1) {
             m2 = mv.getMovedList().get(1);
         }
 
         if(m2 == null){// single marble move 
-            success = g.move(m1, mv.getDirection(), m1.isBlack());             
+            success = g.move(m1, mv.getDirection(), m1.isBlack());  
+            
+            //this line below is an insanely stupid workaround that probably shouldn't work
         } else {// multiple marble move
             success = g.move(m1, m2, mv.getDirection(), m1.isBlack());   
         }
@@ -155,8 +158,8 @@ public class aiPlayer {
         
         
         if (success) {
-            //System.out.println("new: " + output.toString());
-            System.out.println("butts");
+            System.out.println("new: " + output.toString());
+            //System.out.println("butts");
         }
         // reset original game state
         g.setBoard(original);
@@ -170,30 +173,16 @@ public class aiPlayer {
      * @param moves
      * @return
      */
+    @SuppressWarnings("unchecked")
     public static HashMap<Board, Double> genAllResults(Game g, ArrayList<Move> moves){
         HashMap<Board, Double> states = new HashMap<Board, Double>();
         Board singleState = null;
 
         for(Move mv : moves){
             singleState = genResultState(g, mv);
+            //Collections.sort(singleState, new SortArray());
             //System.out.println(singleState.toString());
             states.put(singleState, 0.0);
-        }
-
-        return states;
-    }
-    
-    public static HashSet<Board> genAllResultsTest(Game g, ArrayList<Move> moves){
-        HashSet<Board> states = new HashSet<Board>();
-        Board singleState = null;
-
-        for(Move mv : moves){
-            singleState = genResultState(g, mv);
-            //System.out.println(singleState.toString());
-            
-            if (!Board.checkIfSetContains(states, singleState)) {
-                states.add(singleState);
-            }
         }
 
         return states;
