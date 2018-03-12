@@ -22,6 +22,8 @@ public class IODriver {
         int tracker = 0;
         Board inputMarbles = new Board();       //readFile[1] will eventually be put into this
         ArrayList<Move> outputMoves = new ArrayList<Move>();            // return from sort function
+        String fileName = args[0];
+        int digit = 0;
 
 
         HashMap<Board, Double> output = new HashMap<Board, Double>();
@@ -38,11 +40,18 @@ public class IODriver {
         }
 
         try {
-            File file = new File(args[0]);                          //grab the only argument i.e. file name and put it in file
+            File file = new File(fileName);                          //grab the only argument i.e. file name and put it in file
             scan = new Scanner(file);
             while (scan.hasNextLine()) {                            //file now read into readFile
                 readFile[tracker] = scan.nextLine().toUpperCase();
                 tracker++;
+            }
+
+            //File pulls digit from file name
+            for (int i = 0; i < fileName.length(); ++i) {
+                if (Character.isDigit(fileName.charAt(i))) {
+                    digit = Character.getNumericValue(fileName.charAt(i));
+                }
             }
 
             String[] splitInput = readFile[1].split(",");   //Split fileInput[1] by the commas and put into another array
@@ -71,12 +80,11 @@ public class IODriver {
 
 
             //Create file for printing to
-            PrintWriter moveWriter = new PrintWriter("Results.move");
-            PrintWriter boardWriter = new PrintWriter("Results.board");
+            PrintWriter moveWriter = new PrintWriter("Test"+digit+".move");
+            PrintWriter boardWriter = new PrintWriter("Test"+digit+".board");
             
             
             int i = 0;
-            
             for(Move m : outputMoves){
                 moveWriter.println(m);
                 System.out.println(i + " " + m.toString());
