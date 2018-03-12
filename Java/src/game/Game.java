@@ -452,13 +452,27 @@ public class Game {
         adjacent = this.checkAdjacent(moved, direction);
 
         // adjacent space is empty
-        if(adjacent == null){
-            moved.changePos(direction);
-            if(moved.isBlack() != isBlack){
-                sumito(moved);
+        if(adjacent == null && moved.isBlack() == isBlack){
+            Marble dummy = new Marble(moved);
+            dummy.changePos(direction);
+            if(!sumito(dummy, isBlack)){
+                moved.changePos(direction);
+                return true;
             }
-            return true;
+            
+            return false;
         }  
+        
+        if(adjacent == null && moved.isBlack() != isBlack){
+            Marble dummy = new Marble(moved);
+            dummy.changePos(direction);
+            if(sumito(dummy, isBlack)){
+                moved.changePos(direction);
+                return true;
+            }
+            
+            return false;
+        }
 
         // pushing friendly marble(s)
         if(adjacent.isBlack() == isBlack && pushedFriend < 2){
@@ -610,7 +624,7 @@ public class Game {
      */
     public static boolean moveIsLegal(Game g, Move m){
         boolean isLegal = false;
-        //Board gameState = Board.copyBoard(g.getBoard());
+        Board gameState = Board.copyBoard(g.getBoard());
 
         Marble m1 = null;
         Marble m2 = null;
@@ -632,7 +646,7 @@ public class Game {
             isLegal = true;
         }
 
-        //g.setBoard(gameState);
+        g.setBoard(gameState);
         //System.out.println(isLegal);
         return isLegal;
     }
@@ -642,8 +656,12 @@ public class Game {
      * @param m
      * @return
      */
-    public boolean sumito(Marble m){
+    public boolean sumito(Marble m, boolean activeIsBlack){
 
+        if(m.isBlack() == activeIsBlack){ // break the method to prevent suicide
+            return false;
+        }
+        
         int alpha = m.getAlpha();
         int num = m.getNumeric();
         System.out.println("alpha: " + alpha + " num: " + num);
@@ -659,7 +677,7 @@ public class Game {
         System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
         System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);
         if (num < numMin || num > numMax || alpha < alphaMin || alpha > alphaMax) {
-            System.out.println("You've activated my trap card Yugi");
+            //System.out.println("You've activated my trap card Yugi");
             if (m.isBlack()) {
                 this.blackLost++;
             } else {
@@ -685,5 +703,7 @@ public class Game {
         
         return null;
     }*/
+    
+    
 
 }
