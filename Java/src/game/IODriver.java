@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -91,6 +92,7 @@ public class IODriver {
             i = 0;
             
             for(Board b : output.keySet()){
+                //Collections.sort(b, new SortArray());
                 line = new StringBuilder();
                 for(Marble m : b){
                     mrbl = new StringBuilder();
