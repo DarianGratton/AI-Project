@@ -1,6 +1,7 @@
 package game;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import javax.swing.JFrame;
 
@@ -73,7 +74,21 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
+        Board b1 = Board.copyBoard(Game.standardLayout);
+        Board b2 = Board.copyBoard(Game.standardLayout);
         
+        HashSet<Board> boards = new HashSet<Board>();
+        boards.add(b1);
+        
+        if (!Board.checkIfSetContains(boards, b2)) {
+            System.out.println("FUCK");
+        }
+        
+        Board b3 = Board.copyBoard(Game.belgianDaisy);
+        
+        if (!Board.checkIfSetContains(boards, b3)) {
+            System.out.println("FUCK");
+        }
 
 
         //Gui.drawBoard(test.getBoard(), frame, g);

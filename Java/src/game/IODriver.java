@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Akemi on 3/6/2018.
@@ -27,6 +28,7 @@ public class IODriver {
 
 
         HashMap<Board, Double> output = new HashMap<Board, Double>();
+        HashSet<Board> outputTest = new HashSet<Board>();
         
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
         GameTimer timer = new GameTimer();                              //to put into Game object
@@ -92,13 +94,14 @@ public class IODriver {
             }
             
             output = aiPlayer.genAllResults(game, outputMoves);
+            outputTest = aiPlayer.genAllResultsTest(game, outputMoves);
             
             StringBuilder mrbl;
             StringBuilder line;
             
             i = 0;
             
-            for(Board b : output.keySet()){
+            for(Board b : outputTest){
                 line = new StringBuilder();
                 for(Marble m : b){
                     mrbl = new StringBuilder();
