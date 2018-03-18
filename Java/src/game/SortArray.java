@@ -2,7 +2,7 @@ package game;
 
 import java.util.Comparator;
 
-public class SortArray implements Comparator {
+public class SortArray implements Comparator<Marble> {
 
 	//To sort use: Collections.sort(nameOfList, new SortArray());
 	public int compare(Marble m1, Marble m2) {
@@ -19,9 +19,5 @@ public class SortArray implements Comparator {
 		return diff;
 	}
 
-	@Override
-	public int compare(Object o1, Object o2) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+
 }

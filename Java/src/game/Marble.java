@@ -146,7 +146,11 @@ public class Marble {
      */
     @Override
     public String toString() {
-        return "Marble [Clr=" + getColor() + "al=" + alpha + ", num=" + numeric + "]";
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getColor());
+        sb.append(this.alpha);
+        sb.append(this.numeric);
+        return sb.toString();
     }
 
 

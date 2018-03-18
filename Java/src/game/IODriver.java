@@ -80,8 +80,8 @@ public class IODriver {
             
             for(Move m : outputMoves){
                 moveWriter.println(m);
-                System.out.println(i + " " + m.toString());
-                ++i;
+                /*System.out.println(i + " " + m.toString());
+                ++i;*/
             }
             
             output = aiPlayer.genAllResults(game, outputMoves);
@@ -100,16 +100,19 @@ public class IODriver {
                     int c2 = m.getNumeric();
                     char c3 = m.getColor();
 
+                    if(line.length() != 0){
+
+                        mrbl.append(',');
+                    }
                     mrbl.append(c1);                    
                     mrbl.append(c2);
                     mrbl.append(c3);
-                    mrbl.append(',');
                     line.append(mrbl.toString());
                 }  
                 
                 boardOutput.add(line.toString());
-                System.out.println(i + " " + line.toString());
-                ++i;
+                /*System.out.println(i + " " + line.toString());
+                ++i;*/
             }
 
             for(String s : boardOutput){

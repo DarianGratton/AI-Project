@@ -1,6 +1,7 @@
 package game;
 import java.awt.Graphics;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.swing.JFrame;
@@ -53,17 +54,16 @@ public class TestDriver {
         Game game = new Game();
         game.setBoard(test);
         
-        for(Marble m : game.getBoard()){
-            System.out.println(m.toString());
-            
-        }
+        /*for(Marble m : game.getBoard()){
+            System.out.println(m.toString()); 
+        }*/
         
         ArrayList<Move> moves = aiPlayer.genPossibleMoves(game, game.activeIsBlack());
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
         }
         
-        
+        HashMap<Board, Double> stuff = aiPlayer.genAllResults(game, moves);
         GameFrame frame = new GameFrame(game);
         
         

@@ -23,21 +23,28 @@ public class aiPlayer {
      */
     public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
+        Board original = Board.copyBoard(g.getBoard());
         Board currentBoard = Board.copyBoard(g.getBoard());
-        Marble mOrig = null;
-        Marble mOrig2 = null;
+        Board ownMarbles = new Board();
+        Marble m1 = null;
+        Marble m2 = null;
 
+        for(Marble m: currentBoard){
+            if(m.isBlack() == aiIsBlack){
+                ownMarbles.add(m);
+            }
+        }
+        
         // Generates moves for a single marble for each marbles in the ArrayList
         for (int i = 0; i < currentBoard.size(); ++i) {
-
-            mOrig = currentBoard.get(i);
-            Marble mNew = new Marble(mOrig);
-            if (mOrig.isBlack() == aiIsBlack) {
+            
+            m1 = currentBoard.get(i);
+            if (m1.isBlack() == aiIsBlack) {
                 int j = DIRECTION_MIN;
                 while (j <= DIRECTION_MAX) {
 
 
-                    Move move = generateMove(g, mNew, j);
+                    Move move = generateMove(g, m1, j);
 
                     if (move != null) {
                         //System.out.println("before: " + move.toString());
@@ -45,6 +52,7 @@ public class aiPlayer {
                         //System.out.println("after: " + move.toString());
                     }
 
+                    currentBoard = Board.copyBoard(original);
                     j++;
                 }
             }
@@ -54,26 +62,27 @@ public class aiPlayer {
         for (int i = 0; i < currentBoard.size() - 1; ++i) {
             for (int j = i + 1; j < currentBoard.size(); ++j) {
 
-                mOrig = currentBoard.get(i);
-                mOrig2 = currentBoard.get(j);
-                Marble mNew1 = new Marble(mOrig);
-                Marble mNew2 = new Marble(mOrig2);
-                if (mOrig.isBlack() == aiIsBlack && mOrig2.isBlack() == aiIsBlack) {
+                m1 = currentBoard.get(i);
+                m2 = currentBoard.get(j);
+                if (m1.isBlack() == aiIsBlack && m2.isBlack() == aiIsBlack) {
                     int k = DIRECTION_MIN;
                     while (k <= DIRECTION_MAX) {
 
-                        Move move = generateMove(g, mNew1, mNew2, k);
+                        Move move = generateMove(g, m1, m2, k);
 
                         if (move != null) {
                             moves.add(move);
                         }
 
+                        currentBoard = Board.copyBoard(original);
                         k++;
                     }
                 }
             }
         }
 
+       
+        
         return moves;
     }
 
@@ -131,39 +140,35 @@ public class aiPlayer {
      * 
      */
     public static Board genResultState(Game g, Move mv){
-        Board current = g.getBoard(); // the current game's active board
-        Board original = Board.copyBoard(current); // the layout of the board as it stands
-        Board output; // to be returned at the end
-        boolean success;
+        Game dummy = new Game(g);
 
         Marble m1 = mv.getMovedList().get(0);
         Marble m2 = null;
-        System.out.println(current.toString());
-        System.out.println("old: " + original.toString());
+        
+        System.out.println(mv.toString());
 
         if (mv.getMovedList().size() > 1) {
             m2 = mv.getMovedList().get(1);
         }
 
         if(m2 == null){// single marble move 
-            success = g.move(m1, mv.getDirection(), m1.isBlack());  
+            //System.out.println("single");
+            dummy.move(m1, mv.getDirection(), m1.isBlack());  
             
-            //this line below is an insanely stupid workaround that probably shouldn't work
         } else {// multiple marble move
-            success = g.move(m1, m2, mv.getDirection(), m1.isBlack());   
+            /*System.out.println("double");
+            System.out.println(m2.toString());*/
+            dummy.move(m1, m2, mv.getDirection(), m1.isBlack());   
         }
         
-        output = Board.copyBoard(current);
         
         
-        
+        /*System.out.println(success);
         if (success) {
-            System.out.println("new: " + output.toString());
+            System.out.println("new: " + dummy.getBoard().toString());
             //System.out.println("butts");
-        }
-        // reset original game state
-        g.setBoard(original);
-        return output;
+        }*/
+        return dummy.getBoard();
     }
 
     /**
