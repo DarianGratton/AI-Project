@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Created by Akemi on 3/6/2018.
@@ -25,7 +26,7 @@ public class IODriver {
         ArrayList<Move> outputMoves = new ArrayList<Move>();            // return from sort function
 
 
-        HashMap<Board, Double> output = new HashMap<Board, Double>();
+        HashSet<Board> output = new HashSet<Board>();
         
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
         GameTimer timer = new GameTimer();                              //to put into Game object
@@ -63,9 +64,9 @@ public class IODriver {
                 
             }
             
-            for(Marble m : inputMarbles){
+            /*for(Marble m : inputMarbles){
                 System.out.println(m.toString());
-            }
+            }*/
 
             Game game = new Game(inputMarbles, isBlack, 100, 100, timer);
             outputMoves = aiPlayer.genPossibleMoves(game, isBlack);
@@ -91,8 +92,8 @@ public class IODriver {
             
             i = 0;
             
-            for(Board b : output.keySet()){
-                //Collections.sort(b, new SortArray());
+            for(Board b : output){
+                //Collections.sort(b, new MarbleComparator());
                 line = new StringBuilder();
                 for(Marble m : b){
                     mrbl = new StringBuilder();

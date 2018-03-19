@@ -105,6 +105,11 @@ public class Marble {
             return 'w';
         }
     }
+    
+    public int intColour(){
+        return (this.isBlack) ? 1 : 0;
+    }
+
     /**
      * @param isBlack the isBlack to set
      */
@@ -154,4 +159,40 @@ public class Marble {
     }
 
 
+    /* (non-Javadoc)
+     * @see java.lang.Object#hashCode()
+     */
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + alpha;
+        result = prime * result + (isActive ? 1231 : 1237);
+        result = prime * result + (isBlack ? 1231 : 1237);
+        result = prime * result + numeric;
+        return result;
+    }
+
+    /* (non-Javadoc)
+     * @see java.lang.Object#equals(java.lang.Object)
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Marble other = (Marble) obj;
+        if (alpha != other.alpha)
+            return false;
+        if (isActive != other.isActive)
+            return false;
+        if (isBlack != other.isBlack)
+            return false;
+        if (numeric != other.numeric)
+            return false;
+        return true;
+    }
 }

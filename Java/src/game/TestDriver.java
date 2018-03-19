@@ -63,7 +63,7 @@ public class TestDriver {
             System.out.println(moves.get(i).toString());
         }
         
-        HashMap<Board, Double> stuff = aiPlayer.genAllResults(game, moves);
+        //HashMap<Board, Double> stuff = aiPlayer.genAllResults(game, moves);
         GameFrame frame = new GameFrame(game);
         
         
@@ -80,7 +80,7 @@ public class TestDriver {
         HashSet<Board> boards = new HashSet<Board>();
         boards.add(b1);
         
-        if (!Board.checkIfSetContains(boards, b2)) {
+        /*if (!Board.checkIfSetContains(boards, b2)) {
             System.out.println("FUCK");
         }
         
@@ -88,7 +88,7 @@ public class TestDriver {
         
         if (!Board.checkIfSetContains(boards, b3)) {
             System.out.println("FUCK");
-        }
+        }*/
 
 
         //Gui.drawBoard(test.getBoard(), frame, g);

@@ -2,12 +2,12 @@ package game;
 
 import java.util.Comparator;
 
-public class SortArray implements Comparator<Marble> {
+public class MarbleComparator implements Comparator<Marble> {
 
-	//To sort use: Collections.sort(nameOfList, new SortArray());
+	//To sort use: Collections.sort(nameOfList, new MarbleComparator());
 	public int compare(Marble m1, Marble m2) {
-
-	    int diff = (int)m1.getColor() - (int)m2.getColor();
+	    
+	    int diff = m2.intColour() - m1.intColour();
 		if (diff != 0) {
 			return diff;
 		}
@@ -17,6 +17,7 @@ public class SortArray implements Comparator<Marble> {
 		}
 		diff = m1.getNumeric() - m2.getNumeric();
 		return diff;
+		
 	}
 
 
