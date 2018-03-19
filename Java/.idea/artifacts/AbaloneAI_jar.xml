@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="AbaloneAI:jar">
+    <output-path>$PROJECT_DIR$/classes/artifacts/AbaloneAI_jar</output-path>
+    <root id="root">
+      <element id="archive" name="AbaloneAI.jar">
+        <element id="module-output" name="AbaloneAI" />
+      </element>
+    </root>
+  </artifact>
+</component>
