@@ -1,18 +1,19 @@
 
 package game;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.TreeSet;
 
 /**
  * @author Mike
  *
  */
 @SuppressWarnings("serial")
-public class Board extends ArrayList<Marble>{
+public class Board extends TreeSet<Marble>{
 
+    private static MarbleComparator mc = new MarbleComparator();
+    
     public Board() {
-        
+        super(mc);
     }
     
     public static Board copyBoard(Board b){
@@ -23,7 +24,7 @@ public class Board extends ArrayList<Marble>{
         return nb;
     }
     
-    public static boolean checkIfSetContains(HashSet<Board> hash, Board board) {
+    /*public static boolean checkIfSetContains(HashSet<Board> hash, Board board) {
         
         for (Board b : hash) {
             
@@ -45,5 +46,6 @@ public class Board extends ArrayList<Marble>{
         }
         
         return false;
-    }
+    }*/
+    
 }

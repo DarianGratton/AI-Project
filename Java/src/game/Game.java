@@ -176,7 +176,7 @@ public class Game {
      */
     public Game(Board layout, boolean aiIsBlack, int moveLimit, 
             long timeLimit, GameTimer timer) {
-        this.board = layout;
+        this.board = Board.copyBoard(layout);
         this.blackLost = 0;
         this.whiteLost = 0;
         this.blackMoves = new ArrayList<Move>();
@@ -190,6 +190,27 @@ public class Game {
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
         this.time = timer;
+    }
+
+    /**
+     * "copy constructor"
+     * @param g
+     */
+    public Game(Game g){
+        this.board = Board.copyBoard(g.getBoard());
+        this.blackLost = 0;
+        this.whiteLost = 0;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
+        this.aiIsBlack = g.aiIsBlack;
+        this.aiMoveLimit = g.aiMoveLimit;
+        this.humanMoveLimit = g.humanMoveLimit;
+        this.aiTimeLimit = g.aiTimeLimit;
+        this.humanTimeLimit = g.humanTimeLimit;
+        this.startTime = System.nanoTime();
+        this.recommended = new Move();
+        this.activePlayerIsBlack = g.activePlayerIsBlack;
+        this.time = new GameTimer();
     }
 
     public Board getBoard(){
@@ -400,6 +421,10 @@ public class Game {
         return null;
     }
 
+    public int reverseDirection(int direction){ 
+        return (direction > 3) ? direction - 3 : direction + 3;
+    }
+
     /**
      * this version implements an inline move
      * @param moved the rear marble to move
@@ -421,7 +446,12 @@ public class Game {
 
         if(adjacent == null){
             moved.changePos(direction);
-            return true;
+            if(!outOfBounds(moved)){ // if the marble is not out of bounds
+                return true;
+            } else { // the marble is out of bounds
+                moved.changePos(reverseDirection(direction)); // move the marble back
+                return false;
+            }        
         } 
         else if(adjacent.isBlack() == isBlack && pushedFriend < 2){
             pushedFriend++;
@@ -451,20 +481,18 @@ public class Game {
 
         adjacent = this.checkAdjacent(moved, direction);
 
-        // adjacent space is empty
+        // adjacent space is empty AND marble being pushed belongs to the player moving
         if(adjacent == null && moved.isBlack() == isBlack){
-            Marble dummy = new Marble(moved);
-            dummy.changePos(direction);
-            if(!sumito(dummy, isBlack)){
-                moved.changePos(direction);
+            moved.changePos(direction);
+            if(!outOfBounds(moved)){ // if the marble is not out of bounds
                 return true;
-            }
-
-            return false;
+            } else { // the marble is out of bounds
+                moved.changePos(reverseDirection(direction)); // move the marble back
+                return false;
+            }      
         }  
 
         if(adjacent == null && moved.isBlack() != isBlack){
-
             moved.changePos(direction);
             sumito(moved, isBlack);
             return true;
@@ -483,7 +511,7 @@ public class Game {
         if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
-            System.out.println(pushedEnemy);
+            //System.out.println(pushedEnemy);
             if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
                 return true;
@@ -577,21 +605,21 @@ public class Game {
                 if((checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && m3 == null) 
                         // second case: 3 marbles involved
                         || checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && checkAdjacent(m3, direction) == null){
-                    Marble dummy1 = new Marble(m1);
-                    Marble dummy2 = new Marble(m2);
-                    dummy1.changePos(direction);
-                    dummy2.changePos(direction);
-                    if(!sumito(dummy1, isBlack) && !sumito(dummy2, isBlack)){
-                        m1.changePos(direction);
-                        m2.changePos(direction);
-                        if(m3 != null){
-                            m3.changePos(direction);
-                        }   
-                        return true;
+
+                    m1.changePos(direction);
+                    m2.changePos(direction);
+                    if(outOfBounds(m1) || outOfBounds(m2)){
+                        m1.changePos(reverseDirection(direction));
+                        m2.changePos(reverseDirection(direction));
+                        return false;
                     }
+                    if(m3 != null){
+                        m3.changePos(direction);
+                    }   
+                    return true;
 
 
-                    return false;
+
 
                 }      
             } 
@@ -668,21 +696,9 @@ public class Game {
             return false;
         }*/
 
-        int alpha = m.getAlpha();
-        int num = m.getNumeric();
-        System.out.println("alpha: " + alpha + " num: " + num);
-
-        // numeric constraints based on alpha values
-        int numMin = Math.max(alpha - 4, 1);
-        int numMax = Math.min(alpha + 4, 9);
-
-        // alpha constraints based on numeric values
-        int alphaMin = Math.max(num - 4, 1);
-        int alphaMax = Math.min(num + 4, 9);
-
-        System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
-        System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);
-        if (num < numMin || num > numMax || alpha < alphaMin || alpha > alphaMax) {
+        /*System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
+        System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);*/
+        if (outOfBounds(m)) {
             //System.out.println("You've activated my trap card Yugi");
             if (m.isBlack()) {
                 this.blackLost++;
@@ -711,5 +727,24 @@ public class Game {
     }*/
 
 
+    public boolean outOfBounds(Marble m){
+        int alpha = m.getAlpha();
+        int num = m.getNumeric();
+        //System.out.println("alpha: " + alpha + " num: " + num);
+
+        // numeric constraints based on alpha values
+        int numMin = Math.max(alpha - 4, 1);
+        int numMax = Math.min(alpha + 4, 9);
+
+        // alpha constraints based on numeric values
+        int alphaMin = Math.max(num - 4, 1);
+        int alphaMax = Math.min(num + 4, 9);
+
+        if (num < numMin || num > numMax || alpha < alphaMin || alpha > alphaMax){
+            return true;
+        }         
+
+        return false;
+    }
 
 }

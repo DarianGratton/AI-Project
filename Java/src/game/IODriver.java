@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Scanner;
 
 /**
@@ -26,7 +27,7 @@ public class IODriver {
         int digit = 0;
 
 
-        HashMap<Board, Double> output = new HashMap<Board, Double>();
+        HashSet<Board> output = new HashSet<Board>();
         
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
         GameTimer timer = new GameTimer();                              //to put into Game object
@@ -71,9 +72,9 @@ public class IODriver {
                 
             }
             
-            for(Marble m : inputMarbles){
+            /*for(Marble m : inputMarbles){
                 System.out.println(m.toString());
-            }
+            }*/
 
             Game game = new Game(inputMarbles, isBlack, 100, 100, timer);
             outputMoves = aiPlayer.genPossibleMoves(game, isBlack);
@@ -88,8 +89,8 @@ public class IODriver {
             
             for(Move m : outputMoves){
                 moveWriter.println(m);
-                System.out.println(i + " " + m.toString());
-                ++i;
+                /*System.out.println(i + " " + m.toString());
+                ++i;*/
             }
             
             output = aiPlayer.genAllResults(game, outputMoves);
@@ -99,8 +100,8 @@ public class IODriver {
             
             i = 0;
             
-            for(Board b : output.keySet()){
-                //Collections.sort(b, new SortArray());
+            for(Board b : output){
+                //Collections.sort(b, new MarbleComparator());
                 line = new StringBuilder();
                 for(Marble m : b){
                     mrbl = new StringBuilder();
@@ -108,16 +109,19 @@ public class IODriver {
                     int c2 = m.getNumeric();
                     char c3 = m.getColor();
 
+                    if(line.length() != 0){
+
+                        mrbl.append(',');
+                    }
                     mrbl.append(c1);                    
                     mrbl.append(c2);
                     mrbl.append(c3);
-                    mrbl.append(',');
                     line.append(mrbl.toString());
                 }  
                 
                 boardOutput.add(line.toString());
-                System.out.println(i + " " + line.toString());
-                ++i;
+                /*System.out.println(i + " " + line.toString());
+                ++i;*/
             }
 
             for(String s : boardOutput){
