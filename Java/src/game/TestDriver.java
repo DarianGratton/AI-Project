@@ -58,17 +58,17 @@ public class TestDriver {
             System.out.println(m.toString()); 
         }*/
         
-        /*ArrayList<Move> moves = aiPlayer.genPossibleMoves(game, game.activeIsBlack());
+        /*ArrayList<Move> moves = AIPlayer.genPossibleMoves(game, game.activeIsBlack());
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
         }*/
         System.out.print("Evaluating board for black side:");
-        System.out.println(aiPlayer.evaluateBoard(game.getBoard(), true));
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
         
         System.out.print("Evaluating board for white side:");
-        System.out.println(aiPlayer.evaluateBoard(game.getBoard(), false));
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
         
-        //HashMap<Board, Double> stuff = aiPlayer.genAllResults(game, moves);
+        //HashMap<Board, Double> stuff = AIPlayer.genAllResults(game, moves);
         GameFrame frame = new GameFrame(game);
         
         
