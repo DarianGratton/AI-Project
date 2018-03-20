@@ -131,8 +131,6 @@ public class BoardPanel extends JPanel {
 
                                     drawMarbles(b);
                                     repaint();
-
-                                    
                                 }
                             }
                          // reset variables
