@@ -60,6 +60,7 @@ public abstract class Gui {
         if(g.move(m1, direction, playerIsBlack)){
             g.addMoveToList(mv);
             turnStart = System.nanoTime();
+            g.switchSides();
             return true;
         }
         return false;
@@ -81,6 +82,7 @@ public abstract class Gui {
         if(g.move(m1, m2, direction, playerIsBlack)){
             g.addMoveToList(mv);
             turnStart = System.nanoTime();
+            g.switchSides();
             return true;
         }
 

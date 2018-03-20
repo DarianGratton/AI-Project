@@ -17,7 +17,8 @@ public class aiPlayer {
 
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
-
+    
+    
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
@@ -226,5 +227,94 @@ public class aiPlayer {
         }
 
         return states;
+    }
+    
+    /**
+     * this method returns as an integer the number of spaces away a marble is from the centre of the board
+     * @param m
+     * @return
+     */
+    public static int distanceFromCenter(Marble m){
+        System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
+        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
+    }
+    
+    /**
+     * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
+     * @param b the current board state
+     * @param aiIsBlack true if the AI is playing black and false if it is playing white
+     * @return the board state's evaluation
+     */
+    public static double evaluateBoard(Board b, boolean aiIsBlack){
+        double eval = 0;
+        
+        // variables to modify for evaluation purposes
+        double ownMarbleVal = 1.0;
+        double oppMarbleVal = 1.0;
+        
+        double centerMod = 2.0;
+        double ring1Mod = 1.5;
+        double ring2Mod = 1.0;
+        double ring3Mod = 0.75;
+        double ring4Mod = 0.5;
+        
+        int dist;
+        double posMod = 1.0;
+        
+        double firstKO = 1.0;
+        double secondKO = 2.0;
+        double thirdKO = 4.0;
+        double fourthKO = 7.0;
+        double fifthKO = 15.0;
+        double sixthKO = 100.0;
+        
+        // counter for enemy marbles still in play, could get this from game score;
+        // but I don't know if this method needs to be passed the whole game
+        int oppMarbles = 0;
+        
+        for(Marble m : b){ // checks each marble present on the board
+            dist = aiPlayer.distanceFromCenter(m);
+            switch (dist){
+                case 0: posMod = centerMod;
+                        break;
+                case 1: posMod = ring1Mod;
+                        break;
+                case 2: posMod = ring2Mod;
+                        break;
+                case 3: posMod = ring3Mod;
+                        break;
+                case 4: posMod = ring4Mod;
+                        break;
+            }
+            
+            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
+                eval += (ownMarbleVal * posMod);
+                
+            } else { // do negative things for opposing marbles
+                eval -= (oppMarbleVal * posMod);
+                ++oppMarbles;
+            }
+        }
+        
+        if(oppMarbles < 14){ // at least one marble knocked out
+            eval += firstKO;
+        }
+        if(oppMarbles < 13){ // at least two marbles knocked out
+            eval += secondKO;
+        }
+        if(oppMarbles < 12){ // at least three marbles knocked out
+            eval += thirdKO;
+        }
+        if(oppMarbles < 11){ // at least four marbles knocked out
+            eval += fourthKO;
+        }
+        if(oppMarbles < 10){ // at least five marbles knocked out
+            eval += fifthKO;
+        }
+        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
+            eval += sixthKO;
+        }
+        
+        return eval;
     }
 }
