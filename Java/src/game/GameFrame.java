@@ -68,6 +68,11 @@ public class GameFrame extends JFrame {
     
     // JButton to pause the game
     private JButton pause;
+    
+    private JPanel museum;
+    
+    HistoryPanel blackHistory;
+    HistoryPanel whiteHistory;
 
     // ArrayList to hold the spaces on the board
     // private ArrayList<Space> spaceList;
@@ -100,7 +105,7 @@ public class GameFrame extends JFrame {
         gameTimer = new GameTimer();
         
         this.setLayout(new BorderLayout());
-        this.add(createGamePanel(new BoardPanel(this.game)),
+        this.add(createGamePanel(new BoardPanel(this.game, this)),
                 BorderLayout.CENTER);
         this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
@@ -117,11 +122,9 @@ public class GameFrame extends JFrame {
         JPanel players = new JPanel();
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
        
-        players.add(createMarblePanel("Team White", 
-                game.getWhiteScore(), Color.WHITE, Color.BLACK));
+        players.add(createMarblePanel("Team White", false, Color.WHITE, Color.BLACK));
         
-        players.add(createMarblePanel("Team Black", 
-                game.getBlackScore(), Color.BLACK, Color.WHITE));
+        players.add(createMarblePanel("Team Black", true, Color.BLACK, Color.WHITE));
         
         return players;
     }
@@ -136,13 +139,14 @@ public class GameFrame extends JFrame {
      * @param fontColor the color of the font in the player panel 
      * @return a new player panel
      */
-    private JPanel createMarblePanel(String teamColor, int score, 
+    private JPanel createMarblePanel(String teamColor, boolean aiPlayerIsBlack, 
             Color backgroundColor, Color fontColor) {
         final int paddingTop = 20;
         final int padding = 15;
         final int fontSizeTeam = 24;
         final int fontSizeScore = 60;
         final int fontSizeStats = 20;
+        int score = 0;
 
         JPanel panel = new JPanel();
         panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
@@ -159,7 +163,7 @@ public class GameFrame extends JFrame {
         playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
         
         // Display game score
-        playerInfo.add(createLabel(new JLabel(), Integer.toString(score), 
+        playerInfo.add(createLabel(new JLabel(), Integer.toString(score),
                 fontSizeScore, fontColor));
         
         // Display number of moves taken per player
@@ -246,45 +250,41 @@ public class GameFrame extends JFrame {
      */
     private JPanel createMuseumPanel() {
 
-        JPanel museum = new JPanel();
+        museum = new JPanel();
+        blackHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
+        whiteHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(createHistoryPanel(new JPanel(), 
-                new JLabel("White Move History")));
-        museum.add(createHistoryPanel(new JPanel(), 
-                new JLabel("Black Move History")));
+        museum.add(blackHistory);
+        museum.add(whiteHistory);
         
         return museum;
     }      
 
-    /**
-     * Create an history panel that contains the player's 
-     * move and time history.
-     * 
-     * @param panel a new JPanel
-     * @param label a new JLabel with team name
-     * @return a JPanel containing history for a player
-     */
-    private JPanel createHistoryPanel(JPanel panel, JLabel label) {
-
-        panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        panel.setBorder(BorderFactory.createLineBorder(Color.black));
-        
-        panel.add(label);
-        JPanel console = new JPanel();
-        
-        vertical = new JScrollPane(console);
-        vertical.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        panel.add(vertical);
-        
-//        for (int i = 0; i < move.getMovedList().size(); ++i) {
-//            move.getMovedList().get(i).toString();
-//        }           
-
-        return panel;
-    }
+//    /**
+//     * Create an history panel that contains the player's 
+//     * move and time history.
+//     * 
+//     * @param panel a new JPanel
+//     * @param label a new JLabel with team name
+//     * @return a JPanel containing history for a player
+//     */
+//    private JPanel createHistoryPanel(JPanel panel, JLabel label) {
+//
+//        panel = new JPanel();
+//        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
+//        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+//        panel.setBorder(BorderFactory.createLineBorder(Color.black));
+//        
+//        panel.add(label);
+//        JPanel console = new JPanel();
+//        
+//        vertical = new JScrollPane(console);
+//        vertical.setVerticalScrollBarPolicy(
+//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+//        panel.add(vertical);
+//
+//        return panel;
+//    }
 
     /**
      * Creates a JLabel that takes an label and sets it text to the 
@@ -382,7 +382,7 @@ public class GameFrame extends JFrame {
         if (g != null) {
             this.game = g;
             gameBoard.removeAll();
-            gameBoard.add(new BoardPanel(game));
+            gameBoard.add(new BoardPanel(game, this));
             repaint();
         }
     }
@@ -408,6 +408,11 @@ public class GameFrame extends JFrame {
             panel.add(btns.get(i));
         }
         
+    }
+    
+    public void updateGameFrame() {
+        whiteHistory.updateMoveHistory(false);
+        blackHistory.updateMoveHistory(true);
     }
     
     /**
@@ -462,7 +467,7 @@ public class GameFrame extends JFrame {
                 game = new Game(boardLayout, aiIsBlack, moveLimit, 
                         timePerMove, gameTimer);
                 gameBoard.removeAll();
-                gameBoard.add(new BoardPanel(game));
+                // gameBoard.add(new BoardPanel(game));
                 repaint();
             }
             

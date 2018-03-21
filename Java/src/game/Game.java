@@ -466,7 +466,9 @@ public class Game {
     }
 
     /**
-     * this version implements an inline move, using an extra parameter for the recursive calls
+     * This version implements an inline move, using an extra parameter 
+     * for the recursive calls.
+     * 
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
@@ -476,8 +478,6 @@ public class Game {
         boolean isBlack = activeIsBlack;
         int pushedFriend = pushedFriendly;
         int pushedEnemy = pushedOpponent;
-
-
 
         adjacent = this.checkAdjacent(moved, direction);
 
