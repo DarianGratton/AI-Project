@@ -212,6 +212,17 @@ public class Game {
         this.activePlayerIsBlack = g.activePlayerIsBlack;
         this.time = new GameTimer();
     }
+    
+    public Game(Board b, boolean aiIsBlack){
+        this.board = Board.copyBoard(b);
+        this.blackLost = 0;
+        this.whiteLost = 0;
+        this.blackMoves = new ArrayList<Move>();
+        this.whiteMoves = new ArrayList<Move>();
+        this.aiIsBlack = aiIsBlack;
+        this.recommended = new Move();
+    }
+    
 
     public Board getBoard(){
         return board;

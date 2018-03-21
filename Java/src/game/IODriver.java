@@ -92,7 +92,7 @@ public class IODriver {
                 ++i;*/
             }
             
-            output = AIPlayer.genAllResults(game, outputMoves);
+            output = AIPlayer.genAllResults(game.getBoard(), outputMoves);
             
             StringBuilder mrbl;
             StringBuilder line;
