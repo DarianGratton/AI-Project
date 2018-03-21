@@ -472,7 +472,7 @@ public class Game {
      * @param moved the rear marble to move
      * @param direction the direction of the move
      */
-    public boolean move(Marble moved, int direction, boolean activeIsBlack, int pushedFriendly, int pushedOpponent){
+    private boolean move(Marble moved, int direction, boolean activeIsBlack, int pushedFriendly, int pushedOpponent){
 
         Marble adjacent = null;
         boolean isBlack = activeIsBlack;

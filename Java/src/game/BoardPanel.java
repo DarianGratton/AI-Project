@@ -154,7 +154,9 @@ public class BoardPanel extends JPanel {
                     } else {
                         marbleClicked = false;
                     }
-                
+                    
+                    
+
 /*
                     if(m1 != null){
                         System.out.println(m1.toString());
@@ -235,8 +237,7 @@ public class BoardPanel extends JPanel {
                                 repaint();
                             }
                         }
-                        
-                        // reset variables
+                     // reset variables
                         m1 = null;
                         m2 = null;
                         m3 = null;
