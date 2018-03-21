@@ -49,13 +49,11 @@ public class HistoryPanel extends JPanel {
     
     public void updateMoveHistory(boolean aiIsBlack) {
         if (aiIsBlack) {
-            for (Move move : game.getBlackMoves()) {
-                console.add(new JLabel(move.toString()));
-            }
+            int lastMove = game.getBlackMoves().size() - 1;
+            console.add(new JLabel(game.getBlackMoves().get(lastMove).toString()));
         } else {
-            for (Move move : game.getWhiteMoves()) {
-                console.add(new JLabel(move.toString()));
-            }
+            int lastMove = game.getWhiteMoves().size() - 1;
+            console.add(new JLabel(game.getWhiteMoves().get(lastMove).toString()));
         }
         remove(vertical);
         vertical = new JScrollPane(console);
