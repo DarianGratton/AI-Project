@@ -8,3 +8,5 @@ Java/bin/game/IODriver.class
 *.class
 Java/bin/game/Board.class
 *.class
+Java/bin/game/aiPlayer.class
+*.class

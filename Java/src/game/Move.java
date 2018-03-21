@@ -14,11 +14,13 @@ public class Move {
     private ArrayList<Marble> movedList;
     private int direction;
     private long time;
+    private double eval; // evaluation function based on resulting board state
     
     public Move() {
         this.movedList = new ArrayList<Marble>();
         this.direction = 0;
         this.time = 0;
+        this.eval = 0.0;
     }
     
     /**
@@ -30,6 +32,7 @@ public class Move {
         this.movedList = new ArrayList<Marble>();
         this.movedList.add(moved);
         this.direction = direction;
+        this.eval = 0.0;
     }
     
     /**
@@ -41,6 +44,7 @@ public class Move {
         this.movedList = new ArrayList<Marble>();
         this.movedList.add(moved);
         this.direction = direction;
+        this.eval = 0.0;
     }
     
     /**
@@ -52,6 +56,7 @@ public class Move {
         this.movedList.add(m1);
         this.movedList.add(m2);
         this.direction = direction;
+        this.eval = 0.0;
     }
     
     /**
@@ -63,6 +68,7 @@ public class Move {
         this.movedList.add(m1);
         this.movedList.add(m2);
         this.direction = direction;
+        this.eval = 0.0;
     }
 
 
@@ -115,6 +121,24 @@ public class Move {
         this.movedList.add(moved);
     }
     
+    /**
+     * this method generates a utility value with the evaluateBoard method and associates it with this move
+     * DO NOT PASS NULL MOVES TO THIS METHOD
+     * @param g the game in progress
+     */
+    public void evaluate(Board b){
+        Board result = AIPlayer.genResultState(b, this);
+        this.eval = AIPlayer.evaluateBoard(result, this.movedList.get(0).isBlack());        
+    }
+    
+    /**
+     * NOTE: unless the move has been evaluated with the above method, this value defaults to 0.0
+     * @return this move's utility value
+     */
+    public double getEval(){
+        return this.eval;
+    }
+    
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
      */
@@ -128,6 +152,7 @@ public class Move {
             sb.append("Marble [alpha=" + IODriver.getAlphaChar(m) + ", numeric=" + m.getNumeric() + "], ");        }
 
         sb.append("direction=" + direction +"]");
+        sb.append("Utility value: " + this.eval);
         
         return sb.toString();
     }
