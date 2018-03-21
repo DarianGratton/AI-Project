@@ -71,8 +71,8 @@ public class GameFrame extends JFrame {
     
     private JPanel museum;
     
-    HistoryPanel blackHistory;
-    HistoryPanel whiteHistory;
+    HistoryPanel blackMoveHistory;
+    HistoryPanel whiteMoveHistory;
 
     // ArrayList to hold the spaces on the board
     // private ArrayList<Space> spaceList;
@@ -411,8 +411,8 @@ public class GameFrame extends JFrame {
     }
     
     public void updateGameFrame() {
-        whiteHistory.updateMoveHistory(false);
-        blackHistory.updateMoveHistory(true);
+        whiteMoveHistory.updateMoveHistory(false);
+        blackMoveHistory.updateMoveHistory(true);
     }
     
     /**
