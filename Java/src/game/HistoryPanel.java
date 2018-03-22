@@ -48,6 +48,8 @@ public class HistoryPanel extends JPanel {
     }
     
     public void updateMoveHistory(boolean aiIsBlack) {
+        System.out.println(game.getBlackMoves().toString());
+        System.out.println(game.getBlackMoves().size());
         if (aiIsBlack) {
             int lastMove = game.getBlackMoves().size() - 1;
             console.add(new JLabel(game.getBlackMoves().get(lastMove).toString()));
