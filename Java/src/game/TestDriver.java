@@ -52,7 +52,7 @@ public class TestDriver {
 
         
         Game game = new Game();
-        game.setBoard(test);
+        //game.setBoard(test);
         
         /*for(Marble m : game.getBoard()){
             System.out.println(m.toString()); 
@@ -84,6 +84,9 @@ public class TestDriver {
         
         HashSet<Board> boards = new HashSet<Board>();
         boards.add(b1);
+        
+        Move butts = AIPlayer.alphaBetaSearch(game, true);
+        System.out.println(butts.toString());
         
         /*if (!Board.checkIfSetContains(boards, b2)) {
             System.out.println("FUCK");
