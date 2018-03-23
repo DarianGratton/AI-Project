@@ -18,7 +18,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.UIManager;
+import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 /**
  * The GameFrame class is an JFrame that displays all the different
@@ -40,7 +43,32 @@ public class GameFrame extends JFrame {
     private static final int PANEL_HEIGHT = 300;
     
     // Board panel height
-    private static final int BOARD_HEIGHT = 600;
+    private static final int BOARD_HEIGHT = 575;
+    
+    private ArrayList<JRadioButton> boardButtons = new ArrayList<JRadioButton>() {
+        private static final long serialVersionUID = -4924548428540373984L;
+    {
+        add(new JRadioButton("Standard"));
+        add(new JRadioButton("German Daisy"));
+        add(new JRadioButton("Belgian Daisy"));
+    }};
+     
+    private ArrayList<JRadioButton> playerButtons = new ArrayList<JRadioButton>() {
+        private static final long serialVersionUID = 1593599663555850435L;
+
+    {
+        add(new JRadioButton("Black"));
+        add(new JRadioButton("White"));
+    }};
+    
+    private ArrayList<JRadioButton> modeButtons = new ArrayList<JRadioButton>() {
+        private static final long serialVersionUID = -7232779521562355537L;
+
+    {
+        add(new JRadioButton("Human VS Human"));
+        add(new JRadioButton("Human VS Computer"));
+        add(new JRadioButton("Computer VS Computer"));
+    }};
     
     // Declaring game object
     private Game game;
@@ -50,12 +78,6 @@ public class GameFrame extends JFrame {
     
     // Declaring GameTimer object to keep track of the game time
     private GameTimer gameTimer;
-    
-    // Declaring TurnTimer object to keep track of the turn time
-    private GameTimer turnTimer;
-    
-    // For scrolling if JPanel in History gets to big
-    private JScrollPane vertical;
     
     // JButton to start the game
     private JButton start;
@@ -198,10 +220,8 @@ public class GameFrame extends JFrame {
         
         JPanel gameLabels = new JPanel();
         gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
-        
-        JPanel options = new JPanel();
-        options.setLayout(new BorderLayout());
-        options.add(gameLabels, BorderLayout.NORTH);
+        gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
+        gameLabels.setBackground(Color.WHITE);
         
         gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
                 fontSizeGameStats, Color.BLACK));
@@ -209,25 +229,27 @@ public class GameFrame extends JFrame {
         gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
                 + game.getRecommended().toString(), 
                 fontSizeGameStats, Color.BLACK));
+        
+        JPanel options = new JPanel();
+        options.setBackground(Color.WHITE);
+        options.setLayout(new BorderLayout());
+        options.add(gameLabels, BorderLayout.NORTH);
 
         ArrayList<JButton> buttons = new ArrayList<>();
-        start = new JButton("Start Game");
+        start = createButton(start, "Start Game");
         buttons.add(start);
-        stop = new JButton("Stop Game");
+        stop = createButton(stop, "Stop Game");
         buttons.add(stop);
-        pause = new JButton("Pause Game");
+        pause = createButton(pause, "Pause Game");
         buttons.add(pause);
-        reset = new JButton("Reset Game");
+        reset = createButton(reset, "Reset Game");
         buttons.add(reset);
-        
-        for (JButton btn : buttons) {
-            btn.addActionListener(new ButtonListener());
-        }
         
         JPanel optionButtons = new JPanel();
         options.add(optionButtons, BorderLayout.SOUTH);
 
         optionButtons = new JPanel();
+        optionButtons.setBackground(Color.WHITE);
         options.add(optionButtons, BorderLayout.SOUTH);
 
         for (JButton btn : buttons) {
@@ -251,40 +273,16 @@ public class GameFrame extends JFrame {
     private JPanel createMuseumPanel() {
 
         museum = new JPanel();
-        blackHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
-        whiteHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
+        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
+        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
+        blackMoveHistory.setBackground(Color.white);
+        whiteMoveHistory.setBackground(Color.white);
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(blackHistory);
-        museum.add(whiteHistory);
+        museum.add(blackMoveHistory);
+        museum.add(whiteMoveHistory);
         
         return museum;
     }      
-
-//    /**
-//     * Create an history panel that contains the player's 
-//     * move and time history.
-//     * 
-//     * @param panel a new JPanel
-//     * @param label a new JLabel with team name
-//     * @return a JPanel containing history for a player
-//     */
-//    private JPanel createHistoryPanel(JPanel panel, JLabel label) {
-//
-//        panel = new JPanel();
-//        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-//        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-//        panel.setBorder(BorderFactory.createLineBorder(Color.black));
-//        
-//        panel.add(label);
-//        JPanel console = new JPanel();
-//        
-//        vertical = new JScrollPane(console);
-//        vertical.setVerticalScrollBarPolicy(
-//                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-//        panel.add(vertical);
-//
-//        return panel;
-//    }
 
     /**
      * Creates a JLabel that takes an label and sets it text to the 
@@ -305,6 +303,20 @@ public class GameFrame extends JFrame {
         return label;
     }
     
+    public JButton createButton(JButton button, String text) {
+        
+        button = new JButton(text);
+        button.setForeground(Color.black);
+        button.setBackground(Color.white);
+        LineBorder line = new LineBorder(Color.WHITE);
+        EmptyBorder margin = new EmptyBorder(5, 15, 5, 15);
+        CompoundBorder compound = new CompoundBorder(line, margin);
+        button.setBorder(compound);
+        button.addActionListener(new ButtonListener());
+        
+        return button;
+    }
+    
     /**
      * Prompts the user to enter conditions for the game and reloads
      * the game based on the results.
@@ -313,44 +325,43 @@ public class GameFrame extends JFrame {
         
         JPanel startPanel = new JPanel();
         startPanel.setLayout(new BoxLayout(startPanel, BoxLayout.PAGE_AXIS));
+        startPanel.setBackground(Color.white);
         
-        ArrayList<JRadioButton> boardButtons = new ArrayList<>();
-        boardButtons.add(new JRadioButton("Standard")); 
-        boardButtons.add(new JRadioButton("German Daisy"));
-        boardButtons.add(new JRadioButton("Belgian Daisy"));
-         
-        ArrayList<JRadioButton> playerButtons = new ArrayList<>();
-        playerButtons.add(new JRadioButton("Black"));
-        playerButtons.add(new JRadioButton("White"));
-        
-        ArrayList<JRadioButton> modeButtons = new ArrayList<>(); 
-        modeButtons.add(new JRadioButton("Human VS Human"));
-        modeButtons.add(new JRadioButton("Human VS Computer"));
-        modeButtons.add(new JRadioButton("Computer VS Computer"));
-        
-        startPanel.add(new JLabel("Choose your initial board state: "));
+        JLabel boardState = createLabel(new JLabel(), "Choose your initial board state: ", 15, Color.black);
+        boardState.setBorder(new EmptyBorder(10, 0, 3, 0));
+        startPanel.add(boardState);
         initRadioButtons(boardButtons, new ButtonGroup(), startPanel);
 
-        startPanel.add(new JLabel("Choose your color: "));
+        JLabel colorChose = createLabel(new JLabel(), "Choose your color: ", 15, Color.black);
+        colorChose.setBorder(new EmptyBorder(10, 0, 3, 0));
+        startPanel.add(colorChose);
         initRadioButtons(playerButtons, new ButtonGroup(), startPanel);
         
-        startPanel.add(new JLabel("Choose mode: "));
+        JLabel choseMode = createLabel(new JLabel(), "Choose mode: ", 15, Color.black);
+        choseMode.setBorder(new EmptyBorder(10, 0, 3, 0));
+        startPanel.add(choseMode);
         initRadioButtons(modeButtons, new ButtonGroup(), startPanel);
         
-        JLabel timeLimit = new JLabel("Set Time Limit per Move: ");
+        JLabel timeLimit = createLabel(new JLabel(), "Set Time Limit per Move: ", 15, Color.black);
+        timeLimit.setBorder(new EmptyBorder(10, 0, 3, 0));
         JFormattedTextField moveTime = new JFormattedTextField();
         moveTime.setText("0");
         startPanel.add(timeLimit);
         startPanel.add(moveTime);
         
-        JLabel moveLimitLabel = new JLabel("Set Move Limit: ");
+        JLabel moveLimitLabel = createLabel(new JLabel(), "Set Move Limit: ", 15, Color.black);
+        moveLimitLabel.setBorder(new EmptyBorder(10, 0, 3, 0));
         JFormattedTextField moveLimitNum = new JFormattedTextField();
         moveLimitNum.setText("0");
         startPanel.add(moveLimitLabel);
         startPanel.add(moveLimitNum);
 
+        UIManager.put("OptionPane.background", Color.white);
+        UIManager.put("Panel.background", Color.white);
+        
         int result = JOptionPane.showConfirmDialog(null, startPanel,
-                "Game Settings", JOptionPane.OK_CANCEL_OPTION);
+                "Game Settings", JOptionPane.OK_CANCEL_OPTION,
+                JOptionPane.PLAIN_MESSAGE);
 
         if (result == JOptionPane.OK_OPTION) {
 
@@ -384,7 +395,7 @@ public class GameFrame extends JFrame {
             gameBoard.removeAll();
             gameBoard.add(new BoardPanel(game, this));
             repaint();
-        }
+        } 
     }
     
     /**
@@ -400,6 +411,7 @@ public class GameFrame extends JFrame {
             ButtonGroup group, JPanel panel) {
         
         for (int i = 0; i < btns.size(); ++i) {
+            btns.get(i).setBackground(Color.white);
             btns.get(i).setActionCommand(btns.get(i).getText());
         }
         
@@ -410,9 +422,12 @@ public class GameFrame extends JFrame {
         
     }
     
-    public void updateGameFrame() {
-        whiteMoveHistory.updateMoveHistory(false);
-        blackMoveHistory.updateMoveHistory(true);
+    public void updateGameFrame(boolean aiIsBlack) {
+        if (aiIsBlack) {
+            blackMoveHistory.updateMoveHistory(aiIsBlack);
+        } else {
+            whiteMoveHistory.updateMoveHistory(aiIsBlack);
+        }
     }
     
     /**

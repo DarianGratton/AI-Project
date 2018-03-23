@@ -197,6 +197,7 @@ public class BoardPanel extends JPanel {
             for(Space s : spaceList){
                 if(s.contains(e.getPoint())){
                     //System.out.println(s.toString());
+                    boolean currActiveTeam = game.activeIsBlack();
 
                     if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
                         int alphaDiff = m1.getAlpha() - s.getAlpha();
@@ -235,14 +236,15 @@ public class BoardPanel extends JPanel {
 
                                 drawMarbles(b);
                                 repaint();
+                                frame.updateGameFrame(currActiveTeam);
                             }
                         }
-                     // reset variables
+                        
+                        // reset variables
                         m1 = null;
                         m2 = null;
                         m3 = null;
                         direction = 0;
-                        frame.updateGameFrame();
                     }
                 }
             }

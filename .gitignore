@@ -1,5 +1,5 @@
 /.metadata/
-/Java/bin/
+/Java/bin/*.class
 *.board
 *.class
 Java/bin/game/Move.class
@@ -8,5 +8,5 @@ Java/bin/game/IODriver.class
 *.class
 Java/bin/game/Board.class
 *.class
-Java/bin/game/aiPlayer.class
+Java/bin/game/AIPlayer.class
 *.class
