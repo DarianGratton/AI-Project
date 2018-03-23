@@ -93,8 +93,8 @@ public class GameFrame extends JFrame {
     
     private JPanel museum;
     
-    HistoryPanel blackHistory;
-    HistoryPanel whiteHistory;
+    HistoryPanel blackMoveHistory;
+    HistoryPanel whiteMoveHistory;
 
     // ArrayList to hold the spaces on the board
     // private ArrayList<Space> spaceList;
@@ -273,11 +273,13 @@ public class GameFrame extends JFrame {
     private JPanel createMuseumPanel() {
 
         museum = new JPanel();
-        blackHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
-        whiteHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
+        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
+        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
+        blackMoveHistory.setBackground(Color.white);
+        whiteMoveHistory.setBackground(Color.white);
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(blackHistory);
-        museum.add(whiteHistory);
+        museum.add(blackMoveHistory);
+        museum.add(whiteMoveHistory);
         
         return museum;
     }      
@@ -306,7 +308,7 @@ public class GameFrame extends JFrame {
         button = new JButton(text);
         button.setForeground(Color.black);
         button.setBackground(Color.white);
-        LineBorder line = new LineBorder(Color.BLACK);
+        LineBorder line = new LineBorder(Color.WHITE);
         EmptyBorder margin = new EmptyBorder(5, 15, 5, 15);
         CompoundBorder compound = new CompoundBorder(line, margin);
         button.setBorder(compound);
@@ -422,9 +424,9 @@ public class GameFrame extends JFrame {
     
     public void updateGameFrame(boolean aiIsBlack) {
         if (aiIsBlack) {
-            blackHistory.updateMoveHistory(aiIsBlack);
+            blackMoveHistory.updateMoveHistory(aiIsBlack);
         } else {
-            whiteHistory.updateMoveHistory(aiIsBlack);
+            whiteMoveHistory.updateMoveHistory(aiIsBlack);
         }
     }
     

@@ -236,6 +236,7 @@ public class BoardPanel extends JPanel {
 
                                 drawMarbles(b);
                                 repaint();
+                                frame.updateGameFrame(currActiveTeam);
                             }
                         }
                         
@@ -244,7 +245,6 @@ public class BoardPanel extends JPanel {
                         m2 = null;
                         m3 = null;
                         direction = 0;
-                        frame.updateGameFrame(currActiveTeam);
                     }
                 }
             }
