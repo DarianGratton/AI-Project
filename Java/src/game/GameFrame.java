@@ -71,8 +71,8 @@ public class GameFrame extends JFrame {
     
     private JPanel museum;
     
-    HistoryPanel blackHistory;
-    HistoryPanel whiteHistory;
+/*    HistoryPanel blackHistory;
+    HistoryPanel whiteHistory;*/
 
     // ArrayList to hold the spaces on the board
     // private ArrayList<Space> spaceList;
@@ -251,11 +251,11 @@ public class GameFrame extends JFrame {
     private JPanel createMuseumPanel() {
 
         museum = new JPanel();
-        blackHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
-        whiteHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
+/*        blackHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
+        whiteHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);*/
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(blackHistory);
-        museum.add(whiteHistory);
+/*        museum.add(blackHistory);
+        museum.add(whiteHistory);*/
         
         return museum;
     }      
@@ -410,10 +410,10 @@ public class GameFrame extends JFrame {
         
     }
     
-    public void updateGameFrame() {
+/*    public void updateGameFrame() {
         whiteHistory.updateMoveHistory(false);
         blackHistory.updateMoveHistory(true);
-    }
+    }*/
     
     /**
      * Gets the game timer.

@@ -142,10 +142,12 @@ public class BoardPanel extends JPanel {
 
                     if(m1 == null){
                         m1 = d.getMarble();
+                        System.out.println(m1.toString());
                         direction = 0;
                         marbleClicked = true;
                     } else if(m2 == null) {
                         m2 = d.getMarble();
+                        System.out.println(m2.toString());
                         direction = 0;
                         marbleClicked = true;
                     } else if(m3 == null){
@@ -242,7 +244,7 @@ public class BoardPanel extends JPanel {
                         m2 = null;
                         m3 = null;
                         direction = 0;
-                        frame.updateGameFrame();
+                        //frame.updateGameFrame();
                     }
                 }
             }
