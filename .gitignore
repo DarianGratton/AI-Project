@@ -10,3 +10,4 @@ Java/bin/game/Board.class
 *.class
 Java/bin/game/aiPlayer.class
 *.class
+Java/src/game/AIPlayer.java
