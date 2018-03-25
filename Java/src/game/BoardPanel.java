@@ -252,6 +252,7 @@ public class BoardPanel extends JPanel {
                             m2 = null;
                             m3 = null;
                             direction = 0;
+                            System.out.println("Black Score: " + Integer.toString(game.getBlackScore()));
                         }
                     }
                 }

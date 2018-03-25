@@ -113,6 +113,8 @@ public class GameFrame extends JFrame {
     private JPanel gameBoard;
     
     private boolean gamePaused;
+    
+    private JLabel scoreLabel;
 
     /**
      * Constructor that creates the initial state of the game.
@@ -191,8 +193,9 @@ public class GameFrame extends JFrame {
         playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
         
         // Display game score
-        playerInfo.add(createLabel(new JLabel(), Integer.toString(score),
-                fontSizeScore, fontColor));
+        scoreLabel = createLabel(scoreLabel, Integer.toString(score),
+                fontSizeScore, fontColor);
+        playerInfo.add(scoreLabel);
         
         // Display number of moves taken per player
         playerInfo.add(createLabel(new JLabel(), "Total # of Moves: ", 
@@ -442,9 +445,12 @@ public class GameFrame extends JFrame {
     public void updateGameFrame(boolean aiIsBlack) {
         if (aiIsBlack) {
             blackMoveHistory.updateMoveHistory(aiIsBlack);
+            scoreLabel.setText(Integer.toString(game.getBlackScore()));
         } else {
             whiteMoveHistory.updateMoveHistory(aiIsBlack);
+            scoreLabel.setText(Integer.toString(game.getWhiteScore()));
         }
+        
     }
     
     /**
