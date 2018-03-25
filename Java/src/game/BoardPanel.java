@@ -136,34 +136,36 @@ public class BoardPanel extends JPanel {
         public void mouseClicked(MouseEvent mouseEvent) {
             marbleClicked = false;
 
-            for (DrawMarble d : drawn) {
-
-                if (d.contains(mouseEvent.getPoint())) {//check if mouse is clicked within shape
-
-                    if(m1 == null){
-                        m1 = d.getMarble();
-                        direction = 0;
-                        marbleClicked = true;
-                    } else if(m2 == null) {
-                        m2 = d.getMarble();
-                        direction = 0;
-                        marbleClicked = true;
-                    } else if(m3 == null){
-                        m3 = d.getMarble();
-                        marbleClicked = true;
-                    } else {
-                        marbleClicked = false;
+            if (game.isGameInSession()) {
+                for (DrawMarble d : drawn) {
+    
+                    if (d.contains(mouseEvent.getPoint())) {//check if mouse is clicked within shape
+    
+                        if(m1 == null){
+                            m1 = d.getMarble();
+                            direction = 0;
+                            marbleClicked = true;
+                        } else if(m2 == null) {
+                            m2 = d.getMarble();
+                            direction = 0;
+                            marbleClicked = true;
+                        } else if(m3 == null){
+                            m3 = d.getMarble();
+                            marbleClicked = true;
+                        } else {
+                            marbleClicked = false;
+                        }
+                        
+                        
+    
+    /*
+                        if(m1 != null){
+                            System.out.println(m1.toString());
+                        }
+                        if(m2 != null){
+                            System.out.println(m2.toString());
+                        }*/
                     }
-                    
-                    
-
-/*
-                    if(m1 != null){
-                        System.out.println(m1.toString());
-                    }
-                    if(m2 != null){
-                        System.out.println(m2.toString());
-                    }*/
                 }
             }
         }
@@ -194,58 +196,61 @@ public class BoardPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent e) {
-            for(Space s : spaceList){
-                if(s.contains(e.getPoint())){
-                    //System.out.println(s.toString());
-                    boolean currActiveTeam = game.activeIsBlack();
-
-                    if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
-                        int alphaDiff = m1.getAlpha() - s.getAlpha();
-                        int numDiff = m1.getNumeric() - s.getNum();
-                        direction = 0;
-
-                        if(alphaDiff == 0){
-                            if(numDiff < 0){
-                                direction = 3;
-                            } else {
-                                direction = 6;
+            
+            if (game.isGameInSession()) {
+                for(Space s : spaceList){
+                    if(s.contains(e.getPoint())){
+                        //System.out.println(s.toString());
+                        boolean currActiveTeam = game.activeIsBlack();
+    
+                        if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
+                            int alphaDiff = m1.getAlpha() - s.getAlpha();
+                            int numDiff = m1.getNumeric() - s.getNum();
+                            direction = 0;
+    
+                            if(alphaDiff == 0){
+                                if(numDiff < 0){
+                                    direction = 3;
+                                } else {
+                                    direction = 6;
+                                }
+                            } else if(numDiff == 0){
+                                if(alphaDiff > 0){
+                                    direction = 4;
+                                } else {
+                                    direction = 1;
+                                }
+                            } else if(alphaDiff == numDiff){
+                                if(alphaDiff > 0){
+                                    direction = 5;
+                                } else {
+                                    direction = 2;
+                                }
                             }
-                        } else if(numDiff == 0){
-                            if(alphaDiff > 0){
-                                direction = 4;
-                            } else {
-                                direction = 1;
-                            }
-                        } else if(alphaDiff == numDiff){
-                            if(alphaDiff > 0){
-                                direction = 5;
-                            } else {
-                                direction = 2;
-                            }
-                        }
-
-                        if(direction != 0){
-                            if(m2 == null){
-                                m2 = game.checkAdjacent(m1, direction);
-                            }
-
-                            // single marble move
-                            if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction))
-                                    // double/triple marble move
-                                    || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
-
-                                drawMarbles(b);
-                                repaint();
+    
+                            if(direction != 0){
+                                if(m2 == null){
+                                    m2 = game.checkAdjacent(m1, direction);
+                                }
+    
+                                // single marble move
+                                if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction))
+                                        // double/triple marble move
+                                        || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
+    
+                                    drawMarbles(b);
+                                    repaint();
+                                }
+                                
+                                frame.updateGameFrame(currActiveTeam);
                             }
                             
-                            frame.updateGameFrame(currActiveTeam);
+                            // reset variables
+                            m1 = null;
+                            m2 = null;
+                            m3 = null;
+                            direction = 0;
                         }
-                        
-                        // reset variables
-                        m1 = null;
-                        m2 = null;
-                        m3 = null;
-                        direction = 0;
                     }
                 }
             }
