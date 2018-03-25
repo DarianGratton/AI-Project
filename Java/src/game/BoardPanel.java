@@ -240,9 +240,9 @@ public class BoardPanel extends JPanel {
     
                                     drawMarbles(b);
                                     repaint();
+                                    frame.updateGameFrame(currActiveTeam);
                                 }
-                                
-                                frame.updateGameFrame(currActiveTeam);
+                               
                             }
                             
                             // reset variables
@@ -250,6 +250,7 @@ public class BoardPanel extends JPanel {
                             m2 = null;
                             m3 = null;
                             direction = 0;
+                            System.out.println("Black Score: " + Integer.toString(game.getBlackScore()));
                         }
                     }
                 }
