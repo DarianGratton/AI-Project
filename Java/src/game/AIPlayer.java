@@ -374,7 +374,7 @@ public class AIPlayer {
         
         /* Turn time limit should go here as terminal test */
         
-        System.out.println("Entered maxMove: " + currentEval);
+//        System.out.println("Entered maxMove: " + currentEval);
         double maxEval = -Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
@@ -421,7 +421,7 @@ public class AIPlayer {
         }
         
         
-        System.out.println("Entered minMove: " + currentEval);
+//        System.out.println("Entered minMove: " + currentEval);
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
