@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+import javax.swing.border.BevelBorder;
+import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
@@ -109,6 +111,8 @@ public class GameFrame extends JFrame {
     private boolean aiIsBlack;
     
     private JPanel gameBoard;
+    
+    private boolean gamePaused;
 
     /**
      * Constructor that creates the initial state of the game.
@@ -126,6 +130,7 @@ public class GameFrame extends JFrame {
         //this.spaceList = new ArrayList<Space>();
         gameTimer = new GameTimer();
         boardLayout = Board.copyBoard(g.getBoard());
+        gamePaused = false;
         
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(new BoardPanel(this.game, this)),
@@ -307,9 +312,7 @@ public class GameFrame extends JFrame {
     public JButton createButton(JButton button, String text) {
         
         button = new JButton(text);
-        button.setForeground(Color.black);
-        button.setBackground(Color.white);
-        LineBorder line = new LineBorder(Color.WHITE);
+        LineBorder line = new LineBorder(Color.GRAY);
         EmptyBorder margin = new EmptyBorder(5, 15, 5, 15);
         CompoundBorder compound = new CompoundBorder(line, margin);
         button.setBorder(compound);
@@ -461,7 +464,7 @@ public class GameFrame extends JFrame {
     public void setTimer(GameTimer timer) {
         this.gameTimer = timer;
     }
-    
+
     private class ButtonListener implements ActionListener {    
 
         @Override
@@ -503,7 +506,18 @@ public class GameFrame extends JFrame {
              * Pause game button, pauses the game in it's current state.
              */
             if (event.getSource() == pause) {
-                gameTimer.stopTimer();
+               
+                if (gamePaused) {
+                    gamePaused = false;
+                    game.setGameInSession(true);
+                    pause.setText("Pause game");
+                    gameTimer.startTimer();
+                } else {
+                    gamePaused = true;
+                    game.setGameInSession(false);
+                    pause.setText("Unpause game");
+                    gameTimer.stopTimer();
+                }
             }
         }
     }

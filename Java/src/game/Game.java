@@ -142,6 +142,8 @@ public class Game {
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
+    
+    private boolean gameInSession;
 
     private GameTimer time;
 
@@ -163,6 +165,7 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
+        this.gameInSession = true;
     }
     /**
      * @param board
@@ -190,6 +193,7 @@ public class Game {
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
         this.time = timer;
+        this.gameInSession = true;
     }
 
     /**
@@ -211,6 +215,7 @@ public class Game {
         this.recommended = new Move();
         this.activePlayerIsBlack = g.activePlayerIsBlack;
         this.time = new GameTimer();
+        this.gameInSession = true;
     }
     
     public Game(Board b, boolean aiIsBlack){
@@ -222,8 +227,21 @@ public class Game {
         this.aiIsBlack = aiIsBlack;
         this.recommended = new Move();
     }
-    
 
+    /**
+     * @return the gameInSession
+     */
+    public boolean isGameInSession() {
+        return gameInSession;
+    }
+    
+    /**
+     * @param gameInSession the gameInSession to set
+     */
+    public void setGameInSession(boolean gameInSession) {
+        this.gameInSession = gameInSession;
+    }
+    
     public Board getBoard(){
         return board;
     }
