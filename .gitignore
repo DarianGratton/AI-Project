@@ -10,3 +10,6 @@ Java/bin/game/Board.class
 *.class
 Java/bin/game/AIPlayer.class
 *.class
+Java/bin/.classpath
+Java/bin/.project
+Java/bin/META-INF/MANIFEST.MF
