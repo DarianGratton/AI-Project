@@ -125,6 +125,7 @@ public class GameFrame extends JFrame {
         this.game = g;
         //this.spaceList = new ArrayList<Space>();
         gameTimer = new GameTimer();
+        boardLayout = Board.copyBoard(g.getBoard());
         
         this.setLayout(new BorderLayout());
         this.add(createGamePanel(new BoardPanel(this.game, this)),
@@ -385,6 +386,11 @@ public class GameFrame extends JFrame {
             
             this.moveLimit = Integer.parseInt(moveLimitNum.getText());
             this.timePerMove = Long.parseLong(moveTime.getText());
+        } else {
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Missing fields to start new game");
+            return;
         }
         
         Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, 
@@ -394,6 +400,7 @@ public class GameFrame extends JFrame {
             this.game = g;
             gameBoard.removeAll();
             gameBoard.add(new BoardPanel(game, this));
+            gameTimer.resetTimer();
             repaint();
         } 
     }
@@ -459,15 +466,12 @@ public class GameFrame extends JFrame {
              */
             if (event.getSource() == start) {
                 gameTimer.stopTimer();
-                gameTimer.resetTimer();
                 initGame();
                 gameTimer.startTimer();
             } 
             
             /**
-             * Stop game button, stops game in current state and declares 
-             * a winner (probably not necessary to declare winner). 
-             * All it does now is stop the game timer.
+             * Stop game button, stops game in current state.
              */
             if (event.getSource() == stop) {
                 gameTimer.stopTimer();
@@ -478,12 +482,14 @@ public class GameFrame extends JFrame {
              * settings. 
              */
             if (event.getSource() == reset) {
-                gameTimer.resetTimer();
                 game = new Game(boardLayout, aiIsBlack, moveLimit, 
                         timePerMove, gameTimer);
                 gameBoard.removeAll();
-                // gameBoard.add(new BoardPanel(game));
+                gameBoard.add(new BoardPanel(game, GameFrame.this));
                 repaint();
+                blackMoveHistory.removeHistory();
+                whiteMoveHistory.removeHistory();
+                gameTimer.resetTimer();
             }
             
             /**
