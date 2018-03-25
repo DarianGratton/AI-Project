@@ -240,9 +240,8 @@ public class BoardPanel extends JPanel {
     
                                     drawMarbles(b);
                                     repaint();
+                                    frame.updateGameFrame(currActiveTeam);
                                 }
-                                
-                                frame.updateGameFrame(currActiveTeam);
                             }
                             
                             // reset variables
