@@ -84,4 +84,12 @@ public class MarblePanel extends JPanel {
         }
     }
     
+    public void removeStats() {
+        blackMoves = 0;
+        whiteMoves = 0;
+        turnNumLabel.setText("Total # of Moves: " 
+                    + blackMoves);
+        scoreLabel.setText(Integer.toString(game.getWhiteScore()));
+    }
+    
 }
