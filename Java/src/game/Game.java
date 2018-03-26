@@ -211,7 +211,8 @@ public class Game {
     }
 
     /**'
-     * I ADDED STUFF HERE
+     * Gets the turn count
+     * 
      * @Akemi
      */
     public int getTurnCount() {
