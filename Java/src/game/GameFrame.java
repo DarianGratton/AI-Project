@@ -188,7 +188,7 @@ public class GameFrame extends JFrame {
         gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         gameLabels.setBackground(Color.WHITE);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: " + gameTimer, 
+        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
                 fontSizeGameStats, Color.BLACK));
         gameLabels.add(gameTimer);
         
