@@ -1,10 +1,7 @@
 package game;
-import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.swing.*;
+import java.awt.*;
 import java.util.HashSet;
-
-import javax.swing.JFrame;
 
 
 /**
@@ -84,7 +81,8 @@ public class TestDriver {
         
         HashSet<Board> boards = new HashSet<Board>();
         boards.add(b1);
-        
+
+
         Move butts = AIPlayer.alphaBetaSearch(game, true);
         System.out.println(butts.toString());
         
