@@ -411,6 +411,8 @@ public class GameFrame extends JFrame {
             gameBoard.removeAll();
             gameBoard.add(new BoardPanel(game, this));
             gameTimer.resetTimer();
+            blackMoveHistory.removeHistory();
+            whiteMoveHistory.removeHistory();
             repaint();
         } 
     }
