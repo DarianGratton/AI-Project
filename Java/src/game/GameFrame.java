@@ -374,6 +374,8 @@ public class GameFrame extends JFrame {
             gameTimer.resetTimer();
             blackMoveHistory.removeHistory();
             whiteMoveHistory.removeHistory();
+            blackMarblePanel.removeStats();
+            whiteMarblePanel.removeStats();
             repaint();
         } 
     }
@@ -469,6 +471,8 @@ public class GameFrame extends JFrame {
                 repaint();
                 blackMoveHistory.removeHistory();
                 whiteMoveHistory.removeHistory();
+                blackMarblePanel.removeStats();
+                whiteMarblePanel.removeStats();
                 gameTimer.resetTimer();
             }
             
