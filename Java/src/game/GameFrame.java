@@ -349,7 +349,7 @@ public class GameFrame extends JFrame {
         JLabel timeLimit = createLabel(new JLabel(), "Set Time Limit per Move: ", 15, Color.black);
         timeLimit.setBorder(new EmptyBorder(10, 0, 3, 0));
         JFormattedTextField moveTime = new JFormattedTextField();
-        moveTime.setText("0");
+        moveTime.setText("5");
         startPanel.add(timeLimit);
         startPanel.add(moveTime);
         
@@ -404,7 +404,7 @@ public class GameFrame extends JFrame {
         }
         
         Game g = new Game(boardLayout, aiIsBlack, this.moveLimit, 
-                timePerMove, gameTimer);
+                this.timePerMove, gameTimer);
         
         if (g != null) {
             this.game = g;

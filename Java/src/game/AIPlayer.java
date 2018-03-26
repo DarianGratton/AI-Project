@@ -17,7 +17,8 @@ public class AIPlayer {
 
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
-
+    private static double stopTime;
+    private static double currentTime;
 
     /**
      * This method is responsible for generating a list of possible moves given the current board state
@@ -343,11 +344,12 @@ public class AIPlayer {
     
     
     public static Move alphaBetaSearch(Game g, boolean aiIsBlack){
-        
+        stopTime = g.getAiTimeLimit() * 1000;
+        currentTime = System.currentTimeMillis() * 1000;
         double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE);
-        
+
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
-        
+
         for(Move m : moves){
             if(m.getEval() == v){
                 return m;
@@ -366,9 +368,9 @@ public class AIPlayer {
      * @return the best possible move for the AI given the board state
      */
     public static double maxMove(Board current, boolean aiIsBlack, double a, double B){
-        
+        double maxTime = System.currentTimeMillis()*1000;
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0){ // replace true with terminal test
+        if(maxTime - currentTime >= stopTime){ // replace true with terminal test
             return currentEval;
         }
         
@@ -415,8 +417,9 @@ public class AIPlayer {
      * @return the best possible move for the opponent given the board state
      */
     public static double minMove(Board current, boolean aiIsBlack, double a, double B){
+        double maxTime = System.currentTimeMillis()*1000;
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0){ // replace true with terminal test
+        if(maxTime - currentTime >= stopTime){ // replace true with terminal test
             return currentEval;
         }
         

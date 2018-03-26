@@ -162,7 +162,7 @@ public class Game {
         this.aiIsBlack = false;
         this.aiMoveLimit = 100;
         this.humanMoveLimit = this.aiMoveLimit;
-        this.aiTimeLimit = (long) 1000.0;
+        this.aiTimeLimit = (long) 5000.0;
         this.humanTimeLimit = this.aiTimeLimit;
         this.startTime = System.nanoTime();
         this.recommended = new Move();
