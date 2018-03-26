@@ -113,6 +113,11 @@ public class GameFrame extends JFrame {
     private JPanel gameBoard;
     
     private boolean gamePaused;
+    
+    private MarblePanel whiteMarblePanel;
+    private MarblePanel blackMarblePanel;
+    
+    private JLabel nextRecommendedMove;
 
     /**
      * Constructor that creates the initial state of the game.
@@ -150,61 +155,15 @@ public class GameFrame extends JFrame {
         JPanel players = new JPanel();
         players.setLayout(new BoxLayout(players, BoxLayout.PAGE_AXIS));
        
-        players.add(createMarblePanel("Team White", false, Color.WHITE, Color.BLACK));
+        whiteMarblePanel = new MarblePanel(this, game, "Team White", 
+                false, Color.WHITE, Color.BLACK);
+        players.add(whiteMarblePanel);
         
-        players.add(createMarblePanel("Team Black", true, Color.BLACK, Color.WHITE));
+        blackMarblePanel = new MarblePanel(this, game, "Team Black",
+                true, Color.BLACK, Color.WHITE);
+        players.add(blackMarblePanel);
         
         return players;
-    }
-    
-    /**
-     * Creates the individual player cards with their stats and 
-     * color.
-     * 
-     * @param teamColor Team color
-     * @param score The team's current score
-     * @param backgroundColor the background color of the player panel
-     * @param fontColor the color of the font in the player panel 
-     * @return a new player panel
-     */
-    private JPanel createMarblePanel(String teamColor, boolean aiPlayerIsBlack, 
-            Color backgroundColor, Color fontColor) {
-        final int paddingTop = 20;
-        final int padding = 15;
-        final int fontSizeTeam = 24;
-        final int fontSizeScore = 60;
-        final int fontSizeStats = 20;
-        int score = 0;
-
-        JPanel panel = new JPanel();
-        panel.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
-        panel.setBackground(backgroundColor);
-        panel.setLayout(new BorderLayout());
-        panel.setBorder(new EmptyBorder(paddingTop, padding, padding, padding));
-        
-        JLabel teamLabel = createLabel(new JLabel(), teamColor, 
-                fontSizeTeam, fontColor);
-        panel.add(teamLabel, BorderLayout.NORTH);
-        
-        JPanel playerInfo = new JPanel();
-        playerInfo.setBackground(backgroundColor);
-        playerInfo.setLayout(new BoxLayout(playerInfo, BoxLayout.PAGE_AXIS));
-        
-        // Display game score
-        playerInfo.add(createLabel(new JLabel(), Integer.toString(score),
-                fontSizeScore, fontColor));
-        
-        // Display number of moves taken per player
-        playerInfo.add(createLabel(new JLabel(), "Total # of Moves: ", 
-                fontSizeStats, fontColor));
-        
-        // Display time taken per move
-        playerInfo.add(createLabel(new JLabel(), "Turn Time: " 
-                + game.getGameTime(), fontSizeStats, fontColor));
-        
-        panel.add(playerInfo, BorderLayout.CENTER);
-        
-        return panel;
     }
 
     /**
@@ -225,16 +184,18 @@ public class GameFrame extends JFrame {
         gameBoard.add(board, BorderLayout.CENTER);
         
         JPanel gameLabels = new JPanel();
-        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
+        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.PAGE_AXIS));
         gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         gameLabels.setBackground(Color.WHITE);
         
         gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
                 fontSizeGameStats, Color.BLACK));
         gameLabels.add(gameTimer);
-        gameLabels.add(createLabel(new JLabel(), " Next Recommended Move: " 
+        
+        nextRecommendedMove = createLabel(nextRecommendedMove, "Next Recommended Move: " 
                 + game.getRecommended().toString(), 
-                fontSizeGameStats, Color.BLACK));
+                fontSizeGameStats, Color.BLACK);
+        gameLabels.add(nextRecommendedMove);
         
         JPanel options = new JPanel();
         options.setBackground(Color.WHITE);
@@ -441,12 +402,19 @@ public class GameFrame extends JFrame {
         
     }
     
-    public void updateGameFrame(boolean aiIsBlack) {
-        if (aiIsBlack) {
-            blackMoveHistory.updateMoveHistory(aiIsBlack);
+    public void updateGameFrame(boolean activePlayerIsBlack) {
+        if (activePlayerIsBlack) {
+            blackMoveHistory.updateMoveHistory(activePlayerIsBlack);
+            blackMarblePanel.updateScoreLabel(activePlayerIsBlack);
+            blackMarblePanel.updateTurnCount(activePlayerIsBlack);
         } else {
-            whiteMoveHistory.updateMoveHistory(aiIsBlack);
+            whiteMoveHistory.updateMoveHistory(activePlayerIsBlack);
+            whiteMarblePanel.updateScoreLabel(activePlayerIsBlack);
+            whiteMarblePanel.updateTurnCount(activePlayerIsBlack);
         }
+        
+        nextRecommendedMove.setText("Next Recommended Move: " 
+                + game.getRecommended().toString());
     }
     
     /**

@@ -17,6 +17,9 @@ public class MarblePanel extends JPanel {
     private Game game;
     
     private JLabel scoreLabel;
+    private JLabel turnNumLabel;
+    private int blackMoves;
+    private int whiteMoves;
 
     MarblePanel(GameFrame frame, Game g, String teamColor, 
             boolean aiPlayerIsBlack, 
@@ -50,8 +53,9 @@ public class MarblePanel extends JPanel {
         playerInfo.add(scoreLabel);
         
         // Display number of moves taken per player
-        playerInfo.add(frame.createLabel(new JLabel(), "Total # of Moves: ", 
-                fontSizeStats, fontColor));
+        turnNumLabel = frame.createLabel(new JLabel(), "Total # of Moves: " 
+        + game.getTurnCount(), fontSizeStats, fontColor);
+        playerInfo.add(turnNumLabel);
         
         // Display time taken per move
         playerInfo.add(frame.createLabel(new JLabel(), "Turn Time: " 
@@ -66,6 +70,18 @@ public class MarblePanel extends JPanel {
         } else {
             scoreLabel.setText(Integer.toString(game.getWhiteScore()));
         }      
+    }
+    
+    public void updateTurnCount(boolean activePlayerIsBlack) {
+        if (activePlayerIsBlack) {
+            blackMoves++;
+            turnNumLabel.setText("Total # of Moves: " 
+                    + blackMoves);
+        } else {
+            whiteMoves++;
+            turnNumLabel.setText("Total # of Moves: " 
+                    + whiteMoves);
+        }
     }
     
 }
