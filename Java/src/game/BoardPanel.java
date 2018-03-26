@@ -3,16 +3,11 @@
  */
 package game;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.awt.event.MouseAdapter;
+import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-
-import javax.swing.JPanel;
+import java.util.ArrayList;
 
 /**
  * @author Mike
@@ -198,16 +193,23 @@ public class BoardPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             
             if (game.isGameInSession()) {
+                if(game.getTurnCount() == game.getAiMoveLimit() && game.getTurnCount() != 0)
+                {
+                    game.setGameInSession(false);
+                    System.out.println("turnLimit reached");
+                }
                 for(Space s : spaceList){
                     if(s.contains(e.getPoint())){
                         //System.out.println(s.toString());
+
+
                         boolean currActiveTeam = game.activeIsBlack();
-    
+
                         if((s != null && m1 != null && !marbleClicked) || (s != null && m3 != null)){
                             int alphaDiff = m1.getAlpha() - s.getAlpha();
                             int numDiff = m1.getNumeric() - s.getNum();
                             direction = 0;
-    
+
                             if(alphaDiff == 0){
                                 if(numDiff < 0){
                                     direction = 3;
@@ -227,23 +229,24 @@ public class BoardPanel extends JPanel {
                                     direction = 2;
                                 }
                             }
-    
+
                             if(direction != 0){
                                 if(m2 == null){
                                     m2 = game.checkAdjacent(m1, direction);
                                 }
-    
+
                                 // single marble move
                                 if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction))
                                         // double/triple marble move
                                         || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
-    
+
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
+                                    game.setTurnCount();
                                 }
                             }
-                            
+
                             // reset variables
                             m1 = null;
                             m2 = null;

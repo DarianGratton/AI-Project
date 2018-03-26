@@ -127,6 +127,8 @@ public class Game {
     // list of moves as objects per player
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
+    private int turnCount = 0;
+    private int turnLimit;
 
     // sets AI color
     private boolean aiIsBlack;
@@ -185,15 +187,41 @@ public class Game {
         this.blackMoves = new ArrayList<Move>();
         this.whiteMoves = new ArrayList<Move>();
         this.aiIsBlack = aiIsBlack;
-        this.aiMoveLimit = moveLimit;
-        this.humanMoveLimit = moveLimit;
-        this.aiTimeLimit = timeLimit;
-        this.humanTimeLimit = timeLimit;
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = true;
         this.time = timer;
         this.gameInSession = true;
+
+        if(moveLimit == 0) {
+            this.aiMoveLimit = Integer.MAX_VALUE;
+            this.humanMoveLimit = Integer.MAX_VALUE;
+        } else {
+            this.aiMoveLimit = moveLimit * 2;
+            this.humanMoveLimit = moveLimit * 2;
+        }
+
+        if(timeLimit == 0) {
+            this.aiTimeLimit = Long.MAX_VALUE;
+            this.humanTimeLimit = Long.MAX_VALUE;
+        } else {
+            this.aiTimeLimit = timeLimit;
+            this.humanTimeLimit = Long.MAX_VALUE;
+        }
+    }
+
+    /**'
+     * I ADDED STUFF HERE
+     * @Akemi
+     */
+    public int getTurnCount() {
+        return turnCount;
+    }
+
+    public void setTurnCount() {
+        System.out.println("count + 1");
+        turnCount++;
+        System.out.println("count = " + turnCount);
     }
 
     /**
@@ -519,7 +547,7 @@ public class Game {
                 moved.changePos(reverseDirection(direction)); // move the marble back
                 return false;
             }      
-        }  
+        }
 
         if(adjacent == null && moved.isBlack() != isBlack){
             moved.changePos(direction);
