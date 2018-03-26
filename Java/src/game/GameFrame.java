@@ -190,7 +190,7 @@ public class GameFrame extends JFrame {
         
         gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
                 fontSizeGameStats, Color.BLACK));
-        gameLabels.add(gameTimer);
+        // gameLabels.add(gameTimer);
         
         nextRecommendedMove = createLabel(nextRecommendedMove, "Next Recommended Move: " 
                 + game.getRecommended().toString(), 
@@ -199,6 +199,7 @@ public class GameFrame extends JFrame {
         
         JPanel options = new JPanel();
         options.setBackground(Color.WHITE);
+        options.setPreferredSize(new Dimension(10, 80));
         options.setLayout(new BorderLayout());
         options.add(gameLabels, BorderLayout.NORTH);
 

@@ -127,7 +127,7 @@ public class Game {
     // list of moves as objects per player
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
-    private int turnCount = 0;
+    private int turnCount;
     private int turnLimit;
 
     // sets AI color

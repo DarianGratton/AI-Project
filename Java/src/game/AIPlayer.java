@@ -346,9 +346,11 @@ public class AIPlayer {
     public static Move alphaBetaSearch(Game g, boolean aiIsBlack){
         stopTime = g.getAiTimeLimit() * 1000;
         currentTime = System.currentTimeMillis() * 1000;
-        double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE);
+        Game gameTest = new Game(g);
+        Board board = Board.copyBoard(gameTest.getBoard());
+        double v = maxMove(board, aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE);
 
-        ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
+        ArrayList<Move> moves = AIPlayer.genPossibleMoves(gameTest, aiIsBlack);
 
         for(Move m : moves){
             if(m.getEval() == v){

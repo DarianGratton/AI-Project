@@ -70,7 +70,7 @@ public class TestDriver {
         
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
+        frame.setSize(1000, 725);
         frame.setVisible(true);  
         
         Graphics g = frame.getGraphics();
@@ -85,17 +85,6 @@ public class TestDriver {
 
         Move butts = AIPlayer.alphaBetaSearch(game, true);
         System.out.println(butts.toString());
-        
-        /*if (!Board.checkIfSetContains(boards, b2)) {
-            System.out.println("FUCK");
-        }
-        
-        Board b3 = Board.copyBoard(Game.belgianDaisy);
-        
-        if (!Board.checkIfSetContains(boards, b3)) {
-            System.out.println("FUCK");
-        }*/
-
 
         //Gui.drawBoard(test.getBoard(), frame, g);
 
