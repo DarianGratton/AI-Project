@@ -188,9 +188,9 @@ public class GameFrame extends JFrame {
         gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         gameLabels.setBackground(Color.WHITE);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
+        gameLabels.add(createLabel(new JLabel(), "Total game time: " + gameTimer, 
                 fontSizeGameStats, Color.BLACK));
-        // gameLabels.add(gameTimer);
+        gameLabels.add(gameTimer);
         
         nextRecommendedMove = createLabel(nextRecommendedMove, "Next Recommended Move: " 
                 + game.getRecommended().toString(), 
