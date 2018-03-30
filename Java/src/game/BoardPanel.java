@@ -4,6 +4,8 @@
 package game;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -51,7 +53,7 @@ public class BoardPanel extends JPanel {
 
 
     public void initSpaces(){
-        int y = 0;
+        int y = -40;
         int x = 0;
         int blank = 80;
         int c = 0;
@@ -61,7 +63,7 @@ public class BoardPanel extends JPanel {
             for(int i = 1; i <= j; i ++) {
                 c = (x + blank - 160)/60;
                 x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
+                spaceList.add(new Space(((20 - y)/60 + 9), c + 5, x, y));
             }
             blank -= 30;
         }
@@ -73,7 +75,7 @@ public class BoardPanel extends JPanel {
             for(int i = 0; i < j; i ++) {
                 c = (x - blank - 1000)/60;
                 x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
+                spaceList.add(new Space(((20 - y)/60 + 9), c + 17, x, y));
 
             }
             blank += 30;
