@@ -129,6 +129,7 @@ public class BoardPanel extends JPanel {
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
+       
             marbleClicked = false;
 
             if (game.isGameInSession()) {
@@ -139,13 +140,16 @@ public class BoardPanel extends JPanel {
                         if(m1 == null){
                             m1 = d.getMarble();
                             direction = 0;
+                           // highlight(g, d);
                             marbleClicked = true;
                         } else if(m2 == null) {
                             m2 = d.getMarble();
                             direction = 0;
+                          //  highlight(g, d);
                             marbleClicked = true;
                         } else if(m3 == null){
                             m3 = d.getMarble();
+                          //  highlight(g, d);
                             marbleClicked = true;
                         } else {
                             marbleClicked = false;
@@ -183,6 +187,14 @@ public class BoardPanel extends JPanel {
         @Override
         public void mouseReleased(MouseEvent arg0) {
             
+        }
+        
+        public void highlight(Graphics g, Shape d) {
+        	Graphics2D g2d = (Graphics2D) g;
+        	 g2d.setPaint(Color.RED);
+        	 g2d.draw(d);
+             g2d.fill(d);
+        	 
         }
         
     }
