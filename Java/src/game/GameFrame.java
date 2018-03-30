@@ -141,9 +141,9 @@ public class GameFrame extends JFrame {
         gamePaused = false;
         
         this.setLayout(new BorderLayout());
+        this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createGamePanel(new BoardPanel(this.game, this)),
                 BorderLayout.CENTER);
-        this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
         gameTimer.startTimer();
     }
@@ -497,8 +497,8 @@ public class GameFrame extends JFrame {
                 whiteMarblePanel.setGame(game);
                 whiteMarblePanel.removeStats();
                 gameTimer.resetTimer();
-//                blackTurnTimer.resetTimer();
-//              whiteTurnTimer.resetTimer();
+                blackTurnTimer.resetTimer();
+                whiteTurnTimer.resetTimer();
             }
             
             /**
@@ -521,11 +521,11 @@ public class GameFrame extends JFrame {
         }
     }
     
-    public MarblePanel getMarblePanel(int n) {
-    	if(n == 0) {
-    		return blackMarblePanel;
-    	}
+    public MarblePanel getWhiteMarblePanel(){
     	return whiteMarblePanel;
     }
     
+    public MarblePanel getBlackMarblePanel(){
+    	return blackMarblePanel;
+    }
 }

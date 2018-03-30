@@ -50,10 +50,10 @@ public class BoardPanel extends JPanel {
         m3 = null;
         direction = 0;
         setLayout(null);
-        blackMarblePanel 	= frame.getMarblePanel(0);				//AH
-        whiteMarblePanel 	= frame.getMarblePanel(1);				//AH
-        blackTurnTimer 		= frame.getTimer();						//AH
-        whiteTurnTimer		= frame.getTimer();						//AH
+        blackMarblePanel 	= frame.getBlackMarblePanel();				//AH
+        whiteMarblePanel 	= frame.getWhiteMarblePanel();				//AH
+        blackTurnTimer 		= blackMarblePanel.getTurnTimer();			//AH
+        whiteTurnTimer		= whiteMarblePanel.getTurnTimer();			//AH
         addMouseListener(new MarbleListener());
         addMouseListener(new SpaceListener());
     }
@@ -270,13 +270,13 @@ public class BoardPanel extends JPanel {
                                         // double/triple marble move
                                         || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
                                 	if(game.activeIsBlack()) {
-                                		whiteTurnTimer.stopTimer();
-//                                		whiteTurnTimer.resetTimer();
+                                		whiteTurnTimer.resetStopTimer();
                                 		blackTurnTimer.startTimer();
+                                		System.out.println("activeisblack");
                                 	} else {
-                                		blackTurnTimer.stopTimer();
-//                                		blackTurnTimer.resetTimer();
+                                		blackTurnTimer.resetStopTimer();
                                 		whiteTurnTimer.startTimer();
+                                		System.out.println("activeiswhite");
                                 	}
                                     drawMarbles(b);
                                     repaint();

@@ -27,6 +27,9 @@ public class GameTimer extends JLabel {
     /** Create an timer object. */
     private Timer timer;
     
+    /** Create time container for marblePabel font **/
+    private int turnTimerFontSize;
+    
   //Create a color object
     private Color foregroundColor;
     
@@ -64,6 +67,7 @@ public class GameTimer extends JLabel {
     public GameTimer(Color c, int size) {											// AH   constructor to pass in color and size of text
         final int delay = 100;
         foregroundColor = c;
+        turnTimerFontSize = size;
         timer = new Timer(delay, new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 final int milmax = 9;
@@ -100,21 +104,12 @@ public class GameTimer extends JLabel {
     }
     
     /**
-     * Stops timer and returns the values to 0. Might be useless?
+     * Stops timer and returns the values to 0.
      */
     public void resetStopTimer() {								//AH stops the timer, and resets timer to 0.
-    	timer.stop();
-    	seconds = 0;
-    	millisec = 0;
-    	final int secmax = 10;
-    	setText("Turn Time: " + seconds + "." + millisec);
-    	String secs = Integer.toString(seconds);
-        if (seconds <= secmax) {
-            secs = "0" + secs;
-        }
-        setForeground(foregroundColor);
+    	stopTimer();
+    	resetTimer();
     }
-    
     /**
      * Resets the timer but doesn't stop it.
      */
@@ -126,7 +121,10 @@ public class GameTimer extends JLabel {
         if (seconds <= secmax) {
             secs = "0" + secs;
         }
-        setText(seconds + "." + millisec);
+        Font font = new Font("DIALOG_INPUT", Font.PLAIN, turnTimerFontSize);
+        setFont(font);
+        setText("Turn Time: " + seconds + "." + millisec);
+        setForeground(foregroundColor);
     }
 
     /**
