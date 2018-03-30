@@ -27,6 +27,9 @@ public class GameTimer extends JLabel {
     /** Create an timer object. */
     private Timer timer;
     
+  //Create a color object
+    private Color foregroundColor;
+    
     /** <p>Constructor for the StopWatchPanel, setting the position of 
      * the buttons and timer while setting up the ActionListener for
      * the timer when called.</p>*/
@@ -53,6 +56,34 @@ public class GameTimer extends JLabel {
         });
     }
     
+    /**
+     * Creates a timer and adapts font color and size to those of its panel's
+     * @param c , color of the font for the respective panel
+     * @param size, size of the font for the respective panel
+     */
+    public GameTimer(Color c, int size) {											// AH   constructor to pass in color and size of text
+        final int delay = 100;
+        foregroundColor = c;
+        timer = new Timer(delay, new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                final int milmax = 9;
+                final int secmax = 10;
+                millisec++;
+                if (millisec > milmax) {
+                    millisec = 0;
+                    seconds++;
+                }
+                String secs = Integer.toString(seconds);
+                if (seconds <= secmax) {
+                    secs = "0" + secs;
+                }
+                Font font = new Font("DIALOG_INPUT", Font.PLAIN, size);
+                setFont(font);
+                setText("Turn Time: " + seconds + "." + millisec);
+                setForeground(foregroundColor);
+            }
+        });
+    }
     
     /** 
      * Starts the timer.
@@ -66,6 +97,22 @@ public class GameTimer extends JLabel {
      */
     public void stopTimer() {
         timer.stop();
+    }
+    
+    /**
+     * Stops timer and returns the values to 0. Might be useless?
+     */
+    public void resetStopTimer() {								//AH stops the timer, and resets timer to 0.
+    	timer.stop();
+    	seconds = 0;
+    	millisec = 0;
+    	final int secmax = 10;
+    	setText("Turn Time: " + seconds + "." + millisec);
+    	String secs = Integer.toString(seconds);
+        if (seconds <= secmax) {
+            secs = "0" + secs;
+        }
+        setForeground(foregroundColor);
     }
     
     /**

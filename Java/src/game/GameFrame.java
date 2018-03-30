@@ -106,6 +106,10 @@ public class GameFrame extends JFrame {
     // Time limit for the game
     private long timePerMove;
     
+    // Turn Timer GameTimer objects					!AH
+    private GameTimer blackTurnTimer;
+    private GameTimer whiteTurnTimer;
+    
     // Boolean to check if the player is black or white
     private boolean aiIsBlack;
     
@@ -156,11 +160,17 @@ public class GameFrame extends JFrame {
        
         whiteMarblePanel = new MarblePanel(this, game, "Team White", 
                 false, Color.WHITE, Color.BLACK);
+     // Get MarblePanel's turnTimer object, add it to players, and reset the timer to show 0.0				AH
+        whiteTurnTimer = whiteMarblePanel.getTurnTimer();
         players.add(whiteMarblePanel);
+        whiteTurnTimer.resetStopTimer();
         
         blackMarblePanel = new MarblePanel(this, game, "Team Black",
                 true, Color.BLACK, Color.WHITE);
+     // same as above, but for black																			AH
+        blackTurnTimer = blackMarblePanel.getTurnTimer();
         players.add(blackMarblePanel);
+        blackTurnTimer.resetStopTimer();
         
         return players;
     }
@@ -379,6 +389,11 @@ public class GameFrame extends JFrame {
             whiteMarblePanel.setGame(game);
             whiteMarblePanel.removeStats();
             repaint();
+            
+            // Once new game is started, reset and stop both timers, then start black timer.
+            whiteTurnTimer.resetStopTimer();
+            blackTurnTimer.resetStopTimer();
+            blackTurnTimer.startTimer();
         } 
     }
     
@@ -459,6 +474,8 @@ public class GameFrame extends JFrame {
              */
             if (event.getSource() == stop) {
                 gameTimer.stopTimer();
+                blackTurnTimer.stopTimer();
+                whiteTurnTimer.stopTimer();
             }
             
             /**
@@ -480,6 +497,8 @@ public class GameFrame extends JFrame {
                 whiteMarblePanel.setGame(game);
                 whiteMarblePanel.removeStats();
                 gameTimer.resetTimer();
+//                blackTurnTimer.resetTimer();
+//              whiteTurnTimer.resetTimer();
             }
             
             /**
@@ -501,4 +520,12 @@ public class GameFrame extends JFrame {
             }
         }
     }
+    
+    public MarblePanel getMarblePanel(int n) {
+    	if(n == 0) {
+    		return blackMarblePanel;
+    	}
+    	return whiteMarblePanel;
+    }
+    
 }

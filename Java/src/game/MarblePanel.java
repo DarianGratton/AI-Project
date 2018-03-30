@@ -18,6 +18,7 @@ public class MarblePanel extends JPanel {
     
     private JLabel scoreLabel;
     private JLabel turnNumLabel;
+    private GameTimer turnTimer;				//AH
 
     MarblePanel(GameFrame frame, Game g, String teamColor, 
             boolean aiPlayerIsBlack, 
@@ -55,9 +56,10 @@ public class MarblePanel extends JPanel {
         + game.getTurnCount(), fontSizeStats, fontColor);
         playerInfo.add(turnNumLabel);
         
-        // Display time taken per move
-        playerInfo.add(frame.createLabel(new JLabel(), "Turn Time: " 
-                + game.getGameTime(), fontSizeStats, fontColor));
+        // AH - Display time taken per move	
+        turnTimer = new GameTimer(fontColor, fontSizeStats);
+        turnTimer.startTimer();
+        playerInfo.add(turnTimer);
         
         this.add(playerInfo, BorderLayout.CENTER);
     }
@@ -100,4 +102,12 @@ public class MarblePanel extends JPanel {
         this.game = game;
     }
     
+    //AH
+    /**
+     * returns the timer belonging to the call class
+     * @return
+     */
+    public GameTimer getTurnTimer() {
+    	return this.turnTimer;
+    }
 }
