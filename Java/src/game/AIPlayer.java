@@ -354,6 +354,7 @@ public class AIPlayer {
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
         bestMove = moves.get(0);
 
+
         System.out.println(System.nanoTime() - startTime);
         System.out.println(g.getAiTimeLimit());
 

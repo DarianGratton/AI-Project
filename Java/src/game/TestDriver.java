@@ -68,7 +68,7 @@ public class TestDriver {
         GameFrame frame = new GameFrame(game);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 700);
+        frame.setSize(1000, 735);
         frame.setVisible(true);  
 
         Graphics g = frame.getGraphics();
@@ -87,7 +87,6 @@ public class TestDriver {
         };
 
         task.run();
-
 
 
     }

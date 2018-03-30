@@ -226,7 +226,7 @@ public class Game {
         this.startTime = System.nanoTime();
         this.recommended = new Move();
         this.activePlayerIsBlack = g.activePlayerIsBlack;
-        this.time = new GameTimer();
+        this.time = new GameTimer("");
         this.gameInSession = true;
     }
 

@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,7 @@ public class GameTimer extends JLabel {
     /** <p>Constructor for the StopWatchPanel, setting the position of 
      * the buttons and timer while setting up the ActionListener for
      * the timer when called.</p>*/
-    public GameTimer() {
+    public GameTimer(String timeLabel) {
         final int fontSizeTime = 15;
         final int delay = 100;
         timer = new Timer(delay, new ActionListener() {
@@ -45,8 +46,9 @@ public class GameTimer extends JLabel {
                 if (seconds <= secmax) {
                     secs = "0" + secs;
                 }
-                setFont(new Font("DIALOG_INPUT", Font.PLAIN, fontSizeTime));
-                setText(seconds + "." + millisec);
+                setFont(new Font("SANS_SERIF", Font.PLAIN, fontSizeTime));
+                setForeground(Color.BLACK);
+                setText(timeLabel + seconds + "." + millisec);
             }
         });
     }

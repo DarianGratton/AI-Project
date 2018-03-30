@@ -18,8 +18,6 @@ public class MarblePanel extends JPanel {
     
     private JLabel scoreLabel;
     private JLabel turnNumLabel;
-    private int blackMoves;
-    private int whiteMoves;
 
     MarblePanel(GameFrame frame, Game g, String teamColor, 
             boolean aiPlayerIsBlack, 
@@ -83,11 +81,23 @@ public class MarblePanel extends JPanel {
     }
     
     public void removeStats() {
-        blackMoves = 0;
-        whiteMoves = 0;
         turnNumLabel.setText("Total # of Moves: " 
-                    + blackMoves);
+                    + game.getWhiteMoves().size());
         scoreLabel.setText(Integer.toString(game.getWhiteScore()));
+    }
+
+    /**
+     * @return the game
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * @param game the game to set
+     */
+    public void setGame(Game game) {
+        this.game = game;
     }
     
 }
