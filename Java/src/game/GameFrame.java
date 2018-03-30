@@ -132,7 +132,7 @@ public class GameFrame extends JFrame {
 
         this.game = g;
         //this.spaceList = new ArrayList<Space>();
-        gameTimer = new GameTimer();
+        gameTimer = new GameTimer("Total Game Time: ");
         boardLayout = Board.copyBoard(g.getBoard());
         gamePaused = false;
         
