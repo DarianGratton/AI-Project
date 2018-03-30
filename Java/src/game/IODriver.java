@@ -29,7 +29,7 @@ public class IODriver {
         HashSet<Board> output = new HashSet<Board>();
         
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
-        GameTimer timer = new GameTimer();                              //to put into Game object
+        GameTimer timer = new GameTimer("");                            //to put into Game object
         ArrayList<String> boardOutput = new ArrayList<String>();        //this String will be written to the Results.board.
 
 

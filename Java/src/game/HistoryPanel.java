@@ -23,13 +23,16 @@ public class HistoryPanel extends JPanel {
     private JPanel console;
     private JScrollPane vertical;
     
-    HistoryPanel(Game g, JLabel label, boolean aiIsBlack) {
+    HistoryPanel(Game g, JLabel label, boolean activePlayerIsBlack, Color fontcolor, Color background) {
         this.game = g;
         
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBorder(BorderFactory.createLineBorder(Color.black));
+        setBackground(background);
         
+        
+        label.setForeground(fontcolor);
         add(label);
         console = new JPanel();
         console.setLayout(new BoxLayout(console, BoxLayout.PAGE_AXIS));
@@ -41,7 +44,7 @@ public class HistoryPanel extends JPanel {
         JScrollPane scrollPane = new JScrollPane(console);
         scrollPane.setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-        scrollPane.getViewport().setPreferredSize(new Dimension(250, 400));
+        scrollPane.getViewport().setPreferredSize(new Dimension(250, 400));      
         
         add(vertical);
         
@@ -51,10 +54,12 @@ public class HistoryPanel extends JPanel {
         
         if (aiIsBlack) {
             int lastMove = game.getBlackMoves().size() - 1;
-            console.add(new JLabel(game.getBlackMoves().get(lastMove).toString()));
+            JLabel newMove = new JLabel(" " + game.getBlackMoves().get(lastMove).toString());
+            console.add(newMove);
         } else {
             int lastMove = game.getWhiteMoves().size() - 1;
-            console.add(new JLabel(game.getWhiteMoves().get(lastMove).toString()));
+            JLabel newMove = new JLabel(" " + game.getWhiteMoves().get(lastMove).toString());
+            console.add(newMove);
         }
         
         remove(vertical);
@@ -72,5 +77,19 @@ public class HistoryPanel extends JPanel {
         vertical.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         add(vertical);
+    }
+
+    /**
+     * @return the game
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * @param game the game to set
+     */
+    public void setGame(Game game) {
+        this.game = game;
     }
 }

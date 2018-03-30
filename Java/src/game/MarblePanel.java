@@ -85,5 +85,19 @@ public class MarblePanel extends JPanel {
                     + game.getWhiteMoves().size());
         scoreLabel.setText(Integer.toString(game.getWhiteScore()));
     }
+
+    /**
+     * @return the game
+     */
+    public Game getGame() {
+        return game;
+    }
+
+    /**
+     * @param game the game to set
+     */
+    public void setGame(Game game) {
+        this.game = game;
+    }
     
 }
