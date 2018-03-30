@@ -12,6 +12,8 @@ public class Board extends TreeSet<Marble>{
 
     private static MarbleComparator mc = new MarbleComparator();
     
+    private double aiEvaluation;
+    
     public Board() {
         super(mc);
     }
@@ -47,5 +49,17 @@ public class Board extends TreeSet<Marble>{
         
         return false;
     }*/
+    
+    public void evaluate(boolean aiIsBlack){
+        this.aiEvaluation = AIPlayer.evaluateBoard(this, aiIsBlack);        
+    }
+    
+    /**
+     * NOTE: unless the move has been evaluated with the above method, this value defaults to 0.0
+     * @return this move's utility value
+     */
+    public double getEval(){
+        return this.aiEvaluation;
+    }
     
 }

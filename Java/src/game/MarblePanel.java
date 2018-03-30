@@ -54,7 +54,7 @@ public class MarblePanel extends JPanel {
         
         // Display number of moves taken per player
         turnNumLabel = frame.createLabel(new JLabel(), "Total # of Moves: " 
-        + game.getTurnCount(), fontSizeStats, fontColor);
+        + (game.getBlackMoves().size() + game.getWhiteMoves().size()), fontSizeStats, fontColor);
         playerInfo.add(turnNumLabel);
         
         // Display time taken per move
@@ -74,13 +74,11 @@ public class MarblePanel extends JPanel {
     
     public void updateTurnCount(boolean activePlayerIsBlack) {
         if (activePlayerIsBlack) {
-            blackMoves++;
             turnNumLabel.setText("Total # of Moves: " 
-                    + blackMoves);
+                    + game.getBlackMoves().size());
         } else {
-            whiteMoves++;
             turnNumLabel.setText("Total # of Moves: " 
-                    + whiteMoves);
+                    + game.getWhiteMoves().size());
         }
     }
     

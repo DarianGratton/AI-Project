@@ -127,8 +127,6 @@ public class Game {
     // list of moves as objects per player
     private ArrayList<Move> blackMoves;
     private ArrayList<Move> whiteMoves;
-    private int turnCount = 0;
-    private int turnLimit;
 
     // sets AI color
     private boolean aiIsBlack;
@@ -144,7 +142,7 @@ public class Game {
     // default unit is seconds?
     private long aiTimeLimit;
     private long humanTimeLimit;
-    
+
     private boolean gameInSession;
 
     private GameTimer time;
@@ -162,7 +160,7 @@ public class Game {
         this.aiIsBlack = false;
         this.aiMoveLimit = 100;
         this.humanMoveLimit = this.aiMoveLimit;
-        this.aiTimeLimit = (long) 5000.0;
+        this.aiTimeLimit = (long) 5000000000.0;
         this.humanTimeLimit = this.aiTimeLimit;
         this.startTime = System.nanoTime();
         this.recommended = new Move();
@@ -210,21 +208,6 @@ public class Game {
         }
     }
 
-    /**'
-     * Gets the turn count
-     * 
-     * @Akemi
-     */
-    public int getTurnCount() {
-        return turnCount;
-    }
-
-    public void setTurnCount() {
-        System.out.println("count + 1");
-        turnCount++;
-        System.out.println("count = " + turnCount);
-    }
-
     /**
      * "copy constructor"
      * @param g
@@ -246,7 +229,7 @@ public class Game {
         this.time = new GameTimer();
         this.gameInSession = true;
     }
-    
+
     public Game(Board b, boolean aiIsBlack){
         this.board = Board.copyBoard(b);
         this.blackLost = 0;
@@ -263,14 +246,14 @@ public class Game {
     public boolean isGameInSession() {
         return gameInSession;
     }
-    
+
     /**
      * @param gameInSession the gameInSession to set
      */
     public void setGameInSession(boolean gameInSession) {
         this.gameInSession = gameInSession;
     }
-    
+
     public Board getBoard(){
         return board;
     }
@@ -324,7 +307,7 @@ public class Game {
     /**
      * @return the aiIsBlack
      */
-    public boolean isAiIsBlack() {
+    public boolean isAiBlack() {
         return aiIsBlack;
     }
 
@@ -614,7 +597,7 @@ public class Game {
 
             // find the marble between the selected marbles, or fail if there isn't one present
             if(diffAlpha == 2 || diffNumeric == 2){
-                m3 = searchBoard(this.getBoard(),  Math.abs((m1.getAlpha()+m2.getAlpha()))/2 , Math.abs((m1.getNumeric()+m2.getNumeric()))/2 );
+                m3 = searchBoard(this.getBoard(),  (m1.getAlpha()+m2.getAlpha())/2 , (m1.getNumeric()+m2.getNumeric())/2 );
                 if(m3 == null || m3.isBlack() != m1.isBlack()){
                     return false;
                 }
@@ -622,6 +605,14 @@ public class Game {
 
             // more specific success conditions, same row, same diagonal (1-4), same diagonal (2-5) respectively
             if(m1.getAlpha() == m2.getAlpha() || m1.getNumeric() == m2.getNumeric() || diffAlpha == diffNumeric){
+
+                // this is a fail state related to some weird phantom diagonals being generated
+                if(diffAlpha == diffNumeric){
+                    if(((m1.getAlpha() > m2.getAlpha())) && (m1.getNumeric() < m2.getNumeric()) ||
+                            ((m1.getAlpha() < m2.getAlpha())) && (m1.getNumeric() > m2.getNumeric())){
+                        return false;
+                    }
+                }
 
                 // shortcut to inline method if appropriate (for the purposes of pushing enemy marbles)
                 if(m1.getAlpha() == m2.getAlpha()){
@@ -784,7 +775,11 @@ public class Game {
         return null;
     }*/
 
-
+    /**
+     * this method checks if a marble in a given position is out of bounds, but doesn't do anything with it
+     * @param m
+     * @return
+     */
     public boolean outOfBounds(Marble m){
         int alpha = m.getAlpha();
         int num = m.getNumeric();

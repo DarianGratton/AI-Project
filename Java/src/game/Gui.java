@@ -89,5 +89,11 @@ public abstract class Gui {
         return false;
     }
 
-
+    public static Move updateRecommended(Game g, boolean aiIsBlack){
+        
+        
+        return null;
+    }
+    
+    
 }

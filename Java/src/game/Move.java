@@ -13,7 +13,7 @@ public class Move {
     
     private ArrayList<Marble> movedList;
     private int direction;
-    private long time;
+    private double time;
     private double eval; // evaluation function based on resulting board state
     
     public Move() {
@@ -103,7 +103,7 @@ public class Move {
     /**
      * @return the time
      */
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 
@@ -146,13 +146,20 @@ public class Move {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         
-        sb.append("Move [");
+        /*if(this.movedList != null && this.movedList.get(0) != null){
+            String colour = this.movedList.get(0).isBlack() ? "black" : "white";
+            sb.append("Playing " + colour + ": [");
+        }*/
+        sb.append("[");
         
         for(Marble m: movedList) {
-            sb.append("Marble [alpha=" + IODriver.getAlphaChar(m) + ", numeric=" + m.getNumeric() + "], ");        }
+            sb.append(IODriver.getAlphaChar(m) + "" + m.getNumeric() +", ");        }
 
-        sb.append("direction=" + direction +"]");
-        sb.append("Utility value: " + this.eval);
+        sb.append("direction=" + direction +", ");
+        //sb.append("\nTime: " + this.time);
+        sb.append("val: " + this.eval);
+        double secTime = this.time / 1000000000;
+        sb.append("time: " + secTime);
         
         return sb.toString();
     }
