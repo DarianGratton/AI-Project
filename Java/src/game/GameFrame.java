@@ -184,11 +184,11 @@ public class GameFrame extends JFrame {
         gameBoard.add(board, BorderLayout.CENTER);
         
         JPanel gameLabels = new JPanel();
-        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.PAGE_AXIS));
+        gameLabels.setLayout(new BoxLayout(gameLabels, BoxLayout.LINE_AXIS));
         gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         gameLabels.setBackground(Color.WHITE);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: " + gameTimer, 
+        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
                 fontSizeGameStats, Color.BLACK));
         gameLabels.add(gameTimer);
         
@@ -241,13 +241,13 @@ public class GameFrame extends JFrame {
     private JPanel createMuseumPanel() {
 
         museum = new JPanel();
-        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
-        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
-        blackMoveHistory.setBackground(Color.white);
-        whiteMoveHistory.setBackground(Color.white);
+        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), 
+                game.activeIsBlack(), Color.WHITE, Color.BLACK);
+        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), 
+                game.activeIsBlack(), Color.BLACK, Color.WHITE);
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(blackMoveHistory);
         museum.add(whiteMoveHistory);
+        museum.add(blackMoveHistory);
         
         return museum;
     }      

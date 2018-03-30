@@ -22,26 +22,34 @@ public class HistoryPanel extends JPanel {
     private Game game;
     private JPanel console;
     private JScrollPane vertical;
+    private Color fontColor;
     
-    HistoryPanel(Game g, JLabel label, boolean aiIsBlack) {
+    HistoryPanel(Game g, JLabel label, boolean activePlayerIsBlack, Color fontcolor, Color background) {
         this.game = g;
+        this.fontColor = fontcolor;
         
         setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
         setBorder(BorderFactory.createLineBorder(Color.black));
+        setBackground(background);
         
+        
+        label.setForeground(fontcolor);
         add(label);
         console = new JPanel();
+        // console.setBackground(background);
         console.setLayout(new BoxLayout(console, BoxLayout.PAGE_AXIS));
         
         vertical = new JScrollPane(console);
         vertical.setVerticalScrollBarPolicy(
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        // vertical.setBackground(background);
         
         JScrollPane scrollPane = new JScrollPane(console);
         scrollPane.setHorizontalScrollBarPolicy(
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getViewport().setPreferredSize(new Dimension(250, 400));
+        // scrollPane.setBackground(background);        
         
         add(vertical);
         
@@ -51,10 +59,13 @@ public class HistoryPanel extends JPanel {
         
         if (aiIsBlack) {
             int lastMove = game.getBlackMoves().size() - 1;
-            console.add(new JLabel(game.getBlackMoves().get(lastMove).toString()));
+            JLabel newMove = new JLabel(" " + game.getBlackMoves().get(lastMove).toString());
+            // newMove.setForeground(fontColor);
+            console.add(newMove);
         } else {
             int lastMove = game.getWhiteMoves().size() - 1;
-            console.add(new JLabel(game.getWhiteMoves().get(lastMove).toString()));
+            JLabel newMove = new JLabel(" " + game.getWhiteMoves().get(lastMove).toString());
+            console.add(newMove);
         }
         
         remove(vertical);
