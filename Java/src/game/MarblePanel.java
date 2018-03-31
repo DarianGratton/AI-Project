@@ -57,6 +57,7 @@ public class MarblePanel extends JPanel {
         + game.getTurnCount(), fontSizeStats, fontColor);
         playerInfo.add(turnNumLabel);
         
+
         // AH - Display time taken per move	
         this.turnTimer = new GameTimer(fontColor, fontSizeStats);
         turnTimer.startTimer();
