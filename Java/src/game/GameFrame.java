@@ -160,14 +160,12 @@ public class GameFrame extends JFrame {
        
         whiteMarblePanel = new MarblePanel(this, game, "Team White", 
                 false, Color.WHITE, Color.BLACK);
-     // Get MarblePanel's turnTimer object, add it to players, and reset the timer to show 0.0				AH
         whiteTurnTimer = whiteMarblePanel.getTurnTimer();
         players.add(whiteMarblePanel);
         whiteTurnTimer.resetStopTimer();
         
         blackMarblePanel = new MarblePanel(this, game, "Team Black",
                 true, Color.BLACK, Color.WHITE);
-     // same as above, but for black																			AH
         blackTurnTimer = blackMarblePanel.getTurnTimer();
         players.add(blackMarblePanel);
         blackTurnTimer.resetStopTimer();
@@ -426,10 +424,12 @@ public class GameFrame extends JFrame {
             blackMoveHistory.updateMoveHistory(activePlayerIsBlack);
             blackMarblePanel.updateScoreLabel(activePlayerIsBlack);
             blackMarblePanel.updateTurnCount(activePlayerIsBlack);
+            blackMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
         } else {
             whiteMoveHistory.updateMoveHistory(activePlayerIsBlack);
             whiteMarblePanel.updateScoreLabel(activePlayerIsBlack);
             whiteMarblePanel.updateTurnCount(activePlayerIsBlack);
+            whiteMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
         }
         
         nextRecommendedMove.setText("Next Recommended Move: " 

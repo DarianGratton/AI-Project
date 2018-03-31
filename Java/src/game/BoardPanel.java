@@ -266,17 +266,16 @@ public class BoardPanel extends JPanel {
                                 }
 
                                 // single marble move
-                                if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction))
+                                if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction, blackTurnTimer, whiteTurnTimer))
                                         // double/triple marble move
-                                        || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
+                                        || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction, blackTurnTimer, whiteTurnTimer)){
                                 	if(game.activeIsBlack()) {
+                                		
                                 		whiteTurnTimer.resetStopTimer();
                                 		blackTurnTimer.startTimer();
-                                		System.out.println("activeisblack");
                                 	} else {
                                 		blackTurnTimer.resetStopTimer();
                                 		whiteTurnTimer.startTimer();
-                                		System.out.println("activeiswhite");
                                 	}
                                     drawMarbles(b);
                                     repaint();

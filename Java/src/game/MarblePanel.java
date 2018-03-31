@@ -18,6 +18,7 @@ public class MarblePanel extends JPanel {
     
     private JLabel scoreLabel;
     private JLabel turnNumLabel;
+    private JLabel totalTurnTime;
     private GameTimer turnTimer;				//AH
 
     MarblePanel(GameFrame frame, Game g, String teamColor, 
@@ -61,6 +62,10 @@ public class MarblePanel extends JPanel {
         turnTimer.startTimer();
         playerInfo.add(turnTimer);
         
+        //AH - Display total time taken
+        totalTurnTime = frame.createLabel(new JLabel(),  "Total time: ", fontSizeStats, fontColor);
+        playerInfo.add(totalTurnTime);
+        
         this.add(playerInfo, BorderLayout.CENTER);
     }
     
@@ -80,6 +85,10 @@ public class MarblePanel extends JPanel {
             turnNumLabel.setText("Total # of Moves: " 
                     + game.getWhiteMoves().size());
         }
+    }
+    
+    public void updateTotalTurnTimer(boolean activePlayerIsBlack) {
+    	totalTurnTime.setText("Total time: " + game.getTotalTurnTime(activePlayerIsBlack) );
     }
     
     public void removeStats() {

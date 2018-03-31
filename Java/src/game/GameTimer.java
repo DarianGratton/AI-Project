@@ -30,6 +30,9 @@ public class GameTimer extends JLabel {
     /** Create time container for marblePabel font **/
     private int turnTimerFontSize;
     
+    /** Total timer value as one big double **/
+    private double totalTime;
+    
   //Create a color object
     private Color foregroundColor;
     
@@ -143,5 +146,11 @@ public class GameTimer extends JLabel {
      */
     public int getMillisec() {
         return millisec;
+    }
+    
+    public double getTimerAsOne() {
+    	String totalTimeString = seconds + "." + millisec;
+    	totalTime = Double.parseDouble(totalTimeString);
+    	return totalTime;
     }
 }
