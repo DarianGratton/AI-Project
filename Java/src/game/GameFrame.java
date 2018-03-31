@@ -106,6 +106,10 @@ public class GameFrame extends JFrame {
     // Time limit for the game
     private long timePerMove;
     
+    // Turn Timer GameTimer objects					!AH
+    private GameTimer blackTurnTimer;
+    private GameTimer whiteTurnTimer;
+    
     // Boolean to check if the player is black or white
     private boolean aiIsBlack;
     
@@ -137,9 +141,9 @@ public class GameFrame extends JFrame {
         gamePaused = false;
         
         this.setLayout(new BorderLayout());
+        this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createGamePanel(new BoardPanel(this.game, this)),
                 BorderLayout.CENTER);
-        this.add(createPlayerPanel(), BorderLayout.WEST);
         this.add(createMuseumPanel(), BorderLayout.EAST);
         gameTimer.startTimer();
     }
@@ -156,11 +160,15 @@ public class GameFrame extends JFrame {
        
         whiteMarblePanel = new MarblePanel(this, game, "Team White", 
                 false, Color.WHITE, Color.BLACK);
+        whiteTurnTimer = whiteMarblePanel.getTurnTimer();
         players.add(whiteMarblePanel);
+        whiteTurnTimer.resetStopTimer();
         
         blackMarblePanel = new MarblePanel(this, game, "Team Black",
                 true, Color.BLACK, Color.WHITE);
+        blackTurnTimer = blackMarblePanel.getTurnTimer();
         players.add(blackMarblePanel);
+        blackTurnTimer.resetStopTimer();
         
         return players;
     }
@@ -379,6 +387,11 @@ public class GameFrame extends JFrame {
             whiteMarblePanel.setGame(game);
             whiteMarblePanel.removeStats();
             repaint();
+            
+            // Once new game is started, reset and stop both timers, then start black timer.
+            whiteTurnTimer.resetStopTimer();
+            blackTurnTimer.resetStopTimer();
+            blackTurnTimer.startTimer();
         } 
     }
     
@@ -411,10 +424,12 @@ public class GameFrame extends JFrame {
             blackMoveHistory.updateMoveHistory(activePlayerIsBlack);
             blackMarblePanel.updateScoreLabel(activePlayerIsBlack);
             blackMarblePanel.updateTurnCount(activePlayerIsBlack);
+            blackMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
         } else {
             whiteMoveHistory.updateMoveHistory(activePlayerIsBlack);
             whiteMarblePanel.updateScoreLabel(activePlayerIsBlack);
             whiteMarblePanel.updateTurnCount(activePlayerIsBlack);
+            whiteMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
         }
         
         nextRecommendedMove.setText("Next Recommended Move: " 
@@ -459,6 +474,8 @@ public class GameFrame extends JFrame {
              */
             if (event.getSource() == stop) {
                 gameTimer.stopTimer();
+                blackTurnTimer.stopTimer();
+                whiteTurnTimer.stopTimer();
             }
             
             /**
@@ -480,6 +497,8 @@ public class GameFrame extends JFrame {
                 whiteMarblePanel.setGame(game);
                 whiteMarblePanel.removeStats();
                 gameTimer.resetTimer();
+                blackTurnTimer.resetTimer();
+                whiteTurnTimer.resetTimer();
             }
             
             /**
@@ -500,5 +519,13 @@ public class GameFrame extends JFrame {
                 }
             }
         }
+    }
+    
+    public MarblePanel getWhiteMarblePanel(){
+    	return whiteMarblePanel;
+    }
+    
+    public MarblePanel getBlackMarblePanel(){
+    	return blackMarblePanel;
     }
 }

@@ -53,13 +53,20 @@ public abstract class Gui {
      * @param direction
      * @param isBlack
      */
-    public static boolean moveMarbles(Game g, boolean playerIsBlack, Marble m1, int direction){
-
+    public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, int direction, GameTimer blackTimer, GameTimer whiteTimer){
         Move mv = new Move(m1, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
-        if(g.move(m1, direction, playerIsBlack)){
+        if(g.move(m1, direction, activeIsBlack)){
             g.addMoveToList(mv);
             turnStart = System.nanoTime();
+            	//passes in the seconds taken into Move, and adds to total turn time in Game 
+            if(activeIsBlack) {
+            	mv.setTime(blackTimer.getTimerAsOne());
+            	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
+            } else {
+            	mv.setTime(whiteTimer.getTimerAsOne());
+            	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
+            }
             g.switchSides();
             return true;
         }
@@ -74,14 +81,22 @@ public abstract class Gui {
      * @param direction
      * @param isBlack
      */
-    public static boolean moveMarbles(Game g, boolean playerIsBlack, Marble m1, Marble m2, int direction){
+    public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, Marble m2, int direction, GameTimer blackTimer, GameTimer whiteTimer){
 
 
         Move mv = new Move(m1, m2, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
-        if(g.move(m1, m2, direction, playerIsBlack)){
+        if(g.move(m1, m2, direction, activeIsBlack)){
             g.addMoveToList(mv);
             turnStart = System.nanoTime();
+          //passes in the seconds taken into Move, and adds to total turn time in Game 
+            if(activeIsBlack) {
+            	mv.setTime(blackTimer.getTimerAsOne());
+            	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
+            } else {
+            	mv.setTime(whiteTimer.getTimerAsOne());
+            	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
+            }
             g.switchSides();
             return true;
         }

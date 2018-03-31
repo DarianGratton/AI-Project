@@ -31,6 +31,10 @@ public class BoardPanel extends JPanel {
     private Game game;
     private Board b;
     private GameFrame frame;
+    private MarblePanel blackMarblePanel;					//AH
+    private MarblePanel whiteMarblePanel;					//AH
+    private GameTimer blackTurnTimer;						//AH
+    private GameTimer whiteTurnTimer;						//AH
     
     public BoardPanel(Game g, GameFrame frame){
         this.game = g;
@@ -46,7 +50,10 @@ public class BoardPanel extends JPanel {
         m3 = null;
         direction = 0;
         setLayout(null);
-        
+        blackMarblePanel 	= frame.getBlackMarblePanel();				//AH
+        whiteMarblePanel 	= frame.getWhiteMarblePanel();				//AH
+        blackTurnTimer 		= blackMarblePanel.getTurnTimer();			//AH
+        whiteTurnTimer		= whiteMarblePanel.getTurnTimer();			//AH
         addMouseListener(new MarbleListener());
         addMouseListener(new SpaceListener());
     }
@@ -259,10 +266,17 @@ public class BoardPanel extends JPanel {
                                 }
 
                                 // single marble move
-                                if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction))
+                                if((m2 == null && Gui.moveMarbles(game, game.activeIsBlack(), m1, direction, blackTurnTimer, whiteTurnTimer))
                                         // double/triple marble move
-                                        || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
-
+                                        || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction, blackTurnTimer, whiteTurnTimer)){
+                                	if(game.activeIsBlack()) {
+                                		
+                                		whiteTurnTimer.resetStopTimer();
+                                		blackTurnTimer.startTimer();
+                                	} else {
+                                		blackTurnTimer.resetStopTimer();
+                                		whiteTurnTimer.startTimer();
+                                	}
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
