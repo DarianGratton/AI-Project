@@ -137,7 +137,11 @@ public class Game {
 
     // next move as recommended by AI
     private Move recommended;
-
+    
+    // Total time taken for black and white
+    private double totalBlackTime = 0.0;
+    private double totalWhiteTime = 0.0;
+    
     private int aiMoveLimit;
     private int humanMoveLimit;
 
@@ -803,6 +807,22 @@ public class Game {
         }         
 
         return false;
+    }
+    
+    public void setTotalTurnTime(boolean activeIsBlack, double turnTimer) {
+    	if(activeIsBlack) {
+    		totalBlackTime += turnTimer;
+    	} else {
+    		totalWhiteTime += turnTimer;
+    	}
+    }
+    
+    public double getTotalTurnTime(boolean activeIsBlack) {
+    	if(activeIsBlack) {
+    		return totalBlackTime;
+    	} else {
+    		return totalWhiteTime;
+    	}
     }
 
 }

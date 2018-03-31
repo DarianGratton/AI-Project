@@ -13,7 +13,7 @@ public class Move {
     
     private ArrayList<Marble> movedList;
     private int direction;
-    private long time;
+    private double time;
     private double eval; // evaluation function based on resulting board state
     
     public Move() {
@@ -103,14 +103,14 @@ public class Move {
     /**
      * @return the time
      */
-    public long getTime() {
+    public double getTime() {
         return time;
     }
 
     /**
      * @param time the time to set
      */
-    public void setTime(long time) {
+    public void setTime(double time) {
         this.time = time;
     }   
     

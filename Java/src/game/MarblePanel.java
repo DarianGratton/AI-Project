@@ -18,7 +18,8 @@ public class MarblePanel extends JPanel {
     
     private JLabel scoreLabel;
     private JLabel turnNumLabel;
-    private JLabel turnTimeLabel;
+    private JLabel totalTurnTime;
+    private GameTimer turnTimer;				//AH
 
     MarblePanel(GameFrame frame, Game g, String teamColor, 
             boolean aiPlayerIsBlack, 
@@ -56,10 +57,15 @@ public class MarblePanel extends JPanel {
         + game.getTurnCount(), fontSizeStats, fontColor);
         playerInfo.add(turnNumLabel);
         
-        // Display time taken per move
-        turnTimeLabel = frame.createLabel(new JLabel(), "Turn Time: " 
-                + game.getGameTime(), fontSizeStats, fontColor);
-        playerInfo.add(turnTimeLabel);
+
+        // AH - Display time taken per move	
+        this.turnTimer = new GameTimer(fontColor, fontSizeStats);
+        turnTimer.startTimer();
+        playerInfo.add(turnTimer);
+        
+        //AH - Display total time taken
+        totalTurnTime = frame.createLabel(new JLabel(),  "Total time: ", fontSizeStats, fontColor);
+        playerInfo.add(totalTurnTime);
         
         this.add(playerInfo, BorderLayout.CENTER);
     }
@@ -82,11 +88,9 @@ public class MarblePanel extends JPanel {
         }
     }
     
-    public void updateTurnTime(boolean activePlayerIsBlack) {
-    	if(activePlayerIsBlack) {
-    		//while()
-    	} 
-    } 
+    public void updateTotalTurnTimer(boolean activePlayerIsBlack) {
+    	totalTurnTime.setText("Total time: " + game.getTotalTurnTime(activePlayerIsBlack) );
+    }
     
     public void removeStats() {
         turnNumLabel.setText("Total # of Moves: " 
@@ -108,4 +112,12 @@ public class MarblePanel extends JPanel {
         this.game = game;
     }
     
+    //AH
+    /**
+     * returns the timer belonging to the call class
+     * @return
+     */
+    public GameTimer getTurnTimer() {
+    	return this.turnTimer;
+    }
 }
