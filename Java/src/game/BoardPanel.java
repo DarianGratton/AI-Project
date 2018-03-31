@@ -4,6 +4,8 @@
 package game;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -16,6 +18,8 @@ import java.util.ArrayList;
 @SuppressWarnings("serial")
 public class BoardPanel extends JPanel {
 
+    private static final int ASCII = 64;
+    
     private ArrayList<Space> spaceList;
     private ArrayList<DrawMarble> drawn;  
 
@@ -45,20 +49,18 @@ public class BoardPanel extends JPanel {
         m2 = null;
         m3 = null;
         direction = 0;
-      
         setLayout(null);
         blackMarblePanel 	= frame.getBlackMarblePanel();				//AH
         whiteMarblePanel 	= frame.getWhiteMarblePanel();				//AH
         blackTurnTimer 		= blackMarblePanel.getTurnTimer();			//AH
         whiteTurnTimer		= whiteMarblePanel.getTurnTimer();			//AH
-
         addMouseListener(new MarbleListener());
         addMouseListener(new SpaceListener());
     }
 
 
     public void initSpaces(){
-        int y = 0;
+        int y = -40;
         int x = 0;
         int blank = 80;
         int c = 0;
@@ -68,7 +70,7 @@ public class BoardPanel extends JPanel {
             for(int i = 1; i <= j; i ++) {
                 c = (x + blank - 160)/60;
                 x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 5, x, y));
+                spaceList.add(new Space(((20 - y)/60 + 9), c + 5, x, y));
             }
             blank -= 30;
         }
@@ -80,10 +82,28 @@ public class BoardPanel extends JPanel {
             for(int i = 0; i < j; i ++) {
                 c = (x - blank - 1000)/60;
                 x += 60;
-                spaceList.add(new Space(((60 - y)/60 + 9), c + 17, x, y));
+                spaceList.add(new Space(((20 - y)/60 + 9), c + 17, x, y));
 
             }
             blank += 30;
+        } 
+        
+        for (Space s : spaceList) {
+            int alphaInt = s.getAlpha() + ASCII;
+            char alphaChar = (char) alphaInt;
+            String alpha   = Character.toString(alphaChar);
+            String numeric = Integer.toString(s.getNum());
+            int x1 = (int) s.getX();
+            int y2 = (int) s.getY();
+            
+            JLabel coordinates = new JLabel(alpha + ", " + numeric);
+            coordinates.setFont(new Font("SANS_SERIF", Font.PLAIN, 18));
+            coordinates.setForeground(Color.ORANGE);
+            add(coordinates);
+            
+            Insets insets = getInsets();
+            Dimension size = coordinates.getPreferredSize();
+            coordinates.setBounds(x1 + 18, y2 + 18, size.width, size.height);
         }
     }
 
@@ -111,13 +131,12 @@ public class BoardPanel extends JPanel {
         }
         for (DrawMarble d : drawn){
 
-        	 if(d.getHighlight()) {
-             	g2d.setPaint(new Color(0,255,255));
-             } else if(d.getMarble().isBlack()){
+            if(d.getMarble().isBlack()){
                 g2d.setPaint(Color.BLACK);
-            } else if(! d.getMarble().isBlack()) {
+            } else {
                 g2d.setPaint(Color.WHITE);
             }
+            
             g2d.draw(d);
             g2d.fill(d);
         }
@@ -137,11 +156,9 @@ public class BoardPanel extends JPanel {
     }
     
     public class MarbleListener implements MouseListener {
-    	int count = 0;
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
-       
             marbleClicked = false;
 
             if (game.isGameInSession()) {
@@ -153,33 +170,19 @@ public class BoardPanel extends JPanel {
                             m1 = d.getMarble();
                             direction = 0;
                             marbleClicked = true;
-                            d.setHighlight(true);
-                            count++;
-                        	System.out.println("highlight true");
-                        	
                         } else if(m2 == null) {
                             m2 = d.getMarble();
                             direction = 0;
                             marbleClicked = true;
-                            d.setHighlight(true);
-                            count++;
-                        	System.out.println("highlight true");
-                        	
                         } else if(m3 == null){
                             m3 = d.getMarble();
-                            d.setHighlight(true);
                             marbleClicked = true;
-                                                  	
                         } else {
                             marbleClicked = false;
-                            
                         }
-                        repaint();
-//                        if(marbleClicked == true && count <= 3) {
-//                        	d.setHighlight(true);
-//                        	repaint();
-//                        }
-//                       
+                        
+                        
+    
     /*
                         if(m1 != null){
                             System.out.println(m1.toString());
@@ -225,8 +228,6 @@ public class BoardPanel extends JPanel {
                     game.setGameInSession(false);
                     System.out.println("turnLimit reached");
                 }
-                
-               
                 for(Space s : spaceList){
                     if(s.contains(e.getPoint())){
                         //System.out.println(s.toString());
@@ -277,7 +278,7 @@ public class BoardPanel extends JPanel {
                                 		whiteTurnTimer.startTimer();
                                 	}
                                     drawMarbles(b);
-                                   
+                                    repaint();
                                     frame.updateGameFrame(currActiveTeam);
                                     game.setTurnCount();
                                 }
@@ -288,11 +289,6 @@ public class BoardPanel extends JPanel {
                             m2 = null;
                             m3 = null;
                             direction = 0;
-                            for(DrawMarble d : drawn) {
-                            	d.setHighlight(false);
-                            	System.out.println("highlit false");
-                            }
-                            repaint();
                         }
                     }
                 }

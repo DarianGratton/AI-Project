@@ -8,7 +8,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
 /**
@@ -21,14 +20,15 @@ import javax.swing.SwingUtilities;
  */
 public abstract class Gui {
 
-    
+    private static long turnStart;
 
     /**
      * IDK if this needs to exist
      */
     public static Game startGame(Board layout, boolean aiIsBlack, 
             int humanMoveLimit, long humanTimeLimit, GameTimer time) {
-       
+        turnStart = System.nanoTime();
+
         return new Game(layout, aiIsBlack, humanMoveLimit, humanTimeLimit, time);
     }
 
@@ -53,7 +53,6 @@ public abstract class Gui {
      * @param direction
      * @param isBlack
      */
-  
     public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, int direction, GameTimer blackTimer, GameTimer whiteTimer){
         Move mv = new Move(m1, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
@@ -69,7 +68,6 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.switchSides();
-            turnTimer(playerIsBlack);
             return true;
         }
         return false;
@@ -86,7 +84,7 @@ public abstract class Gui {
     public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, Marble m2, int direction, GameTimer blackTimer, GameTimer whiteTimer){
 
 
-        Move mv = new Move(m1, m2, direction);
+        Move mv = new Move(m1, m2, direction, System.nanoTime() - turnStart);
         // check to see if move is valid
         if(g.move(m1, m2, direction, activeIsBlack)){
             g.addMoveToList(mv);
@@ -100,17 +98,11 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.switchSides();
-            turnTimer(playerIsBlack);
             return true;
         }
 
         return false;
     }
 
-    public static void turnTimer(boolean playerIsBlack) {
-    	if(playerIsBlack) {
-    		
-    	}
-    }
 
 }
