@@ -101,12 +101,13 @@ public class BoardPanel extends JPanel {
         }
         for (DrawMarble d : drawn){
 
-            if(d.getMarble().isBlack()){
+        	 if(d.getHighlight()) {
+             	g2d.setPaint(new Color(0,255,255));
+             } else if(d.getMarble().isBlack()){
                 g2d.setPaint(Color.BLACK);
-            } else {
+            } else if(! d.getMarble().isBlack()) {
                 g2d.setPaint(Color.WHITE);
             }
-            
             g2d.draw(d);
             g2d.fill(d);
         }
@@ -126,6 +127,7 @@ public class BoardPanel extends JPanel {
     }
     
     public class MarbleListener implements MouseListener {
+    	int count = 0;
 
         @Override
         public void mouseClicked(MouseEvent mouseEvent) {
@@ -140,23 +142,34 @@ public class BoardPanel extends JPanel {
                         if(m1 == null){
                             m1 = d.getMarble();
                             direction = 0;
-                           // highlight(g, d);
                             marbleClicked = true;
+                            d.setHighlight(true);
+                            count++;
+                        	System.out.println("highlight true");
+                        	
                         } else if(m2 == null) {
                             m2 = d.getMarble();
                             direction = 0;
-                          //  highlight(g, d);
                             marbleClicked = true;
+                            d.setHighlight(true);
+                            count++;
+                        	System.out.println("highlight true");
+                        	
                         } else if(m3 == null){
                             m3 = d.getMarble();
-                          //  highlight(g, d);
+                            d.setHighlight(true);
                             marbleClicked = true;
+                                                  	
                         } else {
                             marbleClicked = false;
+                            
                         }
-                        
-                        
-    
+                        repaint();
+//                        if(marbleClicked == true && count <= 3) {
+//                        	d.setHighlight(true);
+//                        	repaint();
+//                        }
+//                       
     /*
                         if(m1 != null){
                             System.out.println(m1.toString());
@@ -189,14 +202,6 @@ public class BoardPanel extends JPanel {
             
         }
         
-        public void highlight(Graphics g, Shape d) {
-        	Graphics2D g2d = (Graphics2D) g;
-        	 g2d.setPaint(Color.RED);
-        	 g2d.draw(d);
-             g2d.fill(d);
-        	 
-        }
-        
     }
     
     public class SpaceListener implements MouseListener {
@@ -210,6 +215,8 @@ public class BoardPanel extends JPanel {
                     game.setGameInSession(false);
                     System.out.println("turnLimit reached");
                 }
+                
+               
                 for(Space s : spaceList){
                     if(s.contains(e.getPoint())){
                         //System.out.println(s.toString());
@@ -253,7 +260,7 @@ public class BoardPanel extends JPanel {
                                         || (m2 != null) && Gui.moveMarbles(game, game.activeIsBlack(), m1, m2, direction)){
 
                                     drawMarbles(b);
-                                    repaint();
+                                   
                                     frame.updateGameFrame(currActiveTeam);
                                     game.setTurnCount();
                                 }
@@ -264,6 +271,11 @@ public class BoardPanel extends JPanel {
                             m2 = null;
                             m3 = null;
                             direction = 0;
+                            for(DrawMarble d : drawn) {
+                            	d.setHighlight(false);
+                            	System.out.println("highlit false");
+                            }
+                            repaint();
                         }
                     }
                 }

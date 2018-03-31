@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -45,7 +44,7 @@ public class GameFrame extends JFrame {
     private static final int PANEL_HEIGHT = 300;
     
     // Board panel height
-    private static final int BOARD_HEIGHT = 575;
+    private static final int BOARD_HEIGHT = 550;
     
     private ArrayList<JRadioButton> boardButtons = new ArrayList<JRadioButton>() {
         private static final long serialVersionUID = -4924548428540373984L;
@@ -59,8 +58,8 @@ public class GameFrame extends JFrame {
         private static final long serialVersionUID = 1593599663555850435L;
 
     {
-        add(new JRadioButton("Black"));
-        add(new JRadioButton("White"));
+        add(new JRadioButton("AI is Black"));
+        add(new JRadioButton("AI is White"));
     }};
     
     private ArrayList<JRadioButton> modeButtons = new ArrayList<JRadioButton>() {
@@ -133,7 +132,7 @@ public class GameFrame extends JFrame {
 
         this.game = g;
         //this.spaceList = new ArrayList<Space>();
-        gameTimer = new GameTimer();
+        gameTimer = new GameTimer("Total Game Time: ");
         boardLayout = Board.copyBoard(g.getBoard());
         gamePaused = false;
         
@@ -188,8 +187,6 @@ public class GameFrame extends JFrame {
         gameLabels.setBorder(new EmptyBorder(10, 10, 10, 10));
         gameLabels.setBackground(Color.WHITE);
         
-        gameLabels.add(createLabel(new JLabel(), "Total game time: ", 
-                fontSizeGameStats, Color.BLACK));
         gameLabels.add(gameTimer);
         
         nextRecommendedMove = createLabel(nextRecommendedMove, "Next Recommended Move: " 
@@ -241,13 +238,13 @@ public class GameFrame extends JFrame {
     private JPanel createMuseumPanel() {
 
         museum = new JPanel();
-        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), aiIsBlack);
-        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), aiIsBlack);
-        blackMoveHistory.setBackground(Color.white);
-        whiteMoveHistory.setBackground(Color.white);
+        blackMoveHistory = new HistoryPanel(game, new JLabel("Black Move History"), 
+                game.activeIsBlack(), Color.WHITE, Color.BLACK);
+        whiteMoveHistory = new HistoryPanel(game, new JLabel("White Move History"), 
+                game.activeIsBlack(), Color.BLACK, Color.WHITE);
         museum.setLayout(new BoxLayout(museum, BoxLayout.PAGE_AXIS));
-        museum.add(blackMoveHistory);
         museum.add(whiteMoveHistory);
+        museum.add(blackMoveHistory);
         
         return museum;
     }      
@@ -298,7 +295,7 @@ public class GameFrame extends JFrame {
         startPanel.add(boardState);
         initRadioButtons(boardButtons, new ButtonGroup(), startPanel);
 
-        JLabel colorChose = createLabel(new JLabel(), "Choose your color: ", 15, Color.black);
+        JLabel colorChose = createLabel(new JLabel(), "Choose AI's color: ", 15, Color.black);
         colorChose.setBorder(new EmptyBorder(10, 0, 3, 0));
         startPanel.add(colorChose);
         initRadioButtons(playerButtons, new ButtonGroup(), startPanel);
@@ -373,9 +370,13 @@ public class GameFrame extends JFrame {
             gameBoard.removeAll();
             gameBoard.add(new BoardPanel(game, this));
             gameTimer.resetTimer();
+            blackMoveHistory.setGame(game);
             blackMoveHistory.removeHistory();
+            whiteMoveHistory.setGame(game);
             whiteMoveHistory.removeHistory();
+            blackMarblePanel.setGame(game);
             blackMarblePanel.removeStats();
+            whiteMarblePanel.setGame(game);
             whiteMarblePanel.removeStats();
             repaint();
         } 
@@ -470,9 +471,13 @@ public class GameFrame extends JFrame {
                 gameBoard.removeAll();
                 gameBoard.add(new BoardPanel(game, GameFrame.this));
                 repaint();
+                blackMoveHistory.setGame(game);
                 blackMoveHistory.removeHistory();
+                whiteMoveHistory.setGame(game);
                 whiteMoveHistory.removeHistory();
+                blackMarblePanel.setGame(game);
                 blackMarblePanel.removeStats();
+                whiteMarblePanel.setGame(game);
                 whiteMarblePanel.removeStats();
                 gameTimer.resetTimer();
             }
