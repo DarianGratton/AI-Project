@@ -22,9 +22,6 @@ public class Marble {
 
     // quicker than using ints to assign ownership; this may not be required depending on final state
     private boolean isBlack;
-    
-    //Is true when the marble is selected for highlighting purposes.
-    boolean highlightMarble;
 
 
     /**
@@ -198,9 +195,4 @@ public class Marble {
             return false;
         return true;
     }
-
-	public void highlightMarble() {
-		this.highlightMarble = true;
-	}
-	
 }
