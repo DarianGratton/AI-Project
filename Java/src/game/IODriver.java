@@ -45,8 +45,11 @@ public class IODriver {
         try {
             File file = new File(fileName);                          //grab the only argument i.e. file name and put it in file
             scan = new Scanner(file);
-            while (scan.hasNextLine()) {                            //file now read into readFile
-                readFile[tracker] = scan.nextLine().toUpperCase();
+            while (scan.hasNextLine() && tracker <= 1) {                            //file now read into readFile
+                String line = scan.nextLine();
+                if (line != null) {
+                    readFile[tracker] = line.toUpperCase();
+                }
                 tracker++;
             }
 
