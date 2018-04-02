@@ -378,9 +378,75 @@ public class AIPlayer {
 
         return bestMove;
     }
+    
+    
+    
+    //Made by JAISREET
+//    public static int evaluateBoard(Board b, boolean aiIsBlack) {
+//    	
+//    			int total = 0;
+//    			int gravityBlack = 0;
+//    			int gravityWhite = 0;
+//    			int gravityTotal = 0;
+//    			int adjacentWhite = 0;
+//    			int adjacentBlack = 0;
+//    			int adjacentTotalWhite = 0;
+//    			int adjacentTotalBlack = 0;
+//    			int adjacentTotal = 0;
+//    			char color;
+//    			int alpha;
+//    			int num;
+//    			
+//    		for(Marble m : b) {
+//    				alpha = m.getAlpha();
+//    				num = m.getNumeric();
+//    				color = m.getColor();
+//    	
+//    				if(aiIsBlack == false && color == 'w')
+//    					gravityWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//    				else
+//    					gravityBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//    	
+//    	//			for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
+//    	//				while(checkAdjacent(m, i) != null) {
+//    	//					if(aiIsBlack == true && color == 'b')
+//    	//						adjacentBlack += 1;
+//    	//					else
+//    	//						adjacentWhite += 1;
+//    	//				}
+//    	//
+//    	//				if(adjacentBlack == 1)
+//    	//					adjacentTotalBlack += 1;
+//    	//				else if(adjacentWhite == 2)
+//    	//					adjacentTotalBlack += 2;
+//    	//				else
+//    	//					adjacentTotalBlack += 3;
+//    	//
+//    	//				if(adjacentWhite == 1)
+//    	//					adjacentTotalWhite += 1;
+//    	//				else if(adjacentWhite == 2)
+//    	//					adjacentTotalWhite += 2;
+//    	//				else
+//    	//					adjacentTotalWhite += 3;
+//    	//
+//    	//			}
+//    			}
+//    			if(aiIsBlack == false)  {
+//    				gravityTotal = gravityWhite - gravityBlack;
+//    				adjacentTotal = adjacentTotalWhite - adjacentTotalBlack;
+//    			}
+//    			else {
+//    				gravityTotal = gravityBlack - gravityWhite;
+//    				adjacentTotal = adjacentTotalBlack - adjacentTotalWhite;
+//    			}
+//    	
+//    			total = gravityTotal + adjacentTotal;
+//    	
+//    			return total;
+//    		}
+//    	
 
-    /**
-     * 
+    /**    * 
      * @param b the current board state
      * @param aiIsBlack whether the AI is playing black pieces
      * @param a alpha; i.e. the largest value encountered so far
