@@ -17,8 +17,9 @@ public class AIPlayer {
 
     private static final int DIRECTION_MIN = 1;
     private static final int DIRECTION_MAX = 6;
-    private static double stopTime;
-    private static double currentTime;
+    private static final long NANO_DIVISOR = 1000000000;
+    private static int MAX_DEPTH = 2;
+    private static Move suggestedMove = null;
 
     /**
      * This method is responsible for generating a list of possible moves given the current board state
@@ -314,7 +315,7 @@ public class AIPlayer {
                 } else {
                     eval += (oppMarbleVal * posMod);
                 }
-                
+
                 ++oppMarbles;
             }
         }
@@ -341,24 +342,41 @@ public class AIPlayer {
         return eval;
     }
 
-    
-    
+
+
     public static Move alphaBetaSearch(Game g, boolean aiIsBlack){
-        stopTime = g.getAiTimeLimit() * 1000;
-        currentTime = System.currentTimeMillis() * 1000;
-        Game gameTest = new Game(g);
-        Board board = Board.copyBoard(gameTest.getBoard());
-        double v = maxMove(board, aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE);
+        int depth = 0;
+        int maxDepth = 1;
+        long startTime = System.nanoTime();
+        long timeTaken = 0;
+        int movesMade = aiIsBlack ? g.getBlackMoves().size() : g.getWhiteMoves().size();
+        Move bestMove = null;
+        ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
+        bestMove = moves.get(0);
 
-        ArrayList<Move> moves = AIPlayer.genPossibleMoves(gameTest, aiIsBlack);
 
-        for(Move m : moves){
-            if(m.getEval() == v){
-                return m;
-            }
+        System.out.println(System.nanoTime() - startTime);
+        System.out.println(g.getAiTimeLimit());
+
+        while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
+
+            
+            double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE, depth, maxDepth);
+
+
+            for (Move m : moves) {
+                if (v == m.getEval()) {
+                    bestMove = m;
+                    bestMove.setTime(timeTaken);
+                }
+            } 
+
+            timeTaken = System.nanoTime() - startTime;
+            ++maxDepth;
         }
-        
-        return null;
+
+
+        return bestMove;
     }
 
     /**
@@ -369,44 +387,43 @@ public class AIPlayer {
      * @param B Beta; i.e. the smallest value encountered so far
      * @return the best possible move for the AI given the board state
      */
-    public static double maxMove(Board current, boolean aiIsBlack, double a, double B){
-        double maxTime = System.currentTimeMillis()*1000;
+    public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
+
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(maxTime - currentTime >= stopTime){ // replace true with terminal test
+        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
-        
+        int newDepth = ++depth;
         /* Turn time limit should go here as terminal test */
-        
-//        System.out.println("Entered maxMove: " + currentEval);
+
+        System.out.println("Entered maxMove: " + currentEval);
         double maxEval = -Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
-        
-        int maxIndex = 0; // to hold index of best move from next step
+
         //double maxValue = -Double.MAX_VALUE;
-        
+
         for(int i = 0; i < moves.size(); ++i){
             // pulled out of Math.max function for re-use
-            double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B);
-            
+            double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+
             // straight from pseudocode
             maxEval = Math.max(maxEval, minEval);
             if(maxEval >= B){
-                System.out.println(moves.get(i).toString());
+                //System.out.println(moves.get(i).toString());
                 return maxEval;
             }
-            
+
             /*if(minEval > maxValue){ // if the current result is the best we have so far
                 maxValue = minEval; // set the max value to current result
                 maxIndex = i; // set index of "best" move to current move
             }*/
-            
-            
+
+
             a = Math.max(a, maxEval);
         }
-        
-        System.out.println(moves.get(maxIndex).toString());
+
+        //System.out.println(moves.get(maxIndex).toString());
         return maxEval;
     }
 
@@ -418,43 +435,48 @@ public class AIPlayer {
      * @param B Beta; i.e. the smallest value encountered so far
      * @return the best possible move for the opponent given the board state
      */
-    public static double minMove(Board current, boolean aiIsBlack, double a, double B){
-        double maxTime = System.currentTimeMillis()*1000;
+    public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(maxTime - currentTime >= stopTime){ // replace true with terminal test
+        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
-        
-        
-//        System.out.println("Entered minMove: " + currentEval);
+        int newDepth = ++depth;
+
+        System.out.println("Entered minMove: " + currentEval);
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
-        
-        int minIndex = 0; // to hold index of best move from next step
+
         //double minValue = 0.0;
-        
+
         for(int i = 0; i < moves.size(); ++i){
             // pulled out of Math.min function for re-use
-            double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B);
-            
+            double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+
             // straight from pseudocode
             minEval = Math.min(minEval, maxEval);
             if(minEval <= a){
-                System.out.println(moves.get(i).toString());
+                //System.out.println(moves.get(i).toString());
                 return minEval;
             }
-            
+
             /*if(maxEval < minValue){ // if the current result is the worst we have so far
                 minValue = maxEval; // set the min value to current result
                 minIndex = i; // set index of "worst" move to current move
             }*/
-            
+
             B = Math.min(B, minEval);
         }
-        
-        System.out.println(moves.get(minIndex).toString());
+
+        //System.out.println(moves.get(minIndex).toString());
         return minEval;
     }
 
+    public static int getMaxDepth(){
+        return MAX_DEPTH;
+    }
+
+    public static void setMaxDepth(int newMaxDepth){
+        MAX_DEPTH = newMaxDepth;
+    }
 }

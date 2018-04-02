@@ -223,7 +223,8 @@ public class BoardPanel extends JPanel {
         public void mouseClicked(MouseEvent e) {
             
             if (game.isGameInSession()) {
-                if(game.getTurnCount() == game.getAiMoveLimit() && game.getTurnCount() != 0)
+                int turns = game.isAiBlack() ? game.getBlackMoves().size() : game.getWhiteMoves().size();
+                if(turns >= game.getAiMoveLimit() && game.getBlackMoves().size() != 0)
                 {
                     game.setGameInSession(false);
                     System.out.println("turnLimit reached");
@@ -280,7 +281,6 @@ public class BoardPanel extends JPanel {
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
-                                    game.setTurnCount();
                                 }
                             }
 

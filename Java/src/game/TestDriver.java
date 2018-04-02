@@ -47,50 +47,47 @@ public class TestDriver {
             }
         };
 
-        
+
         Game game = new Game();
         //game.setBoard(test);
-        
+
         /*for(Marble m : game.getBoard()){
             System.out.println(m.toString()); 
         }*/
-        
+
         /*ArrayList<Move> moves = AIPlayer.genPossibleMoves(game, game.activeIsBlack());
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
         }*/
-        System.out.print("Evaluating board for black side:");
-        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+
+
+
         
-        System.out.print("Evaluating board for white side:");
-        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
-        
-        //HashMap<Board, Double> stuff = AIPlayer.genAllResults(game, moves);
+        /*Thread thread = new Thread(task);
+        thread.start();*/
         GameFrame frame = new GameFrame(game);
-        
-        
+
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 735);
         frame.setVisible(true);  
-        
+
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-        Board b1 = Board.copyBoard(Game.standardLayout);
-        Board b2 = Board.copyBoard(Game.standardLayout);
-        
-        HashSet<Board> boards = new HashSet<Board>();
-        boards.add(b1);
+        /*Runnable task = () -> {
+            System.out.print("Evaluating board for black side:");
+            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
 
+            System.out.print("Evaluating board for white side:");
+            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
 
-        Move butts = AIPlayer.alphaBetaSearch(game, true);
-        System.out.println(butts.toString());
+            Move butts = AIPlayer.alphaBetaSearch(game, true);
+            game.setRecommended(butts);
+            System.out.println(butts.toString());
+        };
 
-        //Gui.drawBoard(test.getBoard(), frame, g);
+        task.run();*/
 
-        //        Gui.moveMarbles(test, true, test.searchBoard(1,1), 2);
-        //        frame.repaint();
-        //        Gui.drawBoard(test.getBoard(), frame, g);
 
     }
 }

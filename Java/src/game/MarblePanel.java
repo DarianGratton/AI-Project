@@ -54,7 +54,7 @@ public class MarblePanel extends JPanel {
         
         // Display number of moves taken per player
         turnNumLabel = frame.createLabel(new JLabel(), "Total # of Moves: " 
-        + game.getTurnCount(), fontSizeStats, fontColor);
+        + (game.getBlackMoves().size() + game.getWhiteMoves().size()), fontSizeStats, fontColor);
         playerInfo.add(turnNumLabel);
         
         // AH - Display time taken per move	

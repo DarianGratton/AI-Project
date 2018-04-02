@@ -6,6 +6,8 @@ import java.awt.Component;
 import java.awt.Graphics;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -20,7 +22,7 @@ import javax.swing.SwingUtilities;
  */
 public abstract class Gui {
 
-    private static long turnStart;
+    private static long turnStart = System.nanoTime();
 
     /**
      * IDK if this needs to exist
@@ -55,6 +57,8 @@ public abstract class Gui {
      */
     public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, int direction, GameTimer blackTimer, GameTimer whiteTimer){
         Move mv = new Move(m1, direction, System.nanoTime() - turnStart);
+        Move display = new Move(mv);
+        
         // check to see if move is valid
         if(g.move(m1, direction, activeIsBlack)){
             g.addMoveToList(mv);
@@ -85,6 +89,8 @@ public abstract class Gui {
 
 
         Move mv = new Move(m1, m2, direction, System.nanoTime() - turnStart);
+        Move display = new Move(mv);
+        
         // check to see if move is valid
         if(g.move(m1, m2, direction, activeIsBlack)){
             g.addMoveToList(mv);
@@ -104,5 +110,22 @@ public abstract class Gui {
         return false;
     }
 
-
+    public static void updateRecommended(Game g, boolean aiIsBlack){
+        
+        ExecutorService doTheThing = Executors.newSingleThreadExecutor();
+        doTheThing.submit(() -> {
+            long nanoSec = 0;
+            while(nanoSec < g.getAiTimeLimit()){
+                nanoSec = System.nanoTime() - turnStart;
+                g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack));
+                if(nanoSec >= g.getAiTimeLimit()){
+                    doTheThing.shutdownNow();
+                }
+            }
+        });
+        
+        
+    }
+    
+    
 }
