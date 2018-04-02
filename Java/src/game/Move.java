@@ -126,7 +126,7 @@ public class Move {
     /**
      * @param time the time to set
      */
-    public void setTime(long time) {
+    public void setTime(double time) {
         this.time = time;
     }   
 
