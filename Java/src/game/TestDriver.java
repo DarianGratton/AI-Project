@@ -74,7 +74,7 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-        Runnable task = () -> {
+        /*Runnable task = () -> {
             System.out.print("Evaluating board for black side:");
             System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
 
@@ -86,7 +86,7 @@ public class TestDriver {
             System.out.println(butts.toString());
         };
 
-        task.run();
+        task.run();*/
 
 
     }
