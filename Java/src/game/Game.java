@@ -335,7 +335,7 @@ public class Game {
      */
     public void switchSides(){
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
-        Gui.updateRecommended(this, this.aiIsBlack);
+        //Gui.updateRecommended(this, this.aiIsBlack);
     }
 
     /**

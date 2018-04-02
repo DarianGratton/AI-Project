@@ -1,11 +1,14 @@
 package game;
 
+import java.awt.Graphics;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
+
+import javax.swing.JFrame;
 
 /**
  * Created by Akemi on 3/6/2018.
@@ -15,7 +18,7 @@ import java.util.Scanner;
  */
 public class IODriver {
     private static final int ASCII_CONSTANT = 64;
-    
+
     public static void main(String[] args) {
         Scanner scan;
         String readFile[] = {"", ""};                                   //[0] = 'w' or 'b' ;;   [1] = 'A1b, B3b ....., F3w' etc
@@ -27,7 +30,7 @@ public class IODriver {
 
 
         HashSet<Board> output = new HashSet<Board>();
-        
+
         boolean isBlack = false;                                        //aiIsBlack() from input file first line
         GameTimer timer = new GameTimer("");                            //to put into Game object
         ArrayList<String> boardOutput = new ArrayList<String>();        //this String will be written to the Results.board.
@@ -48,29 +51,31 @@ public class IODriver {
             }
 
             //File pulls digit from file name
-                      for (int i = 0; i < fileName.length(); ++i) {
-                               if (Character.isDigit(fileName.charAt(i))) {
-                                      digit = Character.getNumericValue(fileName.charAt(i));
-                                   }
-                           }
+            for (int i = 0; i < fileName.length(); ++i) {
+                if (Character.isDigit(fileName.charAt(i))) {
+                    digit = Character.getNumericValue(fileName.charAt(i));
+                }
+            }
+
+            char team = readFile[0].charAt(0);
 
             String[] splitInput = readFile[1].split(",");   //Split fileInput[1] by the commas and put into another array
 
             //read first line of file, turn string to char to pass through turnAlphaToBool
 
-            if(turnAlphaToBool(splitInput[0].charAt(0))) {
+            if(turnAlphaToBool(team)) {
                 isBlack = true;
             }
 
             //Make marble objects by taking in values from splitInput. Goes in ArrayList<Marble> inputMarbles
-            
+
             for(String s: splitInput) {
                 int c1 = ((int)s.charAt(0)) - ASCII_CONSTANT;
                 int c2 = Character.getNumericValue(s.charAt(1));
                 inputMarbles.add(new Marble(c1, c2, turnAlphaToBool(s.charAt(2))));
-                
+
             }
-            
+
             /*for(Marble m : inputMarbles){
                 System.out.println(m.toString());
             }*/
@@ -78,27 +83,37 @@ public class IODriver {
             Game game = new Game(inputMarbles, isBlack, 100, 100, timer);
             outputMoves = AIPlayer.genPossibleMoves(game, isBlack);
 
+            GameFrame frame = new GameFrame(game);
+
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 735);
+            frame.setVisible(true);  
+
+            Graphics g = frame.getGraphics();
+            frame.paintComponents(g);
+
+
 
             //Create file for printing to
             PrintWriter moveWriter = new PrintWriter("Test"+digit+".move");
             PrintWriter boardWriter = new PrintWriter("Test"+digit+".board");
-            
-            
+
+
             int i = 0;
-            
+
             for(Move m : outputMoves){
                 moveWriter.println(m);
                 /*System.out.println(i + " " + m.toString());
                 ++i;*/
             }
-            
+
             output = AIPlayer.genAllResults(game.getBoard(), outputMoves);
-            
+
             StringBuilder mrbl;
             StringBuilder line;
-            
+
             i = 0;
-            
+
             for(Board b : output){
                 //Collections.sort(b, new MarbleComparator());
                 line = new StringBuilder();
@@ -117,7 +132,7 @@ public class IODriver {
                     mrbl.append(c3);
                     line.append(mrbl.toString());
                 }  
-                
+
                 boardOutput.add(line.toString());
                 /*System.out.println(i + " " + line.toString());
                 ++i;*/
@@ -137,7 +152,7 @@ public class IODriver {
 
     }
 
-      // 'w' = false ; 'b' = true
+    // 'w' = false ; 'b' = true
     private static boolean turnAlphaToBool(char alpha) {
         char upper = Character.toUpperCase(alpha);
         if(upper == 'B'){
@@ -157,24 +172,24 @@ public class IODriver {
      */
     public static char getAlphaChar(Marble m) {
         switch(m.getAlpha()) {
-            case 1:
-                return 'A';
-            case 2:
-                return 'B';
-            case 3:
-                return 'C';
-            case 4:
-                return 'D';
-            case 5:
-                return 'E';
-            case 6:
-                return 'F';
-            case 7:
-                return 'G';
-            case 8:
-                return 'H';
-            case 9:
-                return 'I';
+        case 1:
+            return 'A';
+        case 2:
+            return 'B';
+        case 3:
+            return 'C';
+        case 4:
+            return 'D';
+        case 5:
+            return 'E';
+        case 6:
+            return 'F';
+        case 7:
+            return 'G';
+        case 8:
+            return 'H';
+        case 9:
+            return 'I';
         }
         return 'Z';
     }
