@@ -2,6 +2,8 @@ package game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -49,7 +51,7 @@ public class TestDriver {
 
 
         Game game = new Game();
-        //game.setBoard(test);
+        game.setBoard(test);
 
         /*for(Marble m : game.getBoard()){
             System.out.println(m.toString()); 
@@ -62,7 +64,22 @@ public class TestDriver {
 
 
 
-        
+
+        Runnable board = () -> {
+            GameFrame frame = new GameFrame(game);
+
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 735);
+            frame.setVisible(true);  
+
+            Graphics g = frame.getGraphics();
+            frame.paintComponents(g);
+        };
+
+
+        Thread thread = new Thread(board);
+        thread.start();
+
         /*Thread thread = new Thread(task);
         thread.start();*/
         GameFrame frame = new GameFrame(game);
@@ -71,16 +88,33 @@ public class TestDriver {
         frame.setSize(1000, 735);
         frame.setVisible(true);  
 
-        Graphics g = frame.getGraphics();
-        frame.paintComponents(g);
+        System.out.print("Evaluating board for black side:");
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
 
-      
-            System.out.print("Evaluating board for black side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
+        game.setRecommended(butts);
+        System.out.println(butts.toString());
 
-            System.out.print("Evaluating board for white side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+
+            while(game.isGameInSession()){
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                long start = Gui.getTurnStart();
+                long current = System.nanoTime();
+                if((current - start) >= game.getAiTimeLimit()){
+                    Gui.killExecutor();
+                }
+            }
 
             
+            
+            
+        });
     }
 }

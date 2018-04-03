@@ -23,6 +23,9 @@ import javax.swing.SwingUtilities;
 public abstract class Gui {
 
     private static long turnStart = System.nanoTime();
+    private static long elapsedTime;
+    private static ExecutorService doTheThing;
+    private static int maxDepth;
 
     /**
      * IDK if this needs to exist
@@ -61,16 +64,17 @@ public abstract class Gui {
         
         // check to see if move is valid
         if(g.move(m1, direction, activeIsBlack)){
-            g.addMoveToList(display);
+            
             turnStart = System.nanoTime();
             	//passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	mv.setTime(blackTimer.getTimerAsOne());
+            	display.setTime(blackTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-            	mv.setTime(whiteTimer.getTimerAsOne());
+            	display.setTime(whiteTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
+            g.addMoveToList(display);
             g.switchSides();
             return true;
         }
@@ -93,16 +97,17 @@ public abstract class Gui {
         
         // check to see if move is valid
         if(g.move(m1, m2, direction, activeIsBlack)){
-            g.addMoveToList(display);
+            
             turnStart = System.nanoTime();
           //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	mv.setTime(blackTimer.getTimerAsOne());
+            	display.setTime(blackTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-            	mv.setTime(whiteTimer.getTimerAsOne());
+                display.setTime(whiteTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
+            g.addMoveToList(display);
             g.switchSides();
             return true;
         }
@@ -111,22 +116,36 @@ public abstract class Gui {
     }
 
     public static void updateRecommended(Game g, boolean aiIsBlack){
-        
-        ExecutorService doTheThing = Executors.newSingleThreadExecutor();
-        doTheThing.submit(() -> {
-            long nanoSec = 0;
-            while(nanoSec < g.getAiTimeLimit()){
-                nanoSec = System.nanoTime() - turnStart;
-                g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack));
-                GameFrame.updateNextMove(g);
-                if(nanoSec >= g.getAiTimeLimit()){
-                    doTheThing.shutdownNow();
+
+        doTheThing = Executors.newSingleThreadExecutor();
+        try {
+            doTheThing.submit(() -> {
+                long nanoSec = 0;
+                int maxDepth = 0;
+                while(nanoSec < g.getAiTimeLimit()){
+                    ++maxDepth;
+                    nanoSec = System.nanoTime() - turnStart;
+                    g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
+                    /*if(nanoSec >= g.getAiTimeLimit()){
+                        doTheThing.shutdownNow();
+                    }*/
                 }
-            }
-        });
-        
-        
+            });
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }        
     }
     
+    public static void killExecutor(){
+        doTheThing.shutdownNow();
+    }
+
+    /**
+     * @return the turnStart
+     */
+    public static long getTurnStart() {
+        return turnStart;
+    }
     
 }

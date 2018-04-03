@@ -284,6 +284,7 @@ public class BoardPanel extends JPanel {
                                 		blackTurnTimer.resetStopTimer();
                                 		whiteTurnTimer.startTimer();
                                 	}
+                                	
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);

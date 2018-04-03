@@ -15,44 +15,44 @@ import java.util.List;
  */
 public class AIPlayer {
 
-	private static final int DIRECTION_MIN = 1;
-	private static final int DIRECTION_MAX = 6;
-	private static final long NANO_DIVISOR = 1000000000;
-	private static int MAX_DEPTH = 2;
-	private static Move suggestedMove = null;
+    private static final int DIRECTION_MIN = 1;
+    private static final int DIRECTION_MAX = 6;
+    private static final long NANO_DIVISOR = 1000000000;
+    private static int MAX_DEPTH = 2;
+    private static Move suggestedMove = null;
 
-	/**
-	 * This method is responsible for generating a list of possible moves given the current board state
-	 * @return
-	 */
-	public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
-		ArrayList<Move> moves = new ArrayList<Move>();
-		//Board original = Board.copyBoard(g.getBoard());
-		Board currentBoard = Board.copyBoard(g.getBoard());
-		Board ownMarbles = new Board();
-		/* Marble m1 = null;
+    /**
+     * This method is responsible for generating a list of possible moves given the current board state
+     * @return
+     */
+    public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
+        ArrayList<Move> moves = new ArrayList<Move>();
+        //Board original = Board.copyBoard(g.getBoard());
+        Board currentBoard = Board.copyBoard(g.getBoard());
+        Board ownMarbles = new Board();
+        /* Marble m1 = null;
         Marble m2 = null;*/
 
-		for(Marble m: currentBoard){
-			if(m.isBlack() == aiIsBlack){
-				ownMarbles.add(m);
-			}
-		}
+        for(Marble m: currentBoard){
+            if(m.isBlack() == aiIsBlack){
+                ownMarbles.add(m);
+            }
+        }
 
-		for(Marble m : ownMarbles){
-			for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
-				Move move = generateMove(g, m, i);
-				if (move != null) {
-					move.evaluate(g.getBoard());
-					//System.out.println("before: " + move.toString());
-					moves.add(move);
-					//System.out.println("after: " + move.toString());
-				}
-			}
-		}
+        for(Marble m : ownMarbles){
+            for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
+                Move move = generateMove(g, m, i);
+                if (move != null) {
+                    move.evaluate(g.getBoard());
+                    //System.out.println("before: " + move.toString());
+                    moves.add(move);
+                    //System.out.println("after: " + move.toString());
+                }
+            }
+        }
 
-		// Generates moves for a single marble for each marbles in the ArrayList
-		/* for (int i = 0; i < currentBoard.size(); ++i) {
+        // Generates moves for a single marble for each marbles in the ArrayList
+        /* for (int i = 0; i < currentBoard.size(); ++i) {
 
             m1 = currentBoard.get(i);
             if (m1.isBlack() == aiIsBlack) {
@@ -74,24 +74,24 @@ public class AIPlayer {
             }
         }*/
 
-		while(!ownMarbles.isEmpty()){
-			Marble m = ownMarbles.pollFirst();
-			for(Marble o : ownMarbles){
-				//if(!m.equals(o)){
-				for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
-					Move move = generateMove(g, m, o, i);
-					if (move != null) {
-						move.evaluate(g.getBoard());
-						//System.out.println("before: " + move.toString());
-						moves.add(move);
-						//System.out.println("after: " + move.toString());
-					}
-				}
-				//}
-			}
-		}
+        while(!ownMarbles.isEmpty()){
+            Marble m = ownMarbles.pollFirst();
+            for(Marble o : ownMarbles){
+                //if(!m.equals(o)){
+                for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
+                    Move move = generateMove(g, m, o, i);
+                    if (move != null) {
+                        move.evaluate(g.getBoard());
+                        //System.out.println("before: " + move.toString());
+                        moves.add(move);
+                        //System.out.println("after: " + move.toString());
+                    }
+                }
+                //}
+            }
+        }
 
-		/*for(Marble m : ownMarbles){
+        /*for(Marble m : ownMarbles){
             for(Marble o : ownMarbles){
                 if(!m.equals(o)){
                     for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
@@ -105,8 +105,8 @@ public class AIPlayer {
                 }
             }
         }*/
-		// Generates moves for 2 or more marbles
-		/*for (int i = 0; i < currentBoard.size() - 1; ++i) {
+        // Generates moves for 2 or more marbles
+        /*for (int i = 0; i < currentBoard.size() - 1; ++i) {
             for (int j = i + 1; j < currentBoard.size(); ++j) {
 
                 m1 = currentBoard.get(i);
@@ -130,528 +130,418 @@ public class AIPlayer {
 
 
 
-		return moves;
-	}
+        return moves;
+    }
 
-	/**
-	 * This method is responsible for generating a single legal move of one marble based on a given board state
-	 * @return
-	 */
-	public static Move generateMove(Game g, Marble m, int direction){
-		Game dummy = new Game(g);
-		Marble nm = Game.searchBoard(dummy.getBoard(), m.getAlpha(), m.getNumeric());
-		Move displayMove = new Move(m, direction);
-		Move move = new Move(nm, direction);
+    /**
+     * This method is responsible for generating a single legal move of one marble based on a given board state
+     * @return
+     */
+    public static Move generateMove(Game g, Marble m, int direction){
+        Game dummy = new Game(g);
+        Marble nm = Game.searchBoard(dummy.getBoard(), m.getAlpha(), m.getNumeric());
+        Move displayMove = new Move(m, direction);
+        Move move = new Move(nm, direction);
 
 
-		/*System.out.print("before");
+        /*System.out.print("before");
         System.out.println(move);*/
-		if(Game.moveIsLegal(g, move)){
-			// resets the board state so that the marbles in the move display origin coordinates
+        if(Game.moveIsLegal(g, move)){
+            // resets the board state so that the marbles in the move display origin coordinates
 
-			/*System.out.print("after");
+            /*System.out.print("after");
             System.out.println(move);*/
-			return displayMove;
-		}      
+            return displayMove;
+        }      
 
-		// return null if move was illegal   
-		return null;
-	}
+        // return null if move was illegal   
+        return null;
+    }
 
-	/**
-	 * This method is responsible for generating a single legal move of multiple marble based on a given board state
-	 * @return
-	 */
-	public static Move generateMove(Game g, Marble m1, Marble m2, int direction){
+    /**
+     * This method is responsible for generating a single legal move of multiple marble based on a given board state
+     * @return
+     */
+    public static Move generateMove(Game g, Marble m1, Marble m2, int direction){
 
-		Game dummy = new Game(g);
+        Game dummy = new Game(g);
 
-		Move displayMove = new Move(m1, m2, direction);
-		Marble nm1 = Game.searchBoard(dummy.getBoard(), m1.getAlpha(), m1.getNumeric());
-		Marble nm2 = Game.searchBoard(dummy.getBoard(), m2.getAlpha(), m2.getNumeric());
-		Move move = new Move(nm1, nm2, direction);
+        Move displayMove = new Move(m1, m2, direction);
+        Marble nm1 = Game.searchBoard(dummy.getBoard(), m1.getAlpha(), m1.getNumeric());
+        Marble nm2 = Game.searchBoard(dummy.getBoard(), m2.getAlpha(), m2.getNumeric());
+        Move move = new Move(nm1, nm2, direction);
 
-		if(Game.moveIsLegal(g, move)){
-			// resets the board state so that the marbles in the move display origin coordinates
-			//g.setBoard(gameState);
-			return displayMove;
-		}      
+        if(Game.moveIsLegal(g, move)){
+            // resets the board state so that the marbles in the move display origin coordinates
+            //g.setBoard(gameState);
+            return displayMove;
+        }      
 
-		// return null if move was illegal
-		return null;
-	}
+        // return null if move was illegal
+        return null;
+    }
 
-	/**
-	 * Takes a suggested move and executes it on the specified board.
-	 * @param g the current state of the game
-	 * 
-	 */
-	public static Board genResultState(Board b, Move mv){
-		Game dummy = new Game(b, mv.getMovedList().get(0).isBlack());
-		//Board original = Board.copyBoard(g.getBoard());
+    /**
+     * Takes a suggested move and executes it on the specified board.
+     * @param g the current state of the game
+     * 
+     */
+    public static Board genResultState(Board b, Move mv){
+        Game dummy = new Game(b, mv.getMovedList().get(0).isBlack());
+        //Board original = Board.copyBoard(g.getBoard());
 
-		Marble m1 = mv.getMovedList().get(0);
-		m1 = Game.searchBoard(dummy.getBoard(), m1.getAlpha(), m1.getNumeric());
-		Marble m2 = null;
+        Marble m1 = mv.getMovedList().get(0);
+        m1 = Game.searchBoard(dummy.getBoard(), m1.getAlpha(), m1.getNumeric());
+        Marble m2 = null;
 
-		//System.out.println("old: " + original.toString());
+        //System.out.println("old: " + original.toString());
 
-		if (mv.getMovedList().size() > 1) {
-			m2 = mv.getMovedList().get(1);
-			if(m2 != null){
-				m2 = Game.searchBoard(dummy.getBoard(), m2.getAlpha(), m2.getNumeric());
-			}
-		}
+        if (mv.getMovedList().size() > 1) {
+            m2 = mv.getMovedList().get(1);
+            if(m2 != null){
+                m2 = Game.searchBoard(dummy.getBoard(), m2.getAlpha(), m2.getNumeric());
+            }
+        }
 
-		if(m2 == null){// single marble move 
-			//System.out.println("single");
-			dummy.move(m1, mv.getDirection(), m1.isBlack());  
+        if(m2 == null){// single marble move 
+            //System.out.println("single");
+            dummy.move(m1, mv.getDirection(), m1.isBlack());  
 
-		} else {// multiple marble move
-			/*System.out.println("double");
+        } else {// multiple marble move
+            /*System.out.println("double");
             System.out.println(m2.toString());*/
-			//System.out.println("The program gets here sometimes");
-			dummy.move(m1, m2, mv.getDirection(), m1.isBlack());   
-		}
+            //System.out.println("The program gets here sometimes");
+            dummy.move(m1, m2, mv.getDirection(), m1.isBlack());   
+        }
 
-		//System.out.println("new?: " + dummy.getBoard().toString());
+        //System.out.println("new?: " + dummy.getBoard().toString());
 
-		/*System.out.println(success);
+        /*System.out.println(success);
         if (success) {
             System.out.println("new: " + dummy.getBoard().toString());
             //System.out.println("butts");
         }*/
-		return dummy.getBoard();
-	}
+        return dummy.getBoard();
+    }
 
-	/**
-	 * Returns resulting states from an arraylist of moves (which must already be checked for legality) as a HashMap; 
-	 * evaluation function values will be added later as the double values in the map
-	 * @param g
-	 * @param moves
-	 * @return
-	 */
-	public static HashSet<Board> genAllResults(Board b, ArrayList<Move> moves){
-		HashSet<Board> states = new HashSet<Board>();
-		Board singleState = null;
+    /**
+     * Returns resulting states from an arraylist of moves (which must already be checked for legality) as a HashMap; 
+     * evaluation function values will be added later as the double values in the map
+     * @param g
+     * @param moves
+     * @return
+     */
+    public static HashSet<Board> genAllResults(Board b, ArrayList<Move> moves){
+        HashSet<Board> states = new HashSet<Board>();
+        Board singleState = null;
 
-		for(Move mv : moves){
-			singleState = Board.copyBoard(genResultState(b, mv));
-			//Collections.sort(singleState, new MarbleComparator());
-			//System.out.println(singleState.toString());
-			if(!states.contains(singleState)){
-				states.add(singleState);
+        for(Move mv : moves){
+            singleState = Board.copyBoard(genResultState(b, mv));
+            //Collections.sort(singleState, new MarbleComparator());
+            //System.out.println(singleState.toString());
+            if(!states.contains(singleState)){
+                states.add(singleState);
 
-			}
-		}
+            }
+        }
 
-		return states;
-	}
+        return states;
+    }
 
-	/**
-	 * this method returns as an integer the number of spaces away a marble is from the centre of the board
-	 * @param m
-	 * @return
-	 */
-	//    public static int distanceFromCenter(Marble m){
-	//        //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
-	//        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
-	//    }
+    /**
+     * this method returns as an integer the number of spaces away a marble is from the centre of the board
+     * @param m
+     * @return
+     */
+    public static int distanceFromCenter(Marble m){
+        //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
+        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
+    }
 
-	/**
-	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
-	 * @param b the current board state
-	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
-	 * @return the board state's evaluation
-	 */
-	//    public static double evaluateBoard(Board b, boolean aiIsBlack){
-	//        double eval = 0;
-	//
-	//        // variables to modify for evaluation purposes
-	//        double ownMarbleVal = 1.0;
-	//        double oppMarbleVal = 1.0;
-	//
-	//        double centerMod = 2.0;
-	//        double ring1Mod = 1.5;
-	//        double ring2Mod = 1.0;
-	//        double ring3Mod = 0.75;
-	//        double ring4Mod = 0.5;
-	//
-	//        int dist;
-	//        double posMod = 1.0;
-	//
-	//        double firstKO = 1.0;
-	//        double secondKO = 2.0;
-	//        double thirdKO = 4.0;
-	//        double fourthKO = 7.0;
-	//        double fifthKO = 15.0;
-	//        double sixthKO = 100.0;
-	//
-	//        // counter for enemy marbles still in play, could get this from game score;
-	//        // but I don't know if this method needs to be passed the whole game
-	//        int oppMarbles = 0;
-	//
-	//        for(Marble m : b){ // checks each marble present on the board
-	//            dist = AIPlayer.distanceFromCenter(m);
-	//            switch (dist){
-	//            case 0: posMod = centerMod;
-	//            break;
-	//            case 1: posMod = ring1Mod;
-	//            break;
-	//            case 2: posMod = ring2Mod;
-	//            break;
-	//            case 3: posMod = ring3Mod;
-	//            break;
-	//            case 4: posMod = ring4Mod;
-	//            break;
-	//            }
-	//
-	//            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
-	//                eval += (ownMarbleVal * posMod);
-	//
-	//            } else { // do negative things for opposing marbles
-	//                if(posMod < 3){
-	//                    eval -= (oppMarbleVal * posMod);
-	//                } else {
-	//                    eval += (oppMarbleVal * posMod);
-	//                }
-	//
-	//                ++oppMarbles;
-	//            }
-	//        }
-	//
-	//        if(oppMarbles < 14){ // at least one marble knocked out
-	//            eval += firstKO;
-	//        }
-	//        if(oppMarbles < 13){ // at least two marbles knocked out
-	//            eval += secondKO;
-	//        }
-	//        if(oppMarbles < 12){ // at least three marbles knocked out
-	//            eval += thirdKO;
-	//        }
-	//        if(oppMarbles < 11){ // at least four marbles knocked out
-	//            eval += fourthKO;
-	//        }
-	//        if(oppMarbles < 10){ // at least five marbles knocked out
-	//            eval += fifthKO;
-	//        }
-	//        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
-	//            eval += sixthKO;
-	//        }
-	//
-	//        return eval;
-	//    }
+    /**
+     * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
+     * @param b the current board state
+     * @param aiIsBlack true if the AI is playing black and false if it is playing white
+     * @return the board state's evaluation
+     */
+    public static double evaluateBoard(Board b, boolean aiIsBlack){
+        double eval = 0;
 
+        // variables to modify for evaluation purposes
+        double ownMarbleVal = 1.0;
+        double oppMarbleVal = 1.0;
 
-	public static int calculateCenter(Board b, boolean aiIsBlack) {
+        double centerMod = 2.0;
+        double ring1Mod = 1.5;
+        double ring2Mod = 1.0;
+        double ring3Mod = 0.75;
+        double ring4Mod = 0.5;
 
-		char color;
-		int alpha;
-		int num;
-		int centerBlack = 0;
-		int centerWhite = 0;
-		int centerTotal = 0;
+        int dist;
+        double posMod = 1.0;
 
-		for(Marble m : b) {
-			//Gets the alpha of the marble.
-			alpha = m.getAlpha();
-			//Gets the numeric of the marble.
-			num = m.getNumeric();
-			//Gets the color of the marble.
-			color = m.getColor();
+        double firstKO = 1.0;
+        double secondKO = 2.0;
+        double thirdKO = 4.0;
+        double fourthKO = 7.0;
+        double fifthKO = 15.0;
+        double sixthKO = 100.0;
 
-			//Calculates the distances from the center and adds them all together.
-			//It takes the center marble E5 and then calculates the distance accordingly.
-			//The marble on the edges will have the lowest value = 1.
-			//The marble next to it will have a value = 4 which is the highest.
-			if(aiIsBlack == false && color == 'w')
-				centerWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-			else
-				centerBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-		}
+        // counter for enemy marbles still in play, could get this from game score;
+        // but I don't know if this method needs to be passed the whole game
+        int oppMarbles = 0;
 
-		if(aiIsBlack == false)  
-			centerTotal = centerWhite - centerBlack;
-		else
-			centerTotal = centerBlack - centerWhite;
+        for(Marble m : b){ // checks each marble present on the board
+            dist = AIPlayer.distanceFromCenter(m);
+            switch (dist){
+            case 0: posMod = centerMod;
+            break;
+            case 1: posMod = ring1Mod;
+            break;
+            case 2: posMod = ring2Mod;
+            break;
+            case 3: posMod = ring3Mod;
+            break;
+            case 4: posMod = ring4Mod;
+            break;
+            }
 
-		return centerTotal;
-	}
+            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
+                eval += (ownMarbleVal * posMod);
 
+            } else { // do negative things for opposing marbles
+                if(posMod < 3){
+                    eval -= (oppMarbleVal * posMod);
+                } else {
+                    eval += (oppMarbleVal * posMod);
+                }
 
-	public static int adjacentMarbles(Board b, boolean aiIsBlack) {
-		int adjacentWhite = 0;
-		int adjacentBlack = 0;
-		int adjacentTotalWhite = 0;
-		int adjacentTotalBlack = 0;
-		int adjacentTotal = 0;
-		Marble adjacent = null;
-		Marble nextMarble;
-		char color;
-		int alpha;
-		int num;
-		Game g = new Game(b, aiIsBlack);
+                ++oppMarbles;
+            }
+        }
 
-		for(Marble m : b) {
-			//Gets the alpha of the marble.
-			alpha = m.getAlpha();
-			//Gets the numeric of the marble.
-			num = m.getNumeric();
-			//Gets the color of the marble.
-			color = m.getColor();
+        if(oppMarbles < 14){ // at least one marble knocked out
+            eval += firstKO;
+        }
+        if(oppMarbles < 13){ // at least two marbles knocked out
+            eval += secondKO;
+        }
+        if(oppMarbles < 12){ // at least three marbles knocked out
+            eval += thirdKO;
+        }
+        if(oppMarbles < 11){ // at least four marbles knocked out
+            eval += fourthKO;
+        }
+        if(oppMarbles < 10){ // at least five marbles knocked out
+            eval += fifthKO;
+        }
+        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
+            eval += sixthKO;
+        }
 
-			//Checks for the adjacent marbles for a particular marble.
-			//Particularly for 3 in a row.
-			//This for loop runs for each marble in every direction possible.
-			for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
+        System.out.println(eval);
+        return eval;
+    }
 
-				//adjacent will be equal to null if there's no marble adjacent
-				// to the current marble.
-				while(adjacent != null) {
-					//checkAdjacent() function in Game.java checks if there's a marble in the given direction.
-					adjacent = g.checkAdjacent(m, i);
-					if(aiIsBlack == true && color == 'b')
-						adjacentBlack += 1;
-					else
-						adjacentWhite += 1;
-				}
+    //Made by JAISREET
+//  public static int evaluateBoard(Board b, boolean aiIsBlack) {
+//    
+//            int total = 0;
+//            int gravityBlack = 0;
+//            int gravityWhite = 0;
+//            int gravityTotal = 0;
+//            int adjacentWhite = 0;
+//            int adjacentBlack = 0;
+//            int adjacentTotalWhite = 0;
+//            int adjacentTotalBlack = 0;
+//            int adjacentTotal = 0;
+//            char color;
+//            int alpha;
+//            int num;
+//            
+//        for(Marble m : b) {
+//                alpha = m.getAlpha();
+//                num = m.getNumeric();
+//                color = m.getColor();
+//    
+//                if(aiIsBlack == false && color == 'w')
+//                    gravityWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//                else
+//                    gravityBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//    
+//    //          for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
+//    //              while(checkAdjacent(m, i) != null) {
+//    //                  if(aiIsBlack == true && color == 'b')
+//    //                      adjacentBlack += 1;
+//    //                  else
+//    //                      adjacentWhite += 1;
+//    //              }
+//    //
+//    //              if(adjacentBlack == 1)
+//    //                  adjacentTotalBlack += 1;
+//    //              else if(adjacentWhite == 2)
+//    //                  adjacentTotalBlack += 2;
+//    //              else
+//    //                  adjacentTotalBlack += 3;
+//    //
+//    //              if(adjacentWhite == 1)
+//    //                  adjacentTotalWhite += 1;
+//    //              else if(adjacentWhite == 2)
+//    //                  adjacentTotalWhite += 2;
+//    //              else
+//    //                  adjacentTotalWhite += 3;
+//    //
+//    //          }
+//            }
+//            if(aiIsBlack == false)  {
+//                gravityTotal = gravityWhite - gravityBlack;
+//                adjacentTotal = adjacentTotalWhite - adjacentTotalBlack;
+//            }
+//            else {
+//                gravityTotal = gravityBlack - gravityWhite;
+//                adjacentTotal = adjacentTotalBlack - adjacentTotalWhite;
+//            }
+//    
+//            total = gravityTotal + adjacentTotal;
+//    
+//            return total;
+//        }
+//  
 
-				//This adds 1 to the adjacent black if there are 2 marbles together
-				// and adds 2 if there are 3 marbles together.
-				// For black marbles.
-				if(adjacentBlack == 1)
-					adjacentTotalBlack += 1;
-				else if(adjacentBlack == 2)
-					adjacentTotalBlack += 2;
-
-				//For white marbles.
-				if(adjacentWhite == 1)
-					adjacentTotalWhite += 1;
-				else if(adjacentWhite == 2)
-					adjacentTotalWhite += 2;
-			}
-
-		}
-		if(aiIsBlack == false)  {
-			adjacentTotal = adjacentTotalWhite - adjacentTotalBlack;
-		}
-		else {
-			adjacentTotal = adjacentTotalBlack - adjacentTotalWhite;
-		}
-
-		return adjacentTotal;
-	}
-
-	//Calculating the value for half hexagonal blobs.
-	public static int halfHexagonBlob(Board b, boolean aiIsBlack) {
-		int halfBlobTotal = 0;
-		char color;
-		int alpha;
-		int num;
-		int ring = 0;
-		int direction = 1;
-		int total;
-		Marble nextMarble = null;
-		Marble Marble1 = null;
-		Marble Marble2 = null;
-		Marble Marble3 = null;
-		Game g = new Game(b, aiIsBlack);
-
-		for(Marble m : b) {
-			//Gets the alpha of the marble.
-			alpha = m.getAlpha();
-			//Gets the numeric of the marble.
-			num = m.getNumeric();
-			//Gets the color of the marble.
-			color = m.getColor();
-
-			ring = 5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num);
-			if(ring == 2) {
-				//The next two lines of code check for the horizontal lines
-				// at the top and bottom where alpha =  'B' or 'H'
-				//It won't be in the second ring if alpha = 'B' and num = 1 or 6
-				// and if alpha = 'H' and num = 4 or 9
-				if((alpha == 2 && num != 1 && num != 6) || (alpha == 8 && num != 4 && num != 9)) {
-					nextMarble.setNumeric( num + 1);
-					if(nextMarble.isActive()) {
-						Marble1.setAlpha(alpha + 1);
-						Marble2.setAlpha(alpha + 1);
-						Marble3.setAlpha(alpha + 1);
-						Marble1.setNumeric(num);
-						Marble2.setNumeric(num + 1);
-						Marble3.setNumeric(num + 2);
-						if(Marble1.isActive() && Marble2.isActive() && Marble3.isActive())
-							halfBlobTotal += 3;
-						break;
-					}
-					nextMarble.setNumeric( num - 1);
-					if(nextMarble.isActive()) {
-						Marble1.setAlpha(alpha + 1);
-						Marble2.setAlpha(alpha + 1);
-						Marble3.setAlpha(alpha + 1);
-						Marble1.setNumeric(num);
-						Marble2.setNumeric(num + 1);
-						Marble3.setNumeric(num + 2);
-						if(Marble1.isActive() && Marble2.isActive() && Marble3.isActive())
-							halfBlobTotal += 1;
-						break;
-					}
-				}
-			}
-		}
-
-		return halfBlobTotal;
-	}
+    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth){
+        Game g = new Game(game);
+        int depth = 0;
+        long startTime = System.nanoTime();
+        long timeTaken = 0;
+        int movesMade = aiIsBlack ? g.getBlackMoves().size() : g.getWhiteMoves().size();
+        Move bestMove = null;
+        ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
+        bestMove = moves.get(0);
 
 
-	/**
-	 * @author Jaisreet
-	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
-	 * @param b the current board state
-	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
-	 * @return the board state's evaluation
-	 */
-	public static int evaluateBoard(Board b, boolean aiIsBlack) {
+        System.out.println(System.nanoTime() - startTime);
+        System.out.println(g.getAiTimeLimit());
 
-		System.out.println("Evaluate board");
-		int total = calculateCenter(b, aiIsBlack) + adjacentMarbles(b, aiIsBlack) + halfHexagonBlob(b, aiIsBlack);
-		return total;
-	}
+        while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
 
-	public static Move alphaBetaSearch(Game game, boolean aiIsBlack){
-		System.out.println("Alpha beta Search");
-		Game g = new Game(game);
-		int depth = 0;
-		int maxDepth = 1;
-		long startTime = System.nanoTime();
-		long timeTaken = 0;
-		int movesMade = aiIsBlack ? g.getBlackMoves().size() : g.getWhiteMoves().size();
-		Move bestMove = null;
-		ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
-		bestMove = moves.get(0);
+            ++depth;
+            double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE, depth, maxDepth);
 
 
-		System.out.println(System.nanoTime() - startTime);
-		System.out.println(g.getAiTimeLimit());
+            for (Move m : moves) {
+                if (v == m.getEval()) {
+                    bestMove = m;
+                    System.out.println(bestMove.toString());
+                    bestMove.setTime(timeTaken);
+                }
+            } 
 
-		while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
-			double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE, depth, maxDepth);
-
-			for (Move m : moves) {
-				if (v == m.getEval()) {
-					bestMove = m;
-					bestMove.setTime(timeTaken);
-				}
-			} 
-
-			timeTaken = System.nanoTime() - startTime;
-			++maxDepth;
-		}
-
-		System.out.println("BEST MOVE" + bestMove);
-		return bestMove;
-	}    
+            timeTaken = System.nanoTime() - startTime;
+            
+        }
 
 
-	/**    * 
-	 * @param b the current board state
-	 * @param aiIsBlack whether the AI is playing black pieces
-	 * @param a alpha; i.e. the largest value encountered so far
-	 * @param B Beta; i.e. the smallest value encountered so far
-	 * @return the best possible move for the AI given the board state
-	 */
-	public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
+        return bestMove;
+    }
+    	
 
-		System.out.println("MAX");
-		double currentEval = evaluateBoard(current, aiIsBlack);
-		if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
-			return currentEval;
-		}
-		int newDepth = ++depth;
-		/* Turn time limit should go here as terminal test */
+    /**    * 
+     * @param b the current board state
+     * @param aiIsBlack whether the AI is playing black pieces
+     * @param a alpha; i.e. the largest value encountered so far
+     * @param B Beta; i.e. the smallest value encountered so far
+     * @return the best possible move for the AI given the board state
+     */
+    public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
 
-		System.out.println("Entered maxMove: " + currentEval);
-		double maxEval = -Double.MAX_VALUE;
-		Game dummy = new Game(current, aiIsBlack);
-		ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
+        double currentEval = evaluateBoard(current, aiIsBlack);
+        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+            return currentEval;
+        }
+        int newDepth = ++depth;
+        /* Turn time limit should go here as terminal test */
 
-		//double maxValue = -Double.MAX_VALUE;
+        System.out.println("Entered maxMove: " + currentEval);
+        double maxEval = -Double.MAX_VALUE;
+        Game dummy = new Game(current, aiIsBlack);
+        ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
 
-		for(int i = 0; i < moves.size(); ++i){
-			// pulled out of Math.max function for re-use
-			double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+        //double maxValue = -Double.MAX_VALUE;
 
-			// straight from pseudocode
-			maxEval = Math.max(maxEval, minEval);
-			if(maxEval >= B){
-				//System.out.println(moves.get(i).toString());
-				return maxEval;
-			}
+        for(int i = 0; i < moves.size(); ++i){
+            // pulled out of Math.max function for re-use
+            double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
 
-			/*if(minEval > maxValue){ // if the current result is the best we have so far
+            // straight from pseudocode
+            maxEval = Math.max(maxEval, minEval);
+            if(maxEval >= B){
+                //System.out.println(moves.get(i).toString());
+                return maxEval;
+            }
+
+            /*if(minEval > maxValue){ // if the current result is the best we have so far
                 maxValue = minEval; // set the max value to current result
                 maxIndex = i; // set index of "best" move to current move
             }*/
 
 
-			a = Math.max(a, maxEval);
-		}
+            a = Math.max(a, maxEval);
+        }
 
-		//System.out.println(moves.get(maxIndex).toString());
-		return maxEval;
-	}
+        //System.out.println(moves.get(maxIndex).toString());
+        return maxEval;
+    }
 
-	/**
-	 * 
-	 * @param b the current board state
-	 * @param aiIsBlack whether the AI is playing black pieces
-	 * @param a alpha; i.e. the largest value encountered so far
-	 * @param B Beta; i.e. the smallest value encountered so far
-	 * @return the best possible move for the opponent given the board state
-	 */
-	public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
-		System.out.println("MIN");
-		double currentEval = evaluateBoard(current, aiIsBlack);
-		if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
-			return currentEval;
-		}
-		int newDepth = ++depth;
+    /**
+     * 
+     * @param b the current board state
+     * @param aiIsBlack whether the AI is playing black pieces
+     * @param a alpha; i.e. the largest value encountered so far
+     * @param B Beta; i.e. the smallest value encountered so far
+     * @return the best possible move for the opponent given the board state
+     */
+    public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
+        double currentEval = evaluateBoard(current, aiIsBlack);
+        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+            return currentEval;
+        }
+        int newDepth = ++depth;
 
-		System.out.println("Entered minMove: " + currentEval);
-		double minEval = Double.MAX_VALUE;
-		Game dummy = new Game(current, aiIsBlack);
-		ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
+        System.out.println("Entered minMove: " + currentEval);
+        double minEval = Double.MAX_VALUE;
+        Game dummy = new Game(current, aiIsBlack);
+        ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
 
-		//double minValue = 0.0;
+        //double minValue = 0.0;
 
-		for(int i = 0; i < moves.size(); ++i){
-			// pulled out of Math.min function for re-use
-			double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+        for(int i = 0; i < moves.size(); ++i){
+            // pulled out of Math.min function for re-use
+            double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
 
-			// straight from pseudocode
-			minEval = Math.min(minEval, maxEval);
-			if(minEval <= a){
-				//System.out.println(moves.get(i).toString());
-				return minEval;
-			}
+            // straight from pseudocode
+            minEval = Math.min(minEval, maxEval);
+            if(minEval <= a){
+                //System.out.println(moves.get(i).toString());
+                return minEval;
+            }
 
-			/*if(maxEval < minValue){ // if the current result is the worst we have so far
+            /*if(maxEval < minValue){ // if the current result is the worst we have so far
                 minValue = maxEval; // set the min value to current result
                 minIndex = i; // set index of "worst" move to current move
             }*/
 
-			B = Math.min(B, minEval);
-		}
+            B = Math.min(B, minEval);
+        }
 
-		//System.out.println(moves.get(minIndex).toString());
-		return minEval;
-	}
+        //System.out.println(moves.get(minIndex).toString());
+        return minEval;
+    }
 
-	public static int getMaxDepth(){
-		return MAX_DEPTH;
-	}
+    public static int getMaxDepth(){
+        return MAX_DEPTH;
+    }
 
-	public static void setMaxDepth(int newMaxDepth){
-		MAX_DEPTH = newMaxDepth;
-	}
+    public static void setMaxDepth(int newMaxDepth){
+        MAX_DEPTH = newMaxDepth;
+    }
 }
