@@ -66,7 +66,7 @@ public class TestDriver {
         /*Thread thread = new Thread(task);
         thread.start();*/
         GameFrame frame = new GameFrame(game);
-
+     
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1000, 735);
         frame.setVisible(true);  
@@ -74,20 +74,13 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-        /*Runnable task = () -> {
+      
             System.out.print("Evaluating board for black side:");
             System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
 
             System.out.print("Evaluating board for white side:");
             System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
 
-            Move butts = AIPlayer.alphaBetaSearch(game, true);
-            game.setRecommended(butts);
-            System.out.println(butts.toString());
-        };
-
-        task.run();*/
-
-
+            
     }
 }

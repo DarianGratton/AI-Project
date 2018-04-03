@@ -118,6 +118,7 @@ public abstract class Gui {
             while(nanoSec < g.getAiTimeLimit()){
                 nanoSec = System.nanoTime() - turnStart;
                 g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack));
+                GameFrame.updateNextMove(g);
                 if(nanoSec >= g.getAiTimeLimit()){
                     doTheThing.shutdownNow();
                 }

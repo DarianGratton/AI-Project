@@ -336,7 +336,7 @@ public class Game {
     public void switchSides(){
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
         //the line below breaks shit
-        //Gui.updateRecommended(this, this.aiIsBlack);
+        Gui.updateRecommended(this, this.aiIsBlack);
     }
 
     /**
@@ -392,7 +392,7 @@ public class Game {
     /**
      * @return the aiTimeLimit
      */
-    public double getAiTimeLimit() {
+    public long getAiTimeLimit() {
         return aiTimeLimit;
     }
 
