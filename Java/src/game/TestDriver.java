@@ -2,6 +2,8 @@ package game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -49,7 +51,7 @@ public class TestDriver {
 
 
         Game game = new Game();
-        //game.setBoard(test);
+        game.setBoard(test);
 
         /*for(Marble m : game.getBoard()){
             System.out.println(m.toString()); 
@@ -59,44 +61,51 @@ public class TestDriver {
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
         }*/
-        
-//        Thread thread = new Thread(task);
-//        thread.start();
-        GameFrame frame = new GameFrame(game);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 735);
-        frame.setVisible(true);  
 
-        Graphics g = frame.getGraphics();
-        frame.paintComponents(g);
+        Runnable board = () -> {
+            GameFrame frame = new GameFrame(game);
 
-        Runnable task = () -> {
-            while(game.isGameInSession()) {
-                
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 735);
+            frame.setVisible(true);  
+
+            Graphics g = frame.getGraphics();
+            frame.paintComponents(g);
+        };
+
+
+        Thread thread = new Thread(board);
+        thread.start();
+
+
+        System.out.print("Evaluating board for black side:");
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+
+        System.out.print("Evaluating board for white side:");
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
+
+        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
+        game.setRecommended(butts);
+        System.out.println(butts.toString());
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+
+            while(game.isGameInSession()){
                 try {
                     Thread.sleep(10);
                 } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
-                
-                if (game.activeIsBlack() == game.isAiBlack()) {
-                    Board copyBoard = Board.copyBoard(game.getBoard());
-                    System.out.print("Evaluating board for black side:");
-                    System.out.println(AIPlayer.evaluateBoard(copyBoard, true));
-
-                    System.out.print("Evaluating board for white side:");
-                    System.out.println(AIPlayer.evaluateBoard(copyBoard, false));
-
-                    Move nextMove = AIPlayer.alphaBetaSearch(game, true);
-                    game.setRecommended(nextMove);
-                    frame.updateRecommendedMove();
-                    System.out.println(nextMove.toString());
-                } 
-            }
-        };
+                long start = Gui.getTurnStart();
+                long current = System.nanoTime();
+                if((current - start) >= game.getAiTimeLimit()){
+                    Gui.killExecutor();
+                }
+            }    
+        });
         
-        Thread newThread = new Thread(task);
-        newThread.start();
     }
 }

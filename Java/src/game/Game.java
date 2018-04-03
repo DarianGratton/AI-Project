@@ -335,7 +335,9 @@ public class Game {
      */
     public void switchSides(){
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
-        //Gui.updateRecommended(this, this.aiIsBlack);
+        //the line below breaks shit
+        System.out.println("switching sides");
+        Gui.updateRecommended(this, this.aiIsBlack);
     }
 
     /**
@@ -391,7 +393,7 @@ public class Game {
     /**
      * @return the aiTimeLimit
      */
-    public double getAiTimeLimit() {
+    public long getAiTimeLimit() {
         return aiTimeLimit;
     }
 
@@ -545,7 +547,7 @@ public class Game {
         }
 
         // pushing friendly marble(s)
-        if(adjacent.isBlack() == isBlack && pushedFriend < 2){
+        if(adjacent.isBlack() == moved.isBlack() && moved.isBlack() == isBlack && pushedFriend < 2){
             pushedFriend++;
             if(this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){
                 moved.changePos(direction);
@@ -565,7 +567,7 @@ public class Game {
         }
 
         // if an enemy marble has already been pushed
-        if(adjacent.isBlack() == isBlack && pushedEnemy > 0 && pushedEnemy < pushedFriend){
+        if(adjacent.isBlack() == moved.isBlack() && pushedEnemy > 0 && pushedEnemy < pushedFriend){
 
             pushedEnemy++;
             if(moved.isBlack() == adjacent.isBlack() && this.move(adjacent, direction, isBlack, pushedFriend, pushedEnemy)){

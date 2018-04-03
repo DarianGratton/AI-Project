@@ -131,7 +131,10 @@ public class BoardPanel extends JPanel {
         }
         for (DrawMarble d : drawn){
 
-            if(d.getMarble().isBlack()){
+        	if(d.getHighlight()) {
+        		g2d.setPaint(Color.RED);
+        	}
+        	else if(d.getMarble().isBlack()){
                 g2d.setPaint(Color.BLACK);
             } else {
                 g2d.setPaint(Color.WHITE);
@@ -169,18 +172,21 @@ public class BoardPanel extends JPanel {
                         if(m1 == null){
                             m1 = d.getMarble();
                             direction = 0;
+                            d.setHighlight(true);
                             marbleClicked = true;
                         } else if(m2 == null) {
                             m2 = d.getMarble();
                             direction = 0;
+                            d.setHighlight(true);
                             marbleClicked = true;
                         } else if(m3 == null){
                             m3 = d.getMarble();
+                            d.setHighlight(true);
                             marbleClicked = true;
                         } else {
                             marbleClicked = false;
                         }
-                        
+                        repaint();
                         
     
     /*
@@ -278,17 +284,26 @@ public class BoardPanel extends JPanel {
                                 		blackTurnTimer.resetStopTimer();
                                 		whiteTurnTimer.startTimer();
                                 	}
+                                	
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
                                 }
                             }
 
+                            //Jaisreet
+                            for(DrawMarble d : drawn) {
+                            	if(d.getHighlight() == true)
+                            		d.setHighlight(false);
+                            	repaint();
+                            }
+                            
                             // reset variables
                             m1 = null;
                             m2 = null;
                             m3 = null;
                             direction = 0;
+                            
                         }
                     }
                 }

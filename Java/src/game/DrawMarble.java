@@ -14,6 +14,7 @@ import java.util.ArrayList;
 public class DrawMarble extends Ellipse2D.Double {
 
     private Marble marble;
+    private boolean highlight;
     
     public DrawMarble(Marble m, Space s){
         super(s.getX(), s.getY(), 65, 65);
@@ -29,6 +30,14 @@ public class DrawMarble extends Ellipse2D.Double {
         super.y = s.getY();
         this.marble.setAlpha(s.getAlpha());
         this.marble.setNumeric(s.getNum());
+    }
+    
+    public void setHighlight(boolean val) {
+    	this.highlight = val;
+    }
+    
+    public boolean getHighlight() {
+    	return this.highlight;
     }
     
 }
