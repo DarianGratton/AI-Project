@@ -17,6 +17,11 @@ public class AIPlayer {
 	private static final long NANO_DIVISOR = 1000000000;
 	private static int MAX_DEPTH = 2;
 	private static Move suggestedMove = null;
+	
+	private static HashSet<ArrayList<Marble>> adjacentMarbles;
+	
+	
+	
 	/**
 	 * This method is responsible for generating a list of possible moves given the current board state
 	 * @return
@@ -204,56 +209,109 @@ public class AIPlayer {
 		}
 		return states;
 	}
-	public static int distanceFromCenter(Board b, boolean aiIsBlack) {
+	
+//	public static int distanceFromCenter(Board b, boolean aiIsBlack) {
+//
+//		char color;
+//		int alpha;
+//		int num;
+//		int centerBlack = 0;
+//		int centerWhite = 0;
+//		int centerTotal = 0;
+//
+//		for(Marble m : b) {
+//			//Gets the alpha of the marble.
+//			alpha = m.getAlpha();
+//			//Gets the numeric of the marble.
+//			num = m.getNumeric();
+//			//Gets the color of the marble.
+//			color = m.getColor();
+//
+//			//Calculates the distances from the center and adds them all together.
+//			//It takes the center marble E5 and then calculates the distance accordingly.
+//			//The marble on the edges will have the lowest value = 2.
+//			//The marble next to it will have a value = 9 which is the highest.
+//			if(aiIsBlack == false && color == 'w')
+//				centerWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//			else
+//				centerBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+//			
+//			
+//		}
+//		
+//		if(aiIsBlack == false)  
+//			centerTotal = centerWhite - centerBlack;
+//		else
+//			centerTotal = centerBlack - centerWhite;
+//
+//		return centerTotal;
+//	}
+//
+//
+//	public static int adjacentMarbles(Board b, boolean aiIsBlack) {
+//		int total = 0;
+//		int color;
+//		int alpha;
+//		int numeric;
+//		for(Marble m : b) {
+//			
+//		}
+//				
+//		return total;
+//	}
 
-		char color;
-		int alpha;
-		int num;
-		int centerBlack = 0;
-		int centerWhite = 0;
-		int centerTotal = 0;
+	public static int isAdjacent(Marble m1, Marble m2) {
+		
+		int alpha1 = m1.getAlpha();
+		int num1 = m1.getNumeric();
+		char color1 = m1.getColor();
 
-		for(Marble m : b) {
-			//Gets the alpha of the marble.
-			alpha = m.getAlpha();
-			//Gets the numeric of the marble.
-			num = m.getNumeric();
-			//Gets the color of the marble.
-			color = m.getColor();
-
-			//Calculates the distances from the center and adds them all together.
-			//It takes the center marble E5 and then calculates the distance accordingly.
-			//The marble on the edges will have the lowest value = 2.
-			//The marble next to it will have a value = 9 which is the highest.
-			if(aiIsBlack == false && color == 'w')
-				centerWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-			else
-				centerBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-			
-			
+		int alpha2 = m2.getAlpha();
+		int num2 = m2.getNumeric();
+		char color2 = m2.getColor();
+		
+		int number = 0;
+		
+		if(color1 != color2)
+			return 0;
+		
+		if(((alpha1 == alpha2 - 1) && (num1 == num2)) || ((alpha1 == alpha2 + 1) && (num1 == num2))) {
+			number = 2;
+			return number;
+		}
+		if (((alpha1 == alpha2) && (num1 == num2 + 1) ) || ((alpha1 == alpha2) && (num1 == num2 - 1))) {
+			number = 2;
+			return number;
+		}
+		if (((alpha1 == alpha2 + 1) && (num1 == num2 + 1)) || ((alpha1 == alpha2 - 1) && (num1 == num2 - 1))) {
+			number = 2;
+			return number;
 		}
 		
-		if(aiIsBlack == false)  
-			centerTotal = centerWhite - centerBlack;
-		else
-			centerTotal = centerBlack - centerWhite;
-
-		return centerTotal;
+		return 0;
 	}
-
-
-	public static int adjacentMarbles(Board b, boolean aiIsBlack) {
-		int total = 0;
-		int color;
-		int alpha;
-		int numeric;
+	
+	public static int isLine(Marble m1, Board b) {
+		int alpha1 = m1.getAlpha();
+		int num1 = m1.getNumeric();
+		char color1 = m1.getColor();
+		int num = 0;
+		
 		for(Marble m : b) {
-			
+			if(m1 != m) {
+				num = isAdjacent(m1, m);
+				if(num != 0) {
+					for(Marble n : b) {
+						if(m1 != n) {
+							num += isAdjacent(m1, n);
+						}
+					}
+				}
+			}
 		}
-				
-		return total;
-	}
 
+		return num;
+	}
 
 	/**
 	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
@@ -263,6 +321,14 @@ public class AIPlayer {
 	 */
 	public static double evaluateBoard(Board b, boolean aiIsBlack){
 		int total = 0;
+		Board testBoard = b;
+		int blobTotal = 0;
+		int adjTotal = 0;
+		for(Marble m : b) {
+			adjTotal += isLine(m, testBoard);
+			System.out.println(adjTotal);
+			
+		}
 		
 		//Kod - Knocked out defensive
 		int Kod1 = 70;
@@ -273,11 +339,11 @@ public class AIPlayer {
 		int Kod6 = 100;
 		
 		//Koo - Knocked out ofensive
-		int Koo1 = 70;
-		int Koo2 = 50;
-		int Koo3 = 40;
-		int Koo4 = 50;
-		int Koo5 = 60;
+		int Koo1 = 85;
+		int Koo2 = 70;
+		int Koo3 = 60;
+		int Koo4 = 65;
+		int Koo5 = 70;
 		int Koo6 = 100;
 		
 		

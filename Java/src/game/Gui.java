@@ -121,9 +121,8 @@ public abstract class Gui {
         try {
             doTheThing.submit(() -> {
                 long nanoSec = 0;
-                int maxDepth = 0;
+                int maxDepth = 3;
                 while(nanoSec < g.getAiTimeLimit()){
-                    ++maxDepth;
                     nanoSec = System.nanoTime() - turnStart;
                     g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
                     /*if(nanoSec >= g.getAiTimeLimit()){
