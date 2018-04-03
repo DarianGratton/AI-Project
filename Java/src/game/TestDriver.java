@@ -82,12 +82,7 @@ public class TestDriver {
 
         /*Thread thread = new Thread(task);
         thread.start();*/
-        GameFrame frame = new GameFrame(game);
-     
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 735);
-        frame.setVisible(true);  
-
+       
         System.out.print("Evaluating board for black side:");
         System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
 
