@@ -80,7 +80,7 @@ public class TestDriver {
         Thread thread = new Thread(board);
         thread.start();
 
-        
+
 
 
         System.out.print("Evaluating board for black side:");
@@ -93,28 +93,15 @@ public class TestDriver {
         game.setRecommended(butts);
         System.out.println(butts.toString());
 
-        ExecutorService executor = Executors.newSingleThreadExecutor();
+        ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(() -> {
-
-            while(game.isGameInSession()){
-                try {
-                    Thread.sleep(10);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-                long start = Gui.getTurnStart();
-                long current = System.nanoTime();
-                if((current - start) >= game.getAiTimeLimit()){
-                    Gui.killExecutor();
-                }
+            long start = Gui.getTurnStart();
+            long current = System.nanoTime();
+            if((current - start) >= game.getAiTimeLimit()){
+                Gui.killExecutor();
             }
-
-            
-            
-            
         });
-        
+
 
     }
 }

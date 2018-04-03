@@ -119,15 +119,16 @@ public abstract class Gui {
         doTheThing = Executors.newSingleThreadExecutor();
         try {
             doTheThing.submit(() -> {
+                System.out.println("entered executor in Gui.updateRecommended()");
                 long nanoSec = 0;
                 int maxDepth = 0;
                 while(nanoSec < g.getAiTimeLimit()){
                     ++maxDepth;
                     nanoSec = System.nanoTime() - turnStart;
                     g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
-                    /*if(nanoSec >= g.getAiTimeLimit()){
+                    if(nanoSec >= g.getAiTimeLimit()){
                         doTheThing.shutdownNow();
-                    }*/
+                    }
                 }
             });
         } catch (Exception e) {
@@ -139,12 +140,20 @@ public abstract class Gui {
     public static void killExecutor(){
         doTheThing.shutdownNow();
     }
+    
+    public static ExecutorService getTheThing(){
+        return doTheThing;
+    }
 
     /**
      * @return the turnStart
      */
     public static long getTurnStart() {
         return turnStart;
+    }
+    
+    public static long getElapsedTime(){
+        return System.nanoTime() - turnStart;
     }
     
 }
