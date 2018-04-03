@@ -444,6 +444,7 @@ public class AIPlayer {
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
         Collections.sort(moves, new MoveComparator().reversed());
+        //I am adding this comment to trigger a change so that I can do a pull request easier
 
         //double minValue = 0.0;
 
