@@ -61,7 +61,7 @@ public abstract class Gui {
         
         // check to see if move is valid
         if(g.move(m1, direction, activeIsBlack)){
-            g.addMoveToList(mv);
+            g.addMoveToList(display);
             turnStart = System.nanoTime();
             	//passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
@@ -93,7 +93,7 @@ public abstract class Gui {
         
         // check to see if move is valid
         if(g.move(m1, m2, direction, activeIsBlack)){
-            g.addMoveToList(mv);
+            g.addMoveToList(display);
             turnStart = System.nanoTime();
           //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
