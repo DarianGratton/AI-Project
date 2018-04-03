@@ -225,10 +225,10 @@ public class AIPlayer {
 			//It takes the center marble E5 and then calculates the distance accordingly.
 			//The marble on the edges will have the lowest value = 2.
 			//The marble next to it will have a value = 9 which is the highest.
-//			if(aiIsBlack == false && color == 'w')
-//				centerWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-//			else
-//				centerBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+			if(aiIsBlack == false && color == 'w')
+				centerWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
+			else
+				centerBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
 			
 			
 		}
@@ -263,7 +263,25 @@ public class AIPlayer {
 	 */
 	public static double evaluateBoard(Board b, boolean aiIsBlack){
 		int total = 0;
-		total = distanceFromCenter(b, aiIsBlack) + adjacentMarbles(b, aiIsBlack);
+		
+		//Kod - Knocked out defensive
+		int Kod1 = 70;
+		int Kod2 = 50;
+		int Kod3 = 40;
+		int Kod4 = 50;
+		int Kod5 = 60;
+		int Kod6 = 100;
+		
+		//Koo - Knocked out ofensive
+		int Koo1 = 70;
+		int Koo2 = 50;
+		int Koo3 = 40;
+		int Koo4 = 50;
+		int Koo5 = 60;
+		int Koo6 = 100;
+		
+		
+		
 		return total;
 	}
 
