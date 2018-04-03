@@ -59,12 +59,9 @@ public class TestDriver {
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
         }*/
-
-
-
         
-        /*Thread thread = new Thread(task);
-        thread.start();*/
+//        Thread thread = new Thread(task);
+//        thread.start();
         GameFrame frame = new GameFrame(game);
 
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -74,20 +71,32 @@ public class TestDriver {
         Graphics g = frame.getGraphics();
         frame.paintComponents(g);
 
-        /*Runnable task = () -> {
-            System.out.print("Evaluating board for black side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+        Runnable task = () -> {
+            while(game.isGameInSession()) {
+                
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                
+                if (game.activeIsBlack() == game.isAiBlack()) {
+                    Board copyBoard = Board.copyBoard(game.getBoard());
+                    System.out.print("Evaluating board for black side:");
+                    System.out.println(AIPlayer.evaluateBoard(copyBoard, true));
 
-            System.out.print("Evaluating board for white side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
+                    System.out.print("Evaluating board for white side:");
+                    System.out.println(AIPlayer.evaluateBoard(copyBoard, false));
 
-            Move butts = AIPlayer.alphaBetaSearch(game, true);
-            game.setRecommended(butts);
-            System.out.println(butts.toString());
+                    Move nextMove = AIPlayer.alphaBetaSearch(game, true);
+                    game.setRecommended(nextMove);
+                    frame.updateRecommendedMove();
+                    System.out.println(nextMove.toString());
+                } 
+            }
         };
-
-        task.run();*/
-
-
+        
+        Thread newThread = new Thread(task);
+        newThread.start();
     }
 }
