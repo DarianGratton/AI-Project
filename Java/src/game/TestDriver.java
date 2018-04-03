@@ -2,6 +2,8 @@ package game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -49,7 +51,7 @@ public class TestDriver {
 
 
         Game game = new Game();
-        //game.setBoard(test);
+        game.setBoard(test);
 
         /*for(Marble m : game.getBoard()){
             System.out.println(m.toString()); 
@@ -62,32 +64,57 @@ public class TestDriver {
 
 
 
-        
-        /*Thread thread = new Thread(task);
-        thread.start();*/
-        GameFrame frame = new GameFrame(game);
 
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(1000, 735);
-        frame.setVisible(true);  
+        Runnable board = () -> {
+            GameFrame frame = new GameFrame(game);
 
-        Graphics g = frame.getGraphics();
-        frame.paintComponents(g);
+            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            frame.setSize(1000, 735);
+            frame.setVisible(true);  
 
-        /*Runnable task = () -> {
-            System.out.print("Evaluating board for black side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
-
-            System.out.print("Evaluating board for white side:");
-            System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
-
-            Move butts = AIPlayer.alphaBetaSearch(game, true);
-            game.setRecommended(butts);
-            System.out.println(butts.toString());
+            Graphics g = frame.getGraphics();
+            frame.paintComponents(g);
         };
 
-        task.run();*/
 
+        Thread thread = new Thread(board);
+        thread.start();
+
+        
+
+
+        System.out.print("Evaluating board for black side:");
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+
+        System.out.print("Evaluating board for white side:");
+        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
+
+        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
+        game.setRecommended(butts);
+        System.out.println(butts.toString());
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        executor.submit(() -> {
+
+            while(game.isGameInSession()){
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                long start = Gui.getTurnStart();
+                long current = System.nanoTime();
+                if((current - start) >= game.getAiTimeLimit()){
+                    Gui.killExecutor();
+                }
+            }
+
+            
+            
+            
+        });
+        
 
     }
 }
