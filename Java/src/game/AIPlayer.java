@@ -443,7 +443,7 @@ public class AIPlayer {
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
-        Collections.sort(moves, new MoveComparator());
+        Collections.sort(moves, new MoveComparator().reversed());
 
         //double minValue = 0.0;
 
