@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * @author Mike
@@ -339,74 +340,9 @@ public class AIPlayer {
             eval += sixthKO;
         }
 
-        System.out.println(eval);
+        //System.out.println(eval);
         return eval;
     }
-
-    //Made by JAISREET
-//  public static int evaluateBoard(Board b, boolean aiIsBlack) {
-//    
-//            int total = 0;
-//            int gravityBlack = 0;
-//            int gravityWhite = 0;
-//            int gravityTotal = 0;
-//            int adjacentWhite = 0;
-//            int adjacentBlack = 0;
-//            int adjacentTotalWhite = 0;
-//            int adjacentTotalBlack = 0;
-//            int adjacentTotal = 0;
-//            char color;
-//            int alpha;
-//            int num;
-//            
-//        for(Marble m : b) {
-//                alpha = m.getAlpha();
-//                num = m.getNumeric();
-//                color = m.getColor();
-//    
-//                if(aiIsBlack == false && color == 'w')
-//                    gravityWhite += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-//                else
-//                    gravityBlack += (5 - Math.abs(5 - alpha) + 5 - Math.abs(5 - num));
-//    
-//    //          for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
-//    //              while(checkAdjacent(m, i) != null) {
-//    //                  if(aiIsBlack == true && color == 'b')
-//    //                      adjacentBlack += 1;
-//    //                  else
-//    //                      adjacentWhite += 1;
-//    //              }
-//    //
-//    //              if(adjacentBlack == 1)
-//    //                  adjacentTotalBlack += 1;
-//    //              else if(adjacentWhite == 2)
-//    //                  adjacentTotalBlack += 2;
-//    //              else
-//    //                  adjacentTotalBlack += 3;
-//    //
-//    //              if(adjacentWhite == 1)
-//    //                  adjacentTotalWhite += 1;
-//    //              else if(adjacentWhite == 2)
-//    //                  adjacentTotalWhite += 2;
-//    //              else
-//    //                  adjacentTotalWhite += 3;
-//    //
-//    //          }
-//            }
-//            if(aiIsBlack == false)  {
-//                gravityTotal = gravityWhite - gravityBlack;
-//                adjacentTotal = adjacentTotalWhite - adjacentTotalBlack;
-//            }
-//            else {
-//                gravityTotal = gravityBlack - gravityWhite;
-//                adjacentTotal = adjacentTotalBlack - adjacentTotalWhite;
-//            }
-//    
-//            total = gravityTotal + adjacentTotal;
-//    
-//            return total;
-//        }
-//  
 
     public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth){
         Game g = new Game(game);
@@ -416,31 +352,30 @@ public class AIPlayer {
         int movesMade = aiIsBlack ? g.getBlackMoves().size() : g.getWhiteMoves().size();
         Move bestMove = null;
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
+        Collections.sort(moves, new MoveComparator());
         bestMove = moves.get(0);
 
 
-        System.out.println(System.nanoTime() - startTime);
+        /*System.out.println(System.nanoTime() - startTime);
         System.out.println(g.getAiTimeLimit());
-
+*/
         while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
 
             ++depth;
             double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE, depth, maxDepth);
-
-
-            for (Move m : moves) {
-                if (v == m.getEval()) {
-                    bestMove = m;
-                    System.out.println(bestMove.toString());
-                    bestMove.setTime(timeTaken);
-                }
-            } 
-
-            timeTaken = System.nanoTime() - startTime;
             
+            for(Move m : moves){
+                if(m.getEval() == v){
+                    bestMove = m;
+                }
+                
+                bestMove.setTime(timeTaken);
+            }
+
+            //System.out.println(bestMove.toString());
+            timeTaken = System.nanoTime() - startTime;
         }
-
-
+        
         return bestMove;
     }
     	
@@ -463,8 +398,11 @@ public class AIPlayer {
 
         System.out.println("Entered maxMove: " + currentEval);
         double maxEval = -Double.MAX_VALUE;
+        
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
+        Collections.sort(moves, new MoveComparator());
+        
 
         //double maxValue = -Double.MAX_VALUE;
 
@@ -478,12 +416,6 @@ public class AIPlayer {
                 //System.out.println(moves.get(i).toString());
                 return maxEval;
             }
-
-            /*if(minEval > maxValue){ // if the current result is the best we have so far
-                maxValue = minEval; // set the max value to current result
-                maxIndex = i; // set index of "best" move to current move
-            }*/
-
 
             a = Math.max(a, maxEval);
         }
@@ -511,6 +443,7 @@ public class AIPlayer {
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
+        Collections.sort(moves, new MoveComparator());
 
         //double minValue = 0.0;
 
@@ -524,11 +457,6 @@ public class AIPlayer {
                 //System.out.println(moves.get(i).toString());
                 return minEval;
             }
-
-            /*if(maxEval < minValue){ // if the current result is the worst we have so far
-                minValue = maxEval; // set the min value to current result
-                minIndex = i; // set index of "worst" move to current move
-            }*/
 
             B = Math.min(B, minEval);
         }

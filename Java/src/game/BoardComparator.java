@@ -6,8 +6,12 @@ public class BoardComparator implements Comparator<Board>{
 
     @Override
     public int compare(Board b1, Board b2) {
-
-        return (int) (b2.getEval() - b1.getEval());
+        if(b1.getEval() > b2.getEval()){
+            return -1;
+        } if(b1.getEval() == b2.getEval()){
+            return 0;
+        } 
+        return 1;
     }
 
 }
