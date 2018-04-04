@@ -154,6 +154,11 @@ public class Move {
     public double getEval(){
         return this.eval;
     }
+    
+    public void setEval(Board b, boolean isBlack){
+        Board result = AIPlayer.genResultState(b, this);
+        this.eval = AIPlayer.evaluateBoard(result, isBlack);  
+    }
 
     /* (non-Javadoc)
      * @see java.lang.Object#toString()
