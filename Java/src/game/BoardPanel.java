@@ -269,7 +269,7 @@ public class BoardPanel extends JPanel {
 
                             if(direction != 0){
                                 if(m2 == null){
-                                    m2 = game.checkAdjacent(m1, direction);
+                                    m2 = Game.checkAdjacent(game.getBoard(), m1, direction);
                                 }
 
                                 // single marble move

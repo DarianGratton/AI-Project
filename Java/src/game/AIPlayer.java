@@ -281,12 +281,14 @@ public class AIPlayer {
         int dist;
         double posMod = 1.0;
 
-        double firstKO = 1.0;
-        double secondKO = 2.0;
-        double thirdKO = 4.0;
-        double fourthKO = 7.0;
-        double fifthKO = 15.0;
-        double sixthKO = 100.0;
+        double firstKO = 10.0;
+        double secondKO = 20.0;
+        double thirdKO = 40.0;
+        double fourthKO = 70.0;
+        double fifthKO = 150.0;
+        double sixthKO = 1000.0;
+        
+        double hexBonus = 50.0;
 
         // counter for enemy marbles still in play, could get this from game score;
         // but I don't know if this method needs to be passed the whole game
@@ -309,12 +311,18 @@ public class AIPlayer {
 
             if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
                 eval += (ownMarbleVal * posMod);
+                if(isHexCluster(b, m)){
+                    eval += hexBonus;
+                }
 
             } else { // do negative things for opposing marbles
-                if(posMod < 3){
+                if(posMod <= 3){
                     eval -= (oppMarbleVal * posMod);
                 } else {
                     eval += (oppMarbleVal * posMod);
+                }
+                if(isHexCluster(b, m)){
+                    eval -= hexBonus;
                 }
 
                 ++oppMarbles;
@@ -342,6 +350,18 @@ public class AIPlayer {
 
         //System.out.println(eval);
         return eval;
+    }
+    
+    public static boolean isHexCluster(Board b, Marble center){
+        boolean surrounded = true;
+        
+        for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
+            if(Game.checkAdjacent(b, center, i) == null || Game.checkAdjacent(b, center, i).isBlack() != center.isBlack()){
+                surrounded = false;
+            }
+        }
+        
+        return surrounded;
     }
 
     public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth){
@@ -390,7 +410,7 @@ public class AIPlayer {
     public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
 
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+        if(currentEval >= 1000.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
         int newDepth = ++depth;
@@ -434,7 +454,7 @@ public class AIPlayer {
      */
     public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+        if(currentEval >= 1000.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
         int newDepth = ++depth;
@@ -443,6 +463,11 @@ public class AIPlayer {
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
+        
+        for(Move m : moves){
+            m.setEval(current, aiIsBlack);
+        }
+        
         Collections.sort(moves, new MoveComparator().reversed());
 
         //double minValue = 0.0;

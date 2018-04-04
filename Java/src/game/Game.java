@@ -450,20 +450,20 @@ public class Game {
         return null;
     }
 
-    public Marble checkAdjacent(Marble m, int direction){
+    public static Marble checkAdjacent(Board b, Marble m, int direction){
         switch (direction) {
         // 1: top-left
-        case 1: return searchBoard(this.getBoard(), m.getAlpha()+1, m.getNumeric());
+        case 1: return searchBoard(b, m.getAlpha()+1, m.getNumeric());
         // 2: top-right
-        case 2: return searchBoard(this.getBoard(), m.getAlpha()+1, m.getNumeric()+1);
+        case 2: return searchBoard(b, m.getAlpha()+1, m.getNumeric()+1);
         // 3: right
-        case 3:return searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric()+1);
+        case 3:return searchBoard(b, m.getAlpha(), m.getNumeric()+1);
         // 4: bottom-right
-        case 4: return searchBoard(this.getBoard(), m.getAlpha()-1, m.getNumeric());
+        case 4: return searchBoard(b, m.getAlpha()-1, m.getNumeric());
         // 5: bottom-left
-        case 5: return searchBoard(this.getBoard(), m.getAlpha()-1, m.getNumeric()-1);
+        case 5: return searchBoard(b, m.getAlpha()-1, m.getNumeric()-1);
         // 6: left
-        case 6: return searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric()-1);  
+        case 6: return searchBoard(b, m.getAlpha(), m.getNumeric()-1);  
         }
         // fallback to break if something weird happens
         return null;
@@ -490,7 +490,7 @@ public class Game {
             return false;
         }
 
-        adjacent = this.checkAdjacent(moved, direction);
+        adjacent = checkAdjacent(this.getBoard(), moved, direction);
 
         if(adjacent == null){
             moved.changePos(direction);
@@ -527,7 +527,7 @@ public class Game {
         int pushedFriend = pushedFriendly;
         int pushedEnemy = pushedOpponent;
 
-        adjacent = this.checkAdjacent(moved, direction);
+        adjacent = checkAdjacent(this.getBoard(), moved, direction);
 
         // adjacent space is empty AND marble being pushed belongs to the player moving
         if(adjacent == null && moved.isBlack() == isBlack){
@@ -658,9 +658,10 @@ public class Game {
                 }
 
                 // first case: only 2 marbles
-                if((checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && m3 == null) 
+                if((checkAdjacent(this.getBoard(), m1, direction) == null && checkAdjacent(this.getBoard(), m2, direction) == null && m3 == null) 
                         // second case: 3 marbles involved
-                        || checkAdjacent(m1, direction) == null && checkAdjacent(m2, direction) == null && checkAdjacent(m3, direction) == null){
+                        || checkAdjacent(this.getBoard(), m1, direction) == null && checkAdjacent(this.getBoard(), m2, direction) == null && 
+                        checkAdjacent(this.getBoard(), m3, direction) == null){
 
                     m1.changePos(direction);
                     m2.changePos(direction);
