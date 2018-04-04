@@ -136,6 +136,11 @@ public class Move {
     public void addMovedToList(Marble moved){
         this.movedList.add(moved);
     }
+    
+    public void setEval(Board b, boolean isBlack){
+        Board result = AIPlayer.genResultState(b, this);
+        this.eval = AIPlayer.evaluateBoard(result, isBlack);  
+    }
 
     /**
      * this method generates a utility value with the evaluateBoard method and associates it with this move

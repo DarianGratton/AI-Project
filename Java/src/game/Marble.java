@@ -33,7 +33,6 @@ public class Marble {
         this.isActive = true;
         this.isBlack = isBlack;
     }
-  
 
     public Marble(Marble m){
         this.alpha = m.getAlpha();
@@ -41,7 +40,7 @@ public class Marble {
         this.isActive = m.isActive();
         this.isBlack = m.isBlack();
     }
-    
+
     /**
      * @return the alpha
      */

@@ -269,7 +269,7 @@ public class BoardPanel extends JPanel {
 
                             if(direction != 0){
                                 if(m2 == null){
-                                    m2 = game.checkAdjacent(m1, direction);
+                                    m2 = Game.checkAdjacent(game.getBoard(), m1, direction);
                                 }
 
                                 // single marble move
@@ -288,10 +288,11 @@ public class BoardPanel extends JPanel {
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
+                                    game.switchSides();
                                 }
                             }
 
-                            //Jaisreet
+                            // Marble Highlighter 
                             for(DrawMarble d : drawn) {
                             	if(d.getHighlight() == true)
                             		d.setHighlight(false);

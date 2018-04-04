@@ -430,14 +430,15 @@ public class GameFrame extends JFrame {
             whiteMarblePanel.updateScoreLabel(activePlayerIsBlack);
             whiteMarblePanel.updateTurnCount(activePlayerIsBlack);
             whiteMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
-        }     
+        }
+        
+        
     }
     
-    public static void updateNextMove(Game game) {
+    public static void updateNextMove(Game g) {
     	nextRecommendedMove.setText("Next Recommended Move: " 
-                + game.getRecommended().toString());
+                + g.getRecommended().toString());
     }
-    
     /**
      * Gets the game timer.
      * 

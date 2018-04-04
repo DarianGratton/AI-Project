@@ -1,7 +1,6 @@
 
 package game;
 
-import java.util.Iterator;
 import java.util.TreeSet;
 
 /**
@@ -61,17 +60,6 @@ public class Board extends TreeSet<Marble>{
      */
     public double getEval(){
         return this.aiEvaluation;
-    }
-    
-    public Marble getMarbleAt(int alpha, int numeric) {
-        Iterator<Marble> itr = this.iterator();
-        while (itr.hasNext()) {
-            Marble m = itr.next();
-            if (m.getAlpha() == alpha && m.getNumeric() == numeric) {
-                return m;
-            }
-        }
-        return null;
     }
     
 }

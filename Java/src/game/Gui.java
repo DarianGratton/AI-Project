@@ -75,7 +75,6 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
-            g.switchSides();
             return true;
         }
         return false;
@@ -108,7 +107,6 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
-            g.switchSides();
             return true;
         }
 
@@ -116,18 +114,19 @@ public abstract class Gui {
     }
 
     public static void updateRecommended(Game g, boolean aiIsBlack){
-
         doTheThing = Executors.newSingleThreadExecutor();
         try {
             doTheThing.submit(() -> {
                 long nanoSec = 0;
-                int maxDepth = 3;
+                int maxDepth = 0;
                 while(nanoSec < g.getAiTimeLimit()){
                     nanoSec = System.nanoTime() - turnStart;
+                    ++maxDepth;
                     g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
-                    /*if(nanoSec >= g.getAiTimeLimit()){
+                    GameFrame.updateNextMove(g);
+                    if(nanoSec >= g.getAiTimeLimit()) {
                         doTheThing.shutdownNow();
-                    }*/
+                    }
                 }
             });
         } catch (Exception e) {
@@ -139,12 +138,20 @@ public abstract class Gui {
     public static void killExecutor(){
         doTheThing.shutdownNow();
     }
+    
+    public static ExecutorService getTheThing(){
+        return doTheThing;
+    }
 
     /**
      * @return the turnStart
      */
     public static long getTurnStart() {
         return turnStart;
+    }
+    
+    public static long getElapsedTime(){
+        return System.nanoTime() - turnStart;
     }
     
 }
