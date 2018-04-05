@@ -47,15 +47,15 @@ public class TestDriver {
 
 
 
-        System.out.print("Evaluating board for black side:");
-        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+//        System.out.print("Evaluating board for black side:");
+//        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
+//
+//        System.out.print("Evaluating board for white side:");
+//        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
 
-        System.out.print("Evaluating board for white side:");
-        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
-
-        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
-        game.setRecommended(butts);
-        System.out.println(butts.toString());
+//        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
+//        game.setRecommended(butts);
+//        System.out.println(butts.toString());
 
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(() -> {

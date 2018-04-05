@@ -166,23 +166,17 @@ public class AIPlayer {
 		}
 	};
 
-
-	private static HashSet<ArrayList<Marble>> adjacentMarbles;
-
     /**
      * This method is responsible for generating a list of possible moves given the current board state
      * @return
      */
     public static ArrayList<Move> genPossibleMoves(Game g, boolean aiIsBlack){
         ArrayList<Move> moves = new ArrayList<Move>();
-        //Board original = Board.copyBoard(g.getBoard());
         Board currentBoard = Board.copyBoard(g.getBoard());
         Board ownMarbles = new Board();
-        /* Marble m1 = null;
-        Marble m2 = null;*/
 
-        for(Marble m: currentBoard){
-            if(m.isBlack() == aiIsBlack){
+        for (Marble m: currentBoard) {
+            if (m.isBlack() == aiIsBlack) {
                 ownMarbles.add(m);
             }
         }
@@ -191,36 +185,11 @@ public class AIPlayer {
             for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
                 Move move = generateMove(g, m, i);
                 if (move != null) {
-                    move.evaluate(g.getBoard());
-                    //System.out.println("before: " + move.toString());
+                    //move.evaluate(g.getBoard());
                     moves.add(move);
-                    //System.out.println("after: " + move.toString());
                 }
             }
         }
-
-        // Generates moves for a single marble for each marbles in the ArrayList
-        /* for (int i = 0; i < currentBoard.size(); ++i) {
-
-            m1 = currentBoard.get(i);
-            if (m1.isBlack() == aiIsBlack) {
-                int j = DIRECTION_MIN;
-                while (j <= DIRECTION_MAX) {
-
-
-                    Move move = generateMove(g, m1, j);
-
-                    if (move != null) {
-                        //System.out.println("before: " + move.toString());
-                        moves.add(move);
-                        //System.out.println("after: " + move.toString());
-                    }
-
-                    currentBoard = Board.copyBoard(original);
-                    j++;
-                }
-            }
-        }*/
 
         while(!ownMarbles.isEmpty()){
             Marble m = ownMarbles.pollFirst();
@@ -229,7 +198,7 @@ public class AIPlayer {
                 for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
                     Move move = generateMove(g, m, o, i);
                     if (move != null) {
-                        move.evaluate(g.getBoard());
+                        //move.evaluate(g.getBoard());
                         //System.out.println("before: " + move.toString());
                         moves.add(move);
                         //System.out.println("after: " + move.toString());
@@ -238,45 +207,6 @@ public class AIPlayer {
                 //}
             }
         }
-
-        /*for(Marble m : ownMarbles){
-            for(Marble o : ownMarbles){
-                if(!m.equals(o)){
-                    for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
-                        Move move = generateMove(g, m, o, i);
-                        if (move != null) {
-                            //System.out.println("before: " + move.toString());
-                            moves.add(move);
-                            //System.out.println("after: " + move.toString());
-                        }
-                    }
-                }
-            }
-        }*/
-        // Generates moves for 2 or more marbles
-        /*for (int i = 0; i < currentBoard.size() - 1; ++i) {
-            for (int j = i + 1; j < currentBoard.size(); ++j) {
-
-                m1 = currentBoard.get(i);
-                m2 = currentBoard.get(j);
-                if (m1.isBlack() == aiIsBlack && m2.isBlack() == aiIsBlack) {
-                    int k = DIRECTION_MIN;
-                    while (k <= DIRECTION_MAX) {
-
-                        Move move = generateMove(g, m1, m2, k);
-
-                        if (move != null) {
-                            moves.add(move);
-                        }
-
-                        currentBoard = Board.copyBoard(original);
-                        k++;
-                    }
-                }
-            }
-        }*/
-
-
 
         return moves;
     }
@@ -642,6 +572,14 @@ public class AIPlayer {
 		}
 	}
 
+	/**
+	 * AlphaBeta Search.
+	 * 
+	 * @param game
+	 * @param aiIsBlack
+	 * @param maxDepth
+	 * @return
+	 */
     public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth){
         Game g = new Game(game);
         int depth = 0;
@@ -653,10 +591,6 @@ public class AIPlayer {
         Collections.sort(moves, new MoveComparator());
         bestMove = moves.get(0);
 
-
-        /*System.out.println(System.nanoTime() - startTime);
-        System.out.println(g.getAiTimeLimit());
-*/
         while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
 
             ++depth;
@@ -670,7 +604,6 @@ public class AIPlayer {
                 bestMove.setTime(timeTaken);
             }
 
-            //System.out.println(bestMove.toString());
             timeTaken = System.nanoTime() - startTime;
         }
         
@@ -688,10 +621,10 @@ public class AIPlayer {
     public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
 
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+        if(currentEval >= 100.0 || depth > maxDepth){ // replace true with terminal test
             return currentEval;
         }
-        int newDepth = ++depth;
+        int newDepth = depth + 1;
         
         /* Turn time limit should go here as terminal test */
         System.out.println("Entered maxMove: " + currentEval);
@@ -701,7 +634,6 @@ public class AIPlayer {
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, aiIsBlack);
         Collections.sort(moves, new MoveComparator());
         
-
         //double maxValue = -Double.MAX_VALUE;
 
         for(int i = 0; i < moves.size(); ++i){
@@ -711,7 +643,7 @@ public class AIPlayer {
             // straight from pseudocode
             maxEval = Math.max(maxEval, minEval);
             if(maxEval >= B){
-                //System.out.println(moves.get(i).toString());
+                System.out.println(moves.get(i).toString());
                 return maxEval;
             }
 
@@ -736,7 +668,7 @@ public class AIPlayer {
         if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
-        int newDepth = ++depth;
+        int newDepth = depth + 1;
 
         System.out.println("Entered minMove: " + currentEval);
         double minEval = Double.MAX_VALUE;
@@ -758,7 +690,7 @@ public class AIPlayer {
             // straight from pseudocode
             minEval = Math.min(minEval, maxEval);
             if(minEval <= a){
-                //System.out.println(moves.get(i).toString());
+                System.out.println(moves.get(i).toString());
                 return minEval;
             }
 

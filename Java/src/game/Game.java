@@ -171,6 +171,7 @@ public class Game {
         this.activePlayerIsBlack = true;
         this.gameInSession = true;
     }
+    
     /**
      * @param board
      * @param blackMoves
@@ -207,7 +208,7 @@ public class Game {
             this.aiTimeLimit = Long.MAX_VALUE;
             this.humanTimeLimit = Long.MAX_VALUE;
         } else {
-            this.aiTimeLimit = timeLimit;
+            this.aiTimeLimit = timeLimit * 1000000000;
             this.humanTimeLimit = Long.MAX_VALUE;
         }
     }
@@ -336,7 +337,6 @@ public class Game {
     public void switchSides() {
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
         // the line below breaks shit
-        // System.out.println("switching sides");
         Gui.updateRecommended(this, this.aiIsBlack);
     }
 

@@ -119,18 +119,20 @@ public abstract class Gui {
             doTheThing.submit(() -> {
                 long nanoSec = 0;
                 int maxDepth = 0;
-                while(nanoSec < g.getAiTimeLimit()){
-                    nanoSec = System.nanoTime() - turnStart;
+                while((nanoSec = System.nanoTime() - turnStart) < g.getAiTimeLimit()){
                     ++maxDepth;
-                    g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
+                    Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth);
+                    System.out.println("Exited at Depth: " + maxDepth);
+                    System.out.println("Next Move: " + nextMove);
+                    g.setRecommended(nextMove);
                     GameFrame.updateNextMove(g);
                     if(nanoSec >= g.getAiTimeLimit()) {
                         doTheThing.shutdownNow();
                     }
                 }
+                System.out.println("What");
             });
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }        
     }
