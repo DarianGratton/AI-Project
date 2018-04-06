@@ -34,7 +34,7 @@ public class TestDriver {
             GameFrame frame = new GameFrame(game);
 
             frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.setSize(1000, 735);
+            frame.setSize(1040, 735);
             frame.setVisible(true);  
 
             Graphics g = frame.getGraphics();
@@ -44,9 +44,6 @@ public class TestDriver {
 
         Thread thread = new Thread(board);
         thread.start();
-
-
-
 
 //        System.out.print("Evaluating board for black side:");
 //        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));

@@ -5,10 +5,7 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.TreeMap;
 
 /**
  * @author Mike
@@ -355,7 +352,7 @@ public class AIPlayer {
     }
     
     public static int isLine(Marble marble, Board b) {
-
+        
         int num = 0;
             
         for (int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
@@ -572,17 +569,113 @@ public class AIPlayer {
 			return ((utilValWhite - utilValBlack) +  getUtilityOffensiveKO(aiIsBlack));
 		}
 	}
-
-	/**
-	 * AlphaBeta Search.
-	 * 
-	 * @param game
-	 * @param aiIsBlack
-	 * @param maxDepth
-	 * @return
-	 */
-    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth) {
         
+//    /**
+//     * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
+//     * @param b the current board state
+//     * @param aiIsBlack true if the AI is playing black and false if it is playing white
+//     * @return the board state's evaluation
+//     */
+//    public static double evaluateBoard(Board b, boolean aiIsBlack){
+//        double eval = 0;
+//
+//        // variables to modify for evaluation purposes
+//        double ownMarbleVal = 1.0;
+//        double oppMarbleVal = 1.0;
+//
+//        double centerMod = 2.0;
+//        double ring1Mod = 1.5;
+//        double ring2Mod = 1.0;
+//        double ring3Mod = 0.75;
+//        double ring4Mod = 0.5;
+//
+//        int dist;
+//        double posMod = 1.0;
+//
+//        double firstKO = 10.0;
+//        double secondKO = 20.0;
+//        double thirdKO = 40.0;
+//        double fourthKO = 70.0;
+//        double fifthKO = 150.0;
+//        double sixthKO = 1000.0;
+//        
+//        double hexBonus = 50.0;
+//
+//        // counter for enemy marbles still in play, could get this from game score;
+//        // but I don't know if this method needs to be passed the whole game
+//        int oppMarbles = 0;
+//
+//        for(Marble m : b){ // checks each marble present on the board
+//            dist = AIPlayer.distanceFromCenter(m);
+//            switch (dist){
+//            case 0: posMod = centerMod;
+//            break;
+//            case 1: posMod = ring1Mod;
+//            break;
+//            case 2: posMod = ring2Mod;
+//            break;
+//            case 3: posMod = ring3Mod;
+//            break;
+//            case 4: posMod = ring4Mod;
+//            break;
+//            }
+//
+//            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
+//                eval += (ownMarbleVal * posMod);
+//                if(isHexCluster(b, m)){
+//                    eval += hexBonus;
+//                }
+//
+//            } else { // do negative things for opposing marbles
+//                if(posMod <= 3){
+//                    eval -= (oppMarbleVal * posMod);
+//                } else {
+//                    eval += (oppMarbleVal * posMod);
+//                }
+//                if(isHexCluster(b, m)){
+//                    eval -= hexBonus;
+//                }
+//
+//                ++oppMarbles;
+//            }
+//        }
+//
+//        if(oppMarbles < 14){ // at least one marble knocked out
+//            eval += firstKO;
+//        }
+//        if(oppMarbles < 13){ // at least two marbles knocked out
+//            eval += secondKO;
+//        }
+//        if(oppMarbles < 12){ // at least three marbles knocked out
+//            eval += thirdKO;
+//        }
+//        if(oppMarbles < 11){ // at least four marbles knocked out
+//            eval += fourthKO;
+//        }
+//        if(oppMarbles < 10){ // at least five marbles knocked out
+//            eval += fifthKO;
+//        }
+//        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
+//            eval += sixthKO;
+//        }
+//
+//        //System.out.println(eval);
+//        return eval;
+//    }
+    
+    public static boolean isHexCluster(Board b, Marble center){
+        boolean surrounded = true;
+        
+        for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
+            if(Game.checkAdjacent(b, center, i) == null || Game.checkAdjacent(b, center, i).isBlack() != center.isBlack()){
+                surrounded = false;
+            }
+        }
+        
+        return surrounded;
+    }
+
+    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth) {
         Game g = new Game(game);
         int depth = 0;
         long startTime = System.nanoTime();
@@ -592,7 +685,7 @@ public class AIPlayer {
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(g, aiIsBlack);
         Collections.sort(moves, new MoveComparator());
         bestMove = moves.get(0);
-
+        
         while (movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit() && depth != maxDepth) {
 
             ++depth;
@@ -602,11 +695,11 @@ public class AIPlayer {
                 if(m.getEval() == v){
                     bestMove = m;
                 }
-                
-                // System.out.println(timeTaken);
+
                 bestMove.setTime(timeTaken);
             }
 
+            //System.out.println(bestMove.toString());
             timeTaken = System.nanoTime() - startTime;
         }
         
@@ -668,7 +761,7 @@ public class AIPlayer {
     public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
         
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
+        if(currentEval >= 1000.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
         depth++;
@@ -677,7 +770,7 @@ public class AIPlayer {
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
-       
+
         for(Move m : moves){
             m.setEval(current, aiIsBlack);
         }

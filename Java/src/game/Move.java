@@ -142,6 +142,7 @@ public class Move {
         this.eval = AIPlayer.evaluateBoard(result, isBlack);  
     }
 
+
     /**
      * this method generates a utility value with the evaluateBoard method and associates it with this move
      * DO NOT PASS NULL MOVES TO THIS METHOD
