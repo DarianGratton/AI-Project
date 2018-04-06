@@ -288,7 +288,7 @@ public class BoardPanel extends JPanel {
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
-                                    game.switchSides();
+                                    
                                 }
                             }
 

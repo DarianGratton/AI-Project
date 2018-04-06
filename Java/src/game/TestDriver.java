@@ -27,6 +27,7 @@ public class TestDriver {
         /*ArrayList<Move> moves = AIPlayer.genPossibleMoves(game, game.activeIsBlack());
         for(int i = 0; i < moves.size(); i++){
             System.out.println(moves.get(i).toString());
+           
         }*/
 
         Runnable board = () -> {
@@ -53,18 +54,23 @@ public class TestDriver {
 //        System.out.print("Evaluating board for white side:");
 //        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
 
-//        Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), 3);
-//        game.setRecommended(butts);
-//        System.out.println(butts.toString());
+//        game.setAiIsBlack(true);
+//        int maxDepth = 0;
+//        while (maxDepth < 5) {
+//            maxDepth++;
+//            Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), maxDepth);
+//            game.setRecommended(butts);
+//            System.out.println(butts.toString());
+//        }
 
-        ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(() -> {
-            long start = Gui.getTurnStart();
-            long current = System.nanoTime();
-            if((current - start) >= game.getAiTimeLimit()){
-                Gui.killExecutor();
-            }
-        });
+//        ExecutorService executor = Executors.newCachedThreadPool();
+//        executor.submit(() -> {
+//            long start = Gui.getTurnStart();
+//            long current = System.nanoTime();
+//            if((current - start) >= game.getAiTimeLimit()){
+//                Gui.killExecutor();
+//            }
+//        });
 
     }
 }

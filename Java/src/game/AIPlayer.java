@@ -468,7 +468,7 @@ public class AIPlayer {
 		int blackMarbles = 14 - g.getWhiteScore();
 		int whiteMarbles = 14 - g.getBlackScore();
 
-		if(aiIsBlack) {
+		if (aiIsBlack) {
 			switch(blackMarbles) {
 			case 13:
 				return 85;
@@ -508,7 +508,7 @@ public class AIPlayer {
 	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
 	 * @return the board state's evaluation
 	 */
-	public static double evaluateBoard(Board b, boolean aiIsBlack){
+	public static double evaluateBoard(Board b, boolean aiIsBlack) {
 		int total = 0;
 		int centreDistance = 0;
 		double utilValBlack= 0.0;
@@ -567,6 +567,7 @@ public class AIPlayer {
 					utilValWhite += getUtilityOffensiveCenter(m);
 				}
 			}
+			
 			//System.out.println("-----------FOR OFFENSIVE--------------------------------------" + (utilValBlack) + ": "+ ( utilValWhite) + ": " + getUtilityOffensiveKO(aiIsBlack));
 			return ((utilValWhite - utilValBlack) +  getUtilityOffensiveKO(aiIsBlack));
 		}
@@ -580,7 +581,8 @@ public class AIPlayer {
 	 * @param maxDepth
 	 * @return
 	 */
-    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth){
+    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth) {
+        
         Game g = new Game(game);
         int depth = 0;
         long startTime = System.nanoTime();
@@ -591,7 +593,7 @@ public class AIPlayer {
         Collections.sort(moves, new MoveComparator());
         bestMove = moves.get(0);
 
-        while(movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit()){
+        while (movesMade <= g.getAiMoveLimit() && timeTaken < g.getAiTimeLimit() && depth != maxDepth) {
 
             ++depth;
             double v = maxMove(g.getBoard(), aiIsBlack, -Double.MAX_VALUE, Double.MAX_VALUE, depth, maxDepth);
@@ -601,6 +603,7 @@ public class AIPlayer {
                     bestMove = m;
                 }
                 
+                // System.out.println(timeTaken);
                 bestMove.setTime(timeTaken);
             }
 
@@ -621,13 +624,13 @@ public class AIPlayer {
     public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
 
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 100.0 || depth > maxDepth){ // replace true with terminal test
+        if(currentEval >= 100.0 || depth > maxDepth) { // replace true with terminal test
             return currentEval;
         }
-        int newDepth = depth + 1;
+        depth++;
         
         /* Turn time limit should go here as terminal test */
-        System.out.println("Entered maxMove: " + currentEval);
+        //System.out.println("Entered maxMove: " + currentEval);
         double maxEval = -Double.MAX_VALUE;
         
         Game dummy = new Game(current, aiIsBlack);
@@ -638,12 +641,12 @@ public class AIPlayer {
 
         for(int i = 0; i < moves.size(); ++i){
             // pulled out of Math.max function for re-use
-            double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+            double minEval = AIPlayer.minMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, depth, maxDepth);
 
             // straight from pseudocode
             maxEval = Math.max(maxEval, minEval);
             if(maxEval >= B){
-                System.out.println(moves.get(i).toString());
+                //System.out.println(moves.get(i).toString());
                 return maxEval;
             }
 
@@ -668,9 +671,9 @@ public class AIPlayer {
         if(currentEval >= 100.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
-        int newDepth = depth + 1;
+        depth++;
 
-        System.out.println("Entered minMove: " + currentEval);
+        //System.out.println("Entered minMove: " + currentEval);
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);
@@ -685,12 +688,12 @@ public class AIPlayer {
 
         for(int i = 0; i < moves.size(); ++i){
             // pulled out of Math.min function for re-use
-            double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, newDepth, maxDepth);
+            double maxEval = AIPlayer.maxMove(genResultState(current, moves.get(i)), aiIsBlack, a, B, depth, maxDepth);
 
             // straight from pseudocode
             minEval = Math.min(minEval, maxEval);
             if(minEval <= a){
-                System.out.println(moves.get(i).toString());
+               //System.out.println(moves.get(i).toString());
                 return minEval;
             }
 

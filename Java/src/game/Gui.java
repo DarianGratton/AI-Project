@@ -75,6 +75,7 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
+            g.switchSides();
             return true;
         }
         return false;
@@ -98,7 +99,8 @@ public abstract class Gui {
         if(g.move(m1, m2, direction, activeIsBlack)){
             
             turnStart = System.nanoTime();
-          //passes in the seconds taken into Move, and adds to total turn time in Game 
+            
+            //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
             	display.setTime(blackTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
@@ -107,6 +109,7 @@ public abstract class Gui {
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
+            g.switchSides();
             return true;
         }
 
@@ -114,27 +117,56 @@ public abstract class Gui {
     }
 
     public static void updateRecommended(Game g, boolean aiIsBlack){
+//        doTheThing = Executors.newSingleThreadExecutor();
+//        try {
+//            doTheThing.submit(() -> {
+//                long nanoSec = 0;
+//                int maxDepth = 0;
+//                long turnStartTest = System.nanoTime();
+//                while ((nanoSec = System.nanoTime() - turnStartTest) <= g.getAiTimeLimit()
+//                        || maxDepth > 5) {
+//                    maxDepth++;
+//                    Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth);
+//                    g.setRecommended(nextMove);
+//                    GameFrame.updateNextMove(g);
+//                }
+//                doTheThing.shutdownNow();
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }        
+        
+        if (doTheThing != null) {
+            doTheThing.shutdownNow();
+        }
         doTheThing = Executors.newSingleThreadExecutor();
         try {
             doTheThing.submit(() -> {
                 long nanoSec = 0;
                 int maxDepth = 0;
-                while((nanoSec = System.nanoTime() - turnStart) < g.getAiTimeLimit()){
-                    ++maxDepth;
+                int depthLimit = 5;
+                long turnStartTest = System.nanoTime();
+                while ((nanoSec = System.nanoTime() - turnStartTest) <= g.getAiTimeLimit()
+                        || maxDepth <= depthLimit) {
+                    maxDepth++;
                     Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth);
-                    System.out.println("Exited at Depth: " + maxDepth);
-                    System.out.println("Next Move: " + nextMove);
+                    System.out.println(nextMove.toString());
                     g.setRecommended(nextMove);
                     GameFrame.updateNextMove(g);
-                    if(nanoSec >= g.getAiTimeLimit()) {
-                        doTheThing.shutdownNow();
-                    }
                 }
-                System.out.println("What");
+                doTheThing.shutdownNow();
             });
         } catch (Exception e) {
             e.printStackTrace();
         }        
+        
+//        int maxDepth = 0;
+//        while (maxDepth < 5) {
+//            maxDepth++;
+//            Move butts = AIPlayer.alphaBetaSearch(g, g.isAiBlack(), maxDepth);
+//            g.setRecommended(butts);
+//            System.out.println(butts.toString());
+//        }
     }
     
     public static void killExecutor(){
