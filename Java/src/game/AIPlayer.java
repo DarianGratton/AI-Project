@@ -421,8 +421,8 @@ public class AIPlayer {
         double eval = 0;
 
         // variables to modify for evaluation purposes
-        double ownMarbleVal = 2.0;
-        double oppMarbleVal = 3.5;
+        double ownMarbleVal = 3.0;
+        double oppMarbleVal = 4.5;
 
         double centerMod = 4.0;
         double ring1Mod = 3.5;
@@ -431,12 +431,12 @@ public class AIPlayer {
         double ring4Mod = 0.5;
 
         int dist;
-        double posMod = 1.5;
+        double posMod = 0.0;
 
         double firstKO = 70.0;
-        double secondKO = 20.0;
-        double thirdKO = 40.0;
-        double fourthKO = 70.0;
+        double secondKO = 80.0;
+        double thirdKO = 90.0;
+        double fourthKO = 100.0;
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
         
