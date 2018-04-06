@@ -121,13 +121,13 @@ public abstract class Gui {
             doTheThing.submit(() -> {
                 System.out.println("entered executor in Gui.updateRecommended()");
                 long nanoSec = 0;
-                int maxDepth = 0;
+                int maxDepth = 4;
                 while(nanoSec < g.getAiTimeLimit()){
-                    ++maxDepth;
                     nanoSec = System.nanoTime() - turnStart;
                     g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
                     GameFrame.updateNextMove(g);
                     if(nanoSec >= g.getAiTimeLimit()){
+                    	System.out.println("Shutting down search..");
                         doTheThing.shutdownNow();
                     }
                 }

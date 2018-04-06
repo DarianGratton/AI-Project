@@ -422,25 +422,25 @@ public class AIPlayer {
 
         // variables to modify for evaluation purposes
         double ownMarbleVal = 2.0;
-        double oppMarbleVal = 2.5;
+        double oppMarbleVal = 3.5;
 
-        double centerMod = 2.0;
-        double ring1Mod = 1.5;
-        double ring2Mod = 1.0;
+        double centerMod = 4.0;
+        double ring1Mod = 3.5;
+        double ring2Mod = 2.0;
         double ring3Mod = 0.75;
         double ring4Mod = 0.5;
 
         int dist;
         double posMod = 1.5;
 
-        double firstKO = 40.0;
-        double secondKO = 60.0;
-        double thirdKO = 70.0;
+        double firstKO = 70.0;
+        double secondKO = 20.0;
+        double thirdKO = 40.0;
         double fourthKO = 70.0;
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
         
-        double hexBonus = 50.0;
+        double hexBonus = 30.0;
 
         // counter for enemy marbles still in play, could get this from game score;
         // but I don't know if this method needs to be passed the whole game
