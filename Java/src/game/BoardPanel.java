@@ -288,10 +288,11 @@ public class BoardPanel extends JPanel {
                                     drawMarbles(b);
                                     repaint();
                                     frame.updateGameFrame(currActiveTeam);
+                                    
                                 }
                             }
 
-                            //Jaisreet
+                            // Marble Highlighter 
                             for(DrawMarble d : drawn) {
                             	if(d.getHighlight() == true)
                             		d.setHighlight(false);

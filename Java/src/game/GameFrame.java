@@ -120,7 +120,7 @@ public class GameFrame extends JFrame {
     private MarblePanel whiteMarblePanel;
     private MarblePanel blackMarblePanel;
     
-    private JLabel nextRecommendedMove;
+    private static JLabel nextRecommendedMove;
 
     /**
      * Constructor that creates the initial state of the game.
@@ -432,10 +432,13 @@ public class GameFrame extends JFrame {
             whiteMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
         }
         
-        nextRecommendedMove.setText("Next Recommended Move: " 
-                + game.getRecommended().toString());
+        
     }
     
+    public static void updateNextMove(Game g) {
+    	nextRecommendedMove.setText("Next Recommended Move: " 
+                + g.getRecommended().toString());
+    }
     /**
      * Gets the game timer.
      * 

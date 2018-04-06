@@ -12,7 +12,7 @@ import javax.swing.border.EmptyBorder;
 public class MarblePanel extends JPanel {
    
     private static final long serialVersionUID = 3597646416905814493L;
-    private static final int PANEL_WIDTH = 205;
+    private static final int PANEL_WIDTH = 230;
     private static final int PANEL_HEIGHT = 300;
     private Game game;
     

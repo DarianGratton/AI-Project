@@ -99,7 +99,8 @@ public abstract class Gui {
         if(g.move(m1, m2, direction, activeIsBlack)){
             
             turnStart = System.nanoTime();
-          //passes in the seconds taken into Move, and adds to total turn time in Game 
+            
+            //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
             	display.setTime(blackTimer.getTimerAsOne());
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
@@ -116,25 +117,56 @@ public abstract class Gui {
     }
 
     public static void updateRecommended(Game g, boolean aiIsBlack){
+//        doTheThing = Executors.newSingleThreadExecutor();
+//        try {
+//            doTheThing.submit(() -> {
+//                long nanoSec = 0;
+//                int maxDepth = 0;
+//                long turnStartTest = System.nanoTime();
+//                while ((nanoSec = System.nanoTime() - turnStartTest) <= g.getAiTimeLimit()
+//                        || maxDepth > 5) {
+//                    maxDepth++;
+//                    Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth);
+//                    g.setRecommended(nextMove);
+//                    GameFrame.updateNextMove(g);
+//                }
+//                doTheThing.shutdownNow();
+//            });
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }        
+        
+        if (doTheThing != null) {
+            doTheThing.shutdownNow();
+        }
         doTheThing = Executors.newSingleThreadExecutor();
         try {
             doTheThing.submit(() -> {
-                System.out.println("entered executor in Gui.updateRecommended()");
                 long nanoSec = 0;
                 int maxDepth = 0;
-                while(nanoSec < g.getAiTimeLimit()){
-                    ++maxDepth;
-                    nanoSec = System.nanoTime() - turnStart;
-                    g.setRecommended(AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth));
-                    if(nanoSec >= g.getAiTimeLimit()){
-                        doTheThing.shutdownNow();
-                    }
+                int depthLimit = 5;
+                long turnStartTest = System.nanoTime();
+                while ((nanoSec = System.nanoTime() - turnStartTest) <= g.getAiTimeLimit()
+                        || maxDepth <= depthLimit) {
+                    maxDepth++;
+                    Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth);
+                    System.out.println(nextMove.toString());
+                    g.setRecommended(nextMove);
+                    GameFrame.updateNextMove(g);
                 }
+                doTheThing.shutdownNow();
             });
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }        
+        
+//        int maxDepth = 0;
+//        while (maxDepth < 5) {
+//            maxDepth++;
+//            Move butts = AIPlayer.alphaBetaSearch(g, g.isAiBlack(), maxDepth);
+//            g.setRecommended(butts);
+//            System.out.println(butts.toString());
+//        }
     }
     
     public static void killExecutor(){

@@ -171,6 +171,7 @@ public class Game {
         this.activePlayerIsBlack = true;
         this.gameInSession = true;
     }
+    
     /**
      * @param board
      * @param blackMoves
@@ -207,7 +208,7 @@ public class Game {
             this.aiTimeLimit = Long.MAX_VALUE;
             this.humanTimeLimit = Long.MAX_VALUE;
         } else {
-            this.aiTimeLimit = timeLimit;
+            this.aiTimeLimit = timeLimit * 1000000000;
             this.humanTimeLimit = Long.MAX_VALUE;
         }
     }
@@ -333,10 +334,9 @@ public class Game {
     /**
      * This method switches the active side of play
      */
-    public void switchSides(){
+    public void switchSides() {
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
-        //the line below breaks shit
-        System.out.println("switching sides");
+        // the line below breaks shit
         Gui.updateRecommended(this, this.aiIsBlack);
     }
 
@@ -779,7 +779,6 @@ public class Game {
         Marble m1 = lastMove.getMovedList().get(0);
         int direction = lastMove.getDirection();      
         int reverse = (direction > 3) ? direction-3 : direction +3;
-
         return null;
     }*/
 
@@ -809,19 +808,18 @@ public class Game {
     }
     
     public void setTotalTurnTime(boolean activeIsBlack, double turnTimer) {
-    	if(activeIsBlack) {
-    		totalBlackTime += turnTimer;
-    	} else {
-    		totalWhiteTime += turnTimer;
-    	}
+        if(activeIsBlack) {
+            totalBlackTime += turnTimer;
+        } else {
+            totalWhiteTime += turnTimer;
+        }
     }
     
     public double getTotalTurnTime(boolean activeIsBlack) {
-    	if(activeIsBlack) {
-    		return totalBlackTime;
-    	} else {
-    		return totalWhiteTime;
-    	}
+        if(activeIsBlack) {
+            return totalBlackTime;
+        } else {
+            return totalWhiteTime;
+        }
     }
-
 }
