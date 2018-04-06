@@ -21,6 +21,150 @@ public class AIPlayer {
     private static final long NANO_DIVISOR = 1000000000;
     private static int MAX_DEPTH = 2;
     private static Move suggestedMove = null;
+    
+    private static final ArrayList<Marble> RING1 = new ArrayList<Marble>() {
+		{
+			add(new Marble(5, 5, true));
+			add(new Marble(5, 5, false));
+		}
+	};
+
+	private static final ArrayList<Marble> RING2 = new ArrayList<Marble>() {
+		{
+			add(new Marble(5, 4, true));
+			add(new Marble(5, 4, false));
+			add(new Marble(6, 5, true));
+			add(new Marble(6, 5, false));
+			add(new Marble(6, 6, true));
+			add(new Marble(6, 6, false));
+			add(new Marble(5, 6, true));
+			add(new Marble(5, 6, false));
+			add(new Marble(4, 5, true));
+			add(new Marble(4, 5, false));
+			add(new Marble(4, 4, true));
+			add(new Marble(4, 4, false));
+		}
+	};
+	private static final ArrayList<Marble> RING3 = new ArrayList<Marble>() {
+		{
+			add(new Marble(7, 5, true));
+			add(new Marble(7, 7, false));
+			add(new Marble(7, 6, true));
+			add(new Marble(7, 6, false));
+			add(new Marble(7, 7, true));
+			add(new Marble(7, 7, false));
+			add(new Marble(6, 7, true));
+			add(new Marble(6, 7, false));
+			add(new Marble(5, 7, true));
+			add(new Marble(5, 7, false));
+			add(new Marble(4, 6, true));
+			add(new Marble(4, 6, false));
+			add(new Marble(3, 5, true));
+			add(new Marble(3, 5, false));
+			add(new Marble(3, 4, true));
+			add(new Marble(3, 4, false));
+			add(new Marble(3, 3, true));
+			add(new Marble(3, 3, false));
+			add(new Marble(4, 3, true));
+			add(new Marble(4, 3, false));
+			add(new Marble(5, 3, true));
+			add(new Marble(5, 3, false));
+			add(new Marble(6, 4, true));
+			add(new Marble(6, 4, false));
+		}
+	};
+	private static final ArrayList<Marble> RING4 = new ArrayList<Marble>() {
+		{
+			add(new Marble(8, 5, true));
+			add(new Marble(8, 5, false));
+			add(new Marble(8, 6, true));
+			add(new Marble(8, 6, false));
+			add(new Marble(8, 7, true));
+			add(new Marble(8, 7, false));
+			add(new Marble(8, 8, true));
+			add(new Marble(8, 8, false));
+			add(new Marble(7, 8, true));
+			add(new Marble(7, 8, false));
+			add(new Marble(6, 8, true));
+			add(new Marble(6, 8, false));
+			add(new Marble(5, 8, true));
+			add(new Marble(5, 8, false));
+			add(new Marble(4, 7, true));
+			add(new Marble(4, 7, false));
+			add(new Marble(3, 6, true));
+			add(new Marble(3, 6, false));
+			add(new Marble(2, 5, true));
+			add(new Marble(2, 5, false));
+			add(new Marble(2, 4, true));
+			add(new Marble(2, 4, false));
+			add(new Marble(2, 3, true));
+			add(new Marble(2, 3, false));
+			add(new Marble(2, 2, true));
+			add(new Marble(2, 2, false));
+			add(new Marble(3, 2, true));
+			add(new Marble(3, 2, false));
+			add(new Marble(4, 2, true));
+			add(new Marble(4, 2, false));
+			add(new Marble(5, 2, true));
+			add(new Marble(5, 2, false));
+			add(new Marble(8, 4, true));
+			add(new Marble(8, 4, false));
+			add(new Marble(6, 3, true));
+			add(new Marble(6, 3, false));
+		}
+	};
+	private static final ArrayList<Marble> RING5 = new ArrayList<Marble>(){
+		{
+			add(new Marble(9, 5, true));
+			add(new Marble(9, 5, false));
+			add(new Marble(9, 6, true));
+			add(new Marble(9, 6, false));
+			add(new Marble(9, 7, true));
+			add(new Marble(9, 7, false));
+			add(new Marble(9, 8, true));
+			add(new Marble(9, 8, false));
+			add(new Marble(9, 9, true));
+			add(new Marble(9, 9, false));
+			add(new Marble(8, 9, true));
+			add(new Marble(8, 9, false));
+			add(new Marble(7, 9, true));
+			add(new Marble(7, 9, false));
+			add(new Marble(6, 9, true));
+			add(new Marble(6, 9, false));
+			add(new Marble(5, 9, true));
+			add(new Marble(5, 9, false));
+			add(new Marble(4, 8, true));
+			add(new Marble(4, 8, false));
+			add(new Marble(3, 7, true));
+			add(new Marble(3, 7, false));
+			add(new Marble(2, 6, true));
+			add(new Marble(2, 6, false));
+			add(new Marble(1, 5, true));
+			add(new Marble(1, 5, false));
+			add(new Marble(1, 4, true));
+			add(new Marble(1, 4, false));
+			add(new Marble(1, 3, true));
+			add(new Marble(1, 3, false));
+			add(new Marble(1, 2, true));
+			add(new Marble(1, 2, false));
+			add(new Marble(1, 1, true));
+			add(new Marble(1, 1, false));
+			add(new Marble(2, 1, true));
+			add(new Marble(2, 1, false));
+			add(new Marble(3, 1, true));
+			add(new Marble(3, 1, false));
+			add(new Marble(4, 1, true));
+			add(new Marble(4, 1, false));
+			add(new Marble(5, 1, true));
+			add(new Marble(5, 1, false));
+			add(new Marble(6, 2, true));
+			add(new Marble(6, 2, false));
+			add(new Marble(7, 2, true));
+			add(new Marble(7, 2, false));
+			add(new Marble(8, 2, true));
+			add(new Marble(8, 2, false));
+		}
+	};
 
     /**
      * This method is responsible for generating a list of possible moves given the current board state
@@ -254,10 +398,18 @@ public class AIPlayer {
      * @param m
      * @return
      */
-    public static int distanceFromCenter(Marble m){
-        //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
-        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
-    }
+    public static int distanceFromCenter(Marble m) {
+		if(RING1.contains(m)) {
+			return 1;
+		} else if(RING2.contains(m)) {
+			return 2;
+		} else if(RING3.contains(m)) {
+			return 3;
+		} else if(RING4.contains(m)) {
+			return 4;
+		} else
+			return 5;
+	}
 
     /**
      * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
@@ -269,8 +421,8 @@ public class AIPlayer {
         double eval = 0;
 
         // variables to modify for evaluation purposes
-        double ownMarbleVal = 1.0;
-        double oppMarbleVal = 1.0;
+        double ownMarbleVal = 2.0;
+        double oppMarbleVal = 2.5;
 
         double centerMod = 2.0;
         double ring1Mod = 1.5;
@@ -279,11 +431,11 @@ public class AIPlayer {
         double ring4Mod = 0.5;
 
         int dist;
-        double posMod = 1.0;
+        double posMod = 1.5;
 
-        double firstKO = 10.0;
-        double secondKO = 20.0;
-        double thirdKO = 40.0;
+        double firstKO = 40.0;
+        double secondKO = 60.0;
+        double thirdKO = 70.0;
         double fourthKO = 70.0;
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
