@@ -392,6 +392,10 @@ public class GameFrame extends JFrame {
             whiteTurnTimer.resetStopTimer();
             blackTurnTimer.resetStopTimer();
             blackTurnTimer.startTimer();
+            
+            if (game.isAiBlack()) {
+                Gui.updateRecommended(game, aiIsBlack);
+            }
         } 
     }
     

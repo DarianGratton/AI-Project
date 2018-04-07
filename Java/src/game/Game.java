@@ -336,8 +336,11 @@ public class Game {
      */
     public void switchSides() {
         this.activePlayerIsBlack = !this.activePlayerIsBlack;
+        
         // the line below breaks shit
-        Gui.updateRecommended(this, this.aiIsBlack);
+        if (activePlayerIsBlack == this.aiIsBlack) {
+            Gui.updateRecommended(this, this.aiIsBlack);
+        }
     }
 
     /**
