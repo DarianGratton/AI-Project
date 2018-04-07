@@ -19,149 +19,6 @@ public class AIPlayer {
     private static int MAX_DEPTH = 2;
     private static Move suggestedMove = null;
     private static Game g = new Game();
-	private static final ArrayList<Marble> RING1 = new ArrayList<Marble>() {
-		{
-			add(new Marble(5, 5, true));
-			add(new Marble(5, 5, false));
-		}
-	};
-
-	private static final ArrayList<Marble> RING2 = new ArrayList<Marble>() {
-		{
-			add(new Marble(5, 4, true));
-			add(new Marble(5, 4, false));
-			add(new Marble(6, 5, true));
-			add(new Marble(6, 5, false));
-			add(new Marble(6, 6, true));
-			add(new Marble(6, 6, false));
-			add(new Marble(5, 6, true));
-			add(new Marble(5, 6, false));
-			add(new Marble(4, 5, true));
-			add(new Marble(4, 5, false));
-			add(new Marble(4, 4, true));
-			add(new Marble(4, 4, false));
-		}
-	};
-	private static final ArrayList<Marble> RING3 = new ArrayList<Marble>() {
-		{
-			add(new Marble(7, 5, true));
-			add(new Marble(7, 7, false));
-			add(new Marble(7, 6, true));
-			add(new Marble(7, 6, false));
-			add(new Marble(7, 7, true));
-			add(new Marble(7, 7, false));
-			add(new Marble(6, 7, true));
-			add(new Marble(6, 7, false));
-			add(new Marble(5, 7, true));
-			add(new Marble(5, 7, false));
-			add(new Marble(4, 6, true));
-			add(new Marble(4, 6, false));
-			add(new Marble(3, 5, true));
-			add(new Marble(3, 5, false));
-			add(new Marble(3, 4, true));
-			add(new Marble(3, 4, false));
-			add(new Marble(3, 3, true));
-			add(new Marble(3, 3, false));
-			add(new Marble(4, 3, true));
-			add(new Marble(4, 3, false));
-			add(new Marble(5, 3, true));
-			add(new Marble(5, 3, false));
-			add(new Marble(6, 4, true));
-			add(new Marble(6, 4, false));
-		}
-	};
-	private static final ArrayList<Marble> RING4 = new ArrayList<Marble>() {
-		{
-			add(new Marble(8, 5, true));
-			add(new Marble(8, 5, false));
-			add(new Marble(8, 6, true));
-			add(new Marble(8, 6, false));
-			add(new Marble(8, 7, true));
-			add(new Marble(8, 7, false));
-			add(new Marble(8, 8, true));
-			add(new Marble(8, 8, false));
-			add(new Marble(7, 8, true));
-			add(new Marble(7, 8, false));
-			add(new Marble(6, 8, true));
-			add(new Marble(6, 8, false));
-			add(new Marble(5, 8, true));
-			add(new Marble(5, 8, false));
-			add(new Marble(4, 7, true));
-			add(new Marble(4, 7, false));
-			add(new Marble(3, 6, true));
-			add(new Marble(3, 6, false));
-			add(new Marble(2, 5, true));
-			add(new Marble(2, 5, false));
-			add(new Marble(2, 4, true));
-			add(new Marble(2, 4, false));
-			add(new Marble(2, 3, true));
-			add(new Marble(2, 3, false));
-			add(new Marble(2, 2, true));
-			add(new Marble(2, 2, false));
-			add(new Marble(3, 2, true));
-			add(new Marble(3, 2, false));
-			add(new Marble(4, 2, true));
-			add(new Marble(4, 2, false));
-			add(new Marble(5, 2, true));
-			add(new Marble(5, 2, false));
-			add(new Marble(8, 4, true));
-			add(new Marble(8, 4, false));
-			add(new Marble(6, 3, true));
-			add(new Marble(6, 3, false));
-		}
-	};
-	private static final ArrayList<Marble> RING5 = new ArrayList<Marble>(){
-		{
-			add(new Marble(9, 5, true));
-			add(new Marble(9, 5, false));
-			add(new Marble(9, 6, true));
-			add(new Marble(9, 6, false));
-			add(new Marble(9, 7, true));
-			add(new Marble(9, 7, false));
-			add(new Marble(9, 8, true));
-			add(new Marble(9, 8, false));
-			add(new Marble(9, 9, true));
-			add(new Marble(9, 9, false));
-			add(new Marble(8, 9, true));
-			add(new Marble(8, 9, false));
-			add(new Marble(7, 9, true));
-			add(new Marble(7, 9, false));
-			add(new Marble(6, 9, true));
-			add(new Marble(6, 9, false));
-			add(new Marble(5, 9, true));
-			add(new Marble(5, 9, false));
-			add(new Marble(4, 8, true));
-			add(new Marble(4, 8, false));
-			add(new Marble(3, 7, true));
-			add(new Marble(3, 7, false));
-			add(new Marble(2, 6, true));
-			add(new Marble(2, 6, false));
-			add(new Marble(1, 5, true));
-			add(new Marble(1, 5, false));
-			add(new Marble(1, 4, true));
-			add(new Marble(1, 4, false));
-			add(new Marble(1, 3, true));
-			add(new Marble(1, 3, false));
-			add(new Marble(1, 2, true));
-			add(new Marble(1, 2, false));
-			add(new Marble(1, 1, true));
-			add(new Marble(1, 1, false));
-			add(new Marble(2, 1, true));
-			add(new Marble(2, 1, false));
-			add(new Marble(3, 1, true));
-			add(new Marble(3, 1, false));
-			add(new Marble(4, 1, true));
-			add(new Marble(4, 1, false));
-			add(new Marble(5, 1, true));
-			add(new Marble(5, 1, false));
-			add(new Marble(6, 2, true));
-			add(new Marble(6, 2, false));
-			add(new Marble(7, 2, true));
-			add(new Marble(7, 2, false));
-			add(new Marble(8, 2, true));
-			add(new Marble(8, 2, false));
-		}
-	};
 
     /**
      * This method is responsible for generating a list of possible moves given the current board state
@@ -182,7 +39,7 @@ public class AIPlayer {
             for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
                 Move move = generateMove(g, m, i);
                 if (move != null) {
-                    //move.evaluate(g.getBoard());
+                    move.evaluate(g.getBoard());
                     moves.add(move);
                 }
             }
@@ -325,18 +182,10 @@ public class AIPlayer {
     
     
 
-    public static int distanceFromCenter(Marble m) {
-		if(RING1.contains(m)) {
-			return 1;
-		} else if(RING2.contains(m)) {
-			return 2;
-		} else if(RING3.contains(m)) {
-			return 3;
-		} else if(RING4.contains(m)) {
-			return 4;
-		} else
-			return 5;
-	}
+    public static int distanceFromCenter(Marble m){
+        //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
+        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
+}
 
 
 	/**
@@ -349,17 +198,17 @@ public class AIPlayer {
 		double eval = 0;
 
         // variables to modify for evaluation purposes
-        double ownMarbleVal = 3.0;
-        double oppMarbleVal = 4.5;
+        double ownMarbleVal = 50;
+        double oppMarbleVal = 50;
 
-        double centerMod = 4.0;
-        double ring1Mod = 3.5;
-        double ring2Mod = 2.0;
-        double ring3Mod = 0.75;
+        double centerMod = 10.0;
+        double ring1Mod = 9.0;
+        double ring2Mod = 8.0;
+        double ring3Mod = 3.0;
         double ring4Mod = 0.5;
 
         int dist;
-        double posMod = 0.0;
+        double posMod = 5.0;
 
         double firstKO = 70.0;
         double secondKO = 80.0;
@@ -368,7 +217,7 @@ public class AIPlayer {
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
         
-        double hexBonus = 30.0;
+        double hexBonus = 0.0;
 
         // counter for enemy marbles still in play, could get this from game score;
         // but I don't know if this method needs to be passed the whole game
@@ -409,22 +258,22 @@ public class AIPlayer {
             }
         }
 
-        if(oppMarbles < 14 && oppMarbles > 12){ // at least one marble knocked out
+        if(oppMarbles == 13){ // at least one marble knocked out
             eval += firstKO;
         }
-        if(oppMarbles < 13 && oppMarbles > 11){ // at least two marbles knocked out
+        if(oppMarbles == 12){ // at least two marbles knocked out
             eval += secondKO;
         }
-        if(oppMarbles < 12 && oppMarbles > 10){ // at least three marbles knocked out
+        if(oppMarbles == 11){ // at least three marbles knocked out
             eval += thirdKO;
         }
-        if(oppMarbles < 11 && oppMarbles > 9){ // at least four marbles knocked out
+        if(oppMarbles == 10){ // at least four marbles knocked out
             eval += fourthKO;
         }
-        if(oppMarbles < 10 && oppMarbles > 8){ // at least five marbles knocked out
+        if(oppMarbles == 9){ // at least five marbles knocked out
             eval += fifthKO;
         }
-        if(oppMarbles < 9 && oppMarbles > 7){ // six marbles knocked out a.k.a. victory state
+        if(oppMarbles == 8){ // six marbles knocked out a.k.a. victory state
             eval += sixthKO;
         }
 
