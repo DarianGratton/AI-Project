@@ -2,8 +2,12 @@ package game;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 
 /**
@@ -44,30 +48,6 @@ public class TestDriver {
 
         Thread thread = new Thread(board);
         thread.start();
-
-//        System.out.print("Evaluating board for black side:");
-//        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), true));
-//
-//        System.out.print("Evaluating board for white side:");
-//        System.out.println(AIPlayer.evaluateBoard(game.getBoard(), false));
-
-//        game.setAiIsBlack(true);
-//        int maxDepth = 0;
-//        while (maxDepth < 5) {
-//            maxDepth++;
-//            Move butts = AIPlayer.alphaBetaSearch(game, game.isAiBlack(), maxDepth);
-//            game.setRecommended(butts);
-//            System.out.println(butts.toString());
-//        }
-
-//        ExecutorService executor = Executors.newCachedThreadPool();
-//        executor.submit(() -> {
-//            long start = Gui.getTurnStart();
-//            long current = System.nanoTime();
-//            if((current - start) >= game.getAiTimeLimit()){
-//                Gui.killExecutor();
-//            }
-//        });
 
     }
 }

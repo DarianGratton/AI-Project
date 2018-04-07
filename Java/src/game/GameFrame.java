@@ -78,7 +78,7 @@ public class GameFrame extends JFrame {
     private Board boardLayout;
     
     // Declaring GameTimer object to keep track of the game time
-    private GameTimer gameTimer;
+    private static GameTimer gameTimer;
     
     // JButton to start the game
     private JButton start;
@@ -435,10 +435,21 @@ public class GameFrame extends JFrame {
         
     }
     
-    public static void updateNextMove(Game g) {
-    	nextRecommendedMove.setText("Next Recommended Move: " 
-                + g.getRecommended().toString());
+    public static void updateNextMove(Game g, Long nanoSec) {
+        if (nanoSec <= g.getAiTimeLimit()) {
+            nextRecommendedMove.setText("Next Recommended Move: " 
+                    + g.getRecommended().toString());
+        }
     }
+    
+    public GameTimer getTurnTimer(boolean activeIsBlack) {
+        if (activeIsBlack) {
+            return blackTurnTimer;
+        } else {
+            return whiteTurnTimer;
+        }
+    }
+    
     /**
      * Gets the game timer.
      * 
