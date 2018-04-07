@@ -481,22 +481,22 @@ public class AIPlayer {
             }
         }
 
-        if(oppMarbles < 14){ // at least one marble knocked out
+        if(oppMarbles < 14 && oppMarbles > 12){ // at least one marble knocked out
             eval += firstKO;
         }
-        if(oppMarbles < 13){ // at least two marbles knocked out
+        if(oppMarbles < 13 && oppMarbles > 11){ // at least two marbles knocked out
             eval += secondKO;
         }
-        if(oppMarbles < 12){ // at least three marbles knocked out
+        if(oppMarbles < 12 && oppMarbles > 10){ // at least three marbles knocked out
             eval += thirdKO;
         }
-        if(oppMarbles < 11){ // at least four marbles knocked out
+        if(oppMarbles < 11 && oppMarbles > 9){ // at least four marbles knocked out
             eval += fourthKO;
         }
-        if(oppMarbles < 10){ // at least five marbles knocked out
+        if(oppMarbles < 10 && oppMarbles > 8){ // at least five marbles knocked out
             eval += fifthKO;
         }
-        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
+        if(oppMarbles < 9 && oppMarbles > 7){ // six marbles knocked out a.k.a. victory state
             eval += sixthKO;
         }
 
