@@ -675,7 +675,7 @@ public class AIPlayer {
         return surrounded;
     }
 
-    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth) {
+    public static Move alphaBetaSearch(Game game, boolean aiIsBlack, int maxDepth, long totalTime) {
         Game g = new Game(game);
         int depth = 0;
         long startTime = System.nanoTime();
@@ -696,7 +696,8 @@ public class AIPlayer {
                     bestMove = m;
                 }
 
-                bestMove.setTime(timeTaken);
+                long newTime = timeTaken + totalTime;
+                bestMove.setTime(newTime);
             }
 
             //System.out.println(bestMove.toString());
