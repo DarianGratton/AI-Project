@@ -30,6 +30,7 @@ public abstract class Gui {
     private static long elapsedTime;
     private static ExecutorService doTheThing;
     private static int maxDepth;
+    private static Move nextMove;
 
     /**
      * IDK if this needs to exist
@@ -73,13 +74,21 @@ public abstract class Gui {
             
             //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	display.setTime(blackTimer.getTimerAsOne() * 1000000000);
+                if (!g.isAiBlack()) {
+                    display.setTime(blackTimer.getTimerAsOne() * 1000000000);
+                }
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-            	display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
+                if (g.isAiBlack()) {
+                    display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
+                }
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
-            g.addMoveToList(display);
+            if (g.isAiBlack() == g.activeIsBlack()) {
+                g.addMoveToList(nextMove);
+            } else {
+                g.addMoveToList(display);
+            }
             g.switchSides();
             return true;
         }
@@ -94,26 +103,34 @@ public abstract class Gui {
      * @param direction
      * @param isBlack
      */
-    public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, Marble m2, int direction, GameTimer blackTimer, GameTimer whiteTimer){
-
+    public static boolean moveMarbles(Game g, boolean activeIsBlack, Marble m1, Marble m2, int direction, GameTimer blackTimer, GameTimer whiteTimer) {
 
         Move mv = new Move(m1, m2, direction, System.nanoTime() - turnStart);
         Move display = new Move(mv);
         
         // check to see if move is valid
-        if(g.move(m1, m2, direction, activeIsBlack)){
+        if(g.move(m1, m2, direction, activeIsBlack)) {
             
             turnStart = System.nanoTime();
             
             //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	display.setTime(blackTimer.getTimerAsOne() * 1000000000);
-            	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
+                if (!g.isAiBlack()) {
+                    display.setTime(blackTimer.getTimerAsOne() * 1000000000);
+                }
+                g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-                display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
-            	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
+                if (g.isAiBlack()) {
+                    display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
+                }
+                g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
-            g.addMoveToList(display);
+            
+            if (g.isAiBlack() == g.activeIsBlack()) {
+                g.addMoveToList(nextMove);
+            } else {
+                g.addMoveToList(display);
+            }
             g.switchSides();
             return true;
         }
@@ -136,7 +153,7 @@ public abstract class Gui {
             while (nanoSec <= g.getAiTimeLimit() || maxDepth <= depthLimit) {
                 nanoSec = System.nanoTime() - turnStartTest;
                 maxDepth++;
-                Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
+                nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
                 // System.out.println(nextMove.toString());
                 g.setRecommended(nextMove);
                 nanoSec = System.nanoTime() - turnStartTest;
