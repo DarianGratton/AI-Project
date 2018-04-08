@@ -153,10 +153,13 @@ public abstract class Gui {
             while (nanoSec <= g.getAiTimeLimit() || maxDepth <= depthLimit) {
                 nanoSec = System.nanoTime() - turnStartTest;
                 maxDepth++;
-                nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
+                Move move = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
                 // System.out.println(nextMove.toString());
-                g.setRecommended(nextMove);
                 nanoSec = System.nanoTime() - turnStartTest;
+                if (nanoSec <= g.getAiTimeLimit()) {
+                    nextMove = move;
+                    g.setRecommended(nextMove);
+                }
                 GameFrame.updateNextMove(g, nanoSec);
             }
         });       
