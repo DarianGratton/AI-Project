@@ -67,15 +67,16 @@ public abstract class Gui {
         Move display = new Move(mv);
         
         // check to see if move is valid
-        if(g.move(m1, direction, activeIsBlack)){
+        if(g.move(m1, direction, activeIsBlack)) {
             
             turnStart = System.nanoTime();
-            	//passes in the seconds taken into Move, and adds to total turn time in Game 
+            
+            //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	display.setTime(blackTimer.getTimerAsOne());
+            	display.setTime(blackTimer.getTimerAsOne() * 1000000000);
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-            	display.setTime(whiteTimer.getTimerAsOne());
+            	display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
@@ -106,10 +107,10 @@ public abstract class Gui {
             
             //passes in the seconds taken into Move, and adds to total turn time in Game 
             if(activeIsBlack) {
-            	display.setTime(blackTimer.getTimerAsOne());
+            	display.setTime(blackTimer.getTimerAsOne() * 1000000000);
             	g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
-                display.setTime(whiteTimer.getTimerAsOne());
+                display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
             	g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             g.addMoveToList(display);
@@ -136,7 +137,7 @@ public abstract class Gui {
                 nanoSec = System.nanoTime() - turnStartTest;
                 maxDepth++;
                 Move nextMove = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
-                System.out.println(nextMove.toString());
+                // System.out.println(nextMove.toString());
                 g.setRecommended(nextMove);
                 nanoSec = System.nanoTime() - turnStartTest;
                 GameFrame.updateNextMove(g, nanoSec);

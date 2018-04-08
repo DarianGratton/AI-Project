@@ -434,9 +434,7 @@ public class GameFrame extends JFrame {
             whiteMarblePanel.updateScoreLabel(activePlayerIsBlack);
             whiteMarblePanel.updateTurnCount(activePlayerIsBlack);
             whiteMarblePanel.updateTotalTurnTimer(activePlayerIsBlack);
-        }
-        
-        
+        }    
     }
     
     public static void updateNextMove(Game g, Long nanoSec) {
@@ -444,6 +442,13 @@ public class GameFrame extends JFrame {
             nextRecommendedMove.setText("Next Recommended Move: " 
                     + g.getRecommended().toString());
         }
+    }
+    
+    public MarblePanel getMarblePanel(boolean activePlayerIsBlack) {
+        if (activePlayerIsBlack) {
+            return blackMarblePanel;
+        }
+        return whiteMarblePanel;
     }
     
     public GameTimer getTurnTimer(boolean activeIsBlack) {

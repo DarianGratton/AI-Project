@@ -16,7 +16,7 @@ public class HistoryPanel extends JPanel {
      * 
      */
     private static final long serialVersionUID = 1L;
-    private static final int PANEL_WIDTH = 205;
+    private static final int PANEL_WIDTH = 340;
     private static final int PANEL_HEIGHT = 300;
     
     private Game game;
