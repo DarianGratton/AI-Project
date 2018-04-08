@@ -323,7 +323,51 @@ public class AIPlayer {
         return states;
     }
     
+    public static int isAdjacent(Marble m1, Marble adjMarble, Board b, int x, int y) {
+        
+        char color1 = m1.getColor();
+        char color2 = adjMarble.getColor();
+        Board newBoard = Board.copyBoard(b);
+        
+        if (color1 != color2) {
+            return 0;
+        }
+        
+        int number = 1;
     
+        Marble inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
+//        if (inlineMarble == null || inlineMarble.getColor() != adjMarble.getColor()) {
+//            return 1;
+//        } else {
+//            return 2;
+//        }
+//        
+        while (inlineMarble != null && inlineMarble.getColor() == adjMarble.getColor()) {
+            number++;
+            adjMarble = inlineMarble;
+            inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
+        }
+        
+        return number;  
+    }
+    
+    public static int isLine(Marble marble, Board b) {
+        
+        int num = 0;
+            
+        for (int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
+            Marble adjMar = Game.checkAdjacent(b, marble, i);
+            while (adjMar != null && adjMar.getColor() == marble.getColor()) {
+                num++;
+                adjMar = Game.checkAdjacent(b, adjMar, i);
+            }
+        }
+            
+//        System.out.println(marble.toString());
+//        System.out.println(num);
+    
+        return num;
+    }
 
     public static int distanceFromCenter(Marble m) {
 		if(RING1.contains(m)) {
@@ -338,7 +382,123 @@ public class AIPlayer {
 			return 5;
 	}
 
+	private static int getUtilityDefensiveCenter(Marble m) {
+		int centerDistance = distanceFromCenter(m);
 
+
+		switch(centerDistance) {
+		case 1: 
+			return 50;
+		case 2:
+			return 40;
+		case 3:
+			return 30;
+		case 4:
+			return 20;
+		case 5:
+			return 3;
+		}
+		return 0;
+	}
+	
+	private static int getUtilityOffensiveCenter(Marble m) {
+		int centerDistance = distanceFromCenter(m);
+
+
+		switch(centerDistance) {
+		case 1: 
+			return 50;
+		case 2:
+			return 38;
+		case 3:
+			return 35;
+		case 4:
+			return 25;
+		case 5:
+			return 20;
+		}
+		return 0;
+	}
+	
+	private static int getUtilityDefensiveKO(boolean aiIsBlack) {
+		
+		int blackMarbles = 14 - g.getWhiteScore();
+		int whiteMarbles = 14 - g.getBlackScore();
+
+		if(aiIsBlack) {
+			switch(blackMarbles) {
+			case 13:
+				return 70;
+			case 12:
+				return 50;
+			case 11:
+				return 40;
+			case 10:
+				return 50;
+			case 9: 
+				return 60;
+			case 8:
+				return 100;
+			}
+		}
+		else {
+			switch(blackMarbles) {
+			case 13:
+				return 70;
+			case 12:
+				return 50;
+			case 11:
+				return 40;
+			case 10:
+				return 50;
+			case 9: 
+				return 60;
+			case 8:
+				return 100;
+			}
+		}
+		return 0;
+	}
+
+	private static int getUtilityOffensiveKO(boolean aiIsBlack) {
+		
+		int blackMarbles = 14 - g.getWhiteScore();
+		int whiteMarbles = 14 - g.getBlackScore();
+
+		if (aiIsBlack) {
+			switch(blackMarbles) {
+			case 13:
+				return 85;
+			case 12:
+				return 70;
+			case 11:
+				return 60;
+			case 10:
+				return 65;
+			case 9: 
+				return 70;
+			case 8:
+				return 100;
+			}
+		}
+		else {
+			switch(blackMarbles) {
+			case 13:
+				return 85;
+			case 12:
+				return 70;
+			case 11:
+				return 60;
+			case 10:
+				return 65;
+			case 9: 
+				return 70;
+			case 8:
+				return 100;
+			}
+		}
+		return 0;
+	}
 	/**
 	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
 	 * @param b the current board state
@@ -346,91 +506,163 @@ public class AIPlayer {
 	 * @return the board state's evaluation
 	 */
 	public static double evaluateBoard(Board b, boolean aiIsBlack) {
-		double eval = 0;
+		int total = 0;
+		int centreDistance = 0;
+		double utilValBlack= 0.0;
+		double utilValWhite = 0.0;
+		boolean isOnOffensive = true;
+		Board testBoard = Board.copyBoard(b);
+		int blobTotal = 0;
+		int adjTotal = 0;
+		int whiteScore = g.getWhiteScore();
+		int blackScore = g.getBlackScore();
+		int scoreDiff = 0;
+		
+		// If AI is black, score has to be evaluated differently
+		if(aiIsBlack) {
+			scoreDiff = blackScore - whiteScore;
+			if(scoreDiff == 0 || scoreDiff <= -2 || scoreDiff == 1) {
+				isOnOffensive = true;
+			} else {
+				isOnOffensive = false;
+			}
+		} else {
+			scoreDiff = whiteScore - blackScore;
+			if(scoreDiff == 0 || scoreDiff <= -2 || scoreDiff == 1) {
+				isOnOffensive = true;
+			} else {
+				isOnOffensive = false;
+			}
+		}
 
-        // variables to modify for evaluation purposes
-        double ownMarbleVal = 3.0;
-        double oppMarbleVal = 4.5;
+		if(!isOnOffensive) {
+			
+			for(Marble m : b) {
+				//System.out.println(adjTotal);
+			    adjTotal += isLine(m, testBoard);
 
-        double centerMod = 4.0;
-        double ring1Mod = 3.5;
-        double ring2Mod = 2.0;
-        double ring3Mod = 0.75;
-        double ring4Mod = 0.5;
+				if(m.isBlack()) {
+					utilValBlack += getUtilityDefensiveCenter(m);
+				}
+				else {
+					utilValWhite += getUtilityDefensiveCenter(m);
+				}
+			}
 
-        int dist;
-        double posMod = 0.0;
+			//System.out.println("----------FOR DEFENSIVE--------------------------------------" + (utilValBlack) + ": "+ ( utilValWhite) + ": " + getUtilityDefensiveKO(aiIsBlack));
+			return ((utilValBlack - utilValWhite) + getUtilityDefensiveKO(aiIsBlack));
+		} else {
+			
+			for(Marble m : b) {
+				//System.out.println(adjTotal);
+			    adjTotal += isLine(m, testBoard);
 
-        double firstKO = 70.0;
-        double secondKO = 80.0;
-        double thirdKO = 90.0;
-        double fourthKO = 100.0;
-        double fifthKO = 150.0;
-        double sixthKO = 1000.0;
-        
-        double hexBonus = 30.0;
-
-        // counter for enemy marbles still in play, could get this from game score;
-        // but I don't know if this method needs to be passed the whole game
-        int oppMarbles = 0;
-
-        for(Marble m : b){ // checks each marble present on the board
-            dist = AIPlayer.distanceFromCenter(m);
-            switch (dist){
-            case 0: posMod = centerMod;
-            break;
-            case 1: posMod = ring1Mod;
-            break;
-            case 2: posMod = ring2Mod;
-            break;
-            case 3: posMod = ring3Mod;
-            break;
-            case 4: posMod = ring4Mod;
-            break;
-            }
-
-            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
-                eval += (ownMarbleVal * posMod);
-                if(isHexCluster(b, m)){
-                    eval += hexBonus;
-                }
-
-            } else { // do negative things for opposing marbles
-                if(posMod <= 3){
-                    eval -= (oppMarbleVal * posMod);
-                } else {
-                    eval += (oppMarbleVal * posMod);
-                }
-                if(isHexCluster(b, m)){
-                    eval -= hexBonus;
-                }
-
-                ++oppMarbles;
-            }
-        }
-
-        if(oppMarbles < 14 && oppMarbles > 12){ // at least one marble knocked out
-            eval += firstKO;
-        }
-        if(oppMarbles < 13 && oppMarbles > 11){ // at least two marbles knocked out
-            eval += secondKO;
-        }
-        if(oppMarbles < 12 && oppMarbles > 10){ // at least three marbles knocked out
-            eval += thirdKO;
-        }
-        if(oppMarbles < 11 && oppMarbles > 9){ // at least four marbles knocked out
-            eval += fourthKO;
-        }
-        if(oppMarbles < 10 && oppMarbles > 8){ // at least five marbles knocked out
-            eval += fifthKO;
-        }
-        if(oppMarbles < 9 && oppMarbles > 7){ // six marbles knocked out a.k.a. victory state
-            eval += sixthKO;
-        }
-
-        //System.out.println(eval);
-        return eval;
+				if(m.isBlack()) {
+					utilValBlack += getUtilityOffensiveCenter(m);
+				}
+				else {
+					utilValWhite += getUtilityOffensiveCenter(m);
+				}
+			}
+			
+			//System.out.println("-----------FOR OFFENSIVE--------------------------------------" + (utilValBlack) + ": "+ ( utilValWhite) + ": " + getUtilityOffensiveKO(aiIsBlack));
+			return ((utilValWhite - utilValBlack) +  getUtilityOffensiveKO(aiIsBlack));
+		}
 	}
+        
+//    /**
+//     * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
+//     * @param b the current board state
+//     * @param aiIsBlack true if the AI is playing black and false if it is playing white
+//     * @return the board state's evaluation
+//     */
+//    public static double evaluateBoard(Board b, boolean aiIsBlack){
+//        double eval = 0;
+//
+//        // variables to modify for evaluation purposes
+//        double ownMarbleVal = 1.0;
+//        double oppMarbleVal = 1.0;
+//
+//        double centerMod = 2.0;
+//        double ring1Mod = 1.5;
+//        double ring2Mod = 1.0;
+//        double ring3Mod = 0.75;
+//        double ring4Mod = 0.5;
+//
+//        int dist;
+//        double posMod = 1.0;
+//
+//        double firstKO = 10.0;
+//        double secondKO = 20.0;
+//        double thirdKO = 40.0;
+//        double fourthKO = 70.0;
+//        double fifthKO = 150.0;
+//        double sixthKO = 1000.0;
+//        
+//        double hexBonus = 50.0;
+//
+//        // counter for enemy marbles still in play, could get this from game score;
+//        // but I don't know if this method needs to be passed the whole game
+//        int oppMarbles = 0;
+//
+//        for(Marble m : b){ // checks each marble present on the board
+//            dist = AIPlayer.distanceFromCenter(m);
+//            switch (dist){
+//            case 0: posMod = centerMod;
+//            break;
+//            case 1: posMod = ring1Mod;
+//            break;
+//            case 2: posMod = ring2Mod;
+//            break;
+//            case 3: posMod = ring3Mod;
+//            break;
+//            case 4: posMod = ring4Mod;
+//            break;
+//            }
+//
+//            if(m.isBlack() == aiIsBlack){ // do positive things for friendly marbles
+//                eval += (ownMarbleVal * posMod);
+//                if(isHexCluster(b, m)){
+//                    eval += hexBonus;
+//                }
+//
+//            } else { // do negative things for opposing marbles
+//                if(posMod <= 3){
+//                    eval -= (oppMarbleVal * posMod);
+//                } else {
+//                    eval += (oppMarbleVal * posMod);
+//                }
+//                if(isHexCluster(b, m)){
+//                    eval -= hexBonus;
+//                }
+//
+//                ++oppMarbles;
+//            }
+//        }
+//
+//        if(oppMarbles < 14){ // at least one marble knocked out
+//            eval += firstKO;
+//        }
+//        if(oppMarbles < 13){ // at least two marbles knocked out
+//            eval += secondKO;
+//        }
+//        if(oppMarbles < 12){ // at least three marbles knocked out
+//            eval += thirdKO;
+//        }
+//        if(oppMarbles < 11){ // at least four marbles knocked out
+//            eval += fourthKO;
+//        }
+//        if(oppMarbles < 10){ // at least five marbles knocked out
+//            eval += fifthKO;
+//        }
+//        if(oppMarbles < 9){ // six marbles knocked out a.k.a. victory state
+//            eval += sixthKO;
+//        }
+//
+//        //System.out.println(eval);
+//        return eval;
+//    }
+    
     public static boolean isHexCluster(Board b, Marble center){
         boolean surrounded = true;
         
