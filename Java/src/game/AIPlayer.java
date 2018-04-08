@@ -190,189 +190,6 @@ public class AIPlayer {
         //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
         return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
     }
-   
-	/**
-	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
-	 * @param b the current board state
-	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
-	 * @return the board state's evaluation
-	 */
-    public static int isAdjacent(Marble m1, Marble adjMarble, Board b, int x, int y) {
-        
-        char color1 = m1.getColor();
-        char color2 = adjMarble.getColor();
-        Board newBoard = Board.copyBoard(b);
-        
-        if (color1 != color2) {
-            return 0;
-        }
-        
-        int number = 1;
-    
-        Marble inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
-//        if (inlineMarble == null || inlineMarble.getColor() != adjMarble.getColor()) {
-//            return 1;
-//        } else {
-//            return 2;
-//        }
-//        
-        while (inlineMarble != null && inlineMarble.getColor() == adjMarble.getColor()) {
-            number++;
-            adjMarble = inlineMarble;
-            inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
-        }
-        
-        return number;  
-    }
-    
-    public static int isLine(Marble marble, Board b) {
-        
-        int num = 0;
-            
-        for (int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
-            Marble adjMar = Game.checkAdjacent(b, marble, i);
-            while (adjMar != null && adjMar.getColor() == marble.getColor()) {
-                num++;
-                adjMar = Game.checkAdjacent(b, adjMar, i);
-            }
-        }
-            
-//        System.out.println(marble.toString());
-//        System.out.println(num);
-    
-        return num;
-    }
-
-//    public static int distanceFromCenter(Marble m) {
-//		if(RING1.contains(m)) {
-//			return 1;
-//		} else if(RING2.contains(m)) {
-//			return 2;
-//		} else if(RING3.contains(m)) {
-//			return 3;
-//		} else if(RING4.contains(m)) {
-//			return 4;
-//		} else
-//			return 5;
-//	}
-
-	private static int getUtilityDefensiveCenter(Marble m) {
-		int centerDistance = distanceFromCenter(m);
-
-
-		switch(centerDistance) {
-		case 1: 
-			return 50;
-		case 2:
-			return 40;
-		case 3:
-			return 30;
-		case 4:
-			return 20;
-		case 5:
-			return 3;
-		}
-		return 0;
-	}
-	
-	private static int getUtilityOffensiveCenter(Marble m) {
-		int centerDistance = distanceFromCenter(m);
-
-
-		switch(centerDistance) {
-		case 1: 
-			return 50;
-		case 2:
-			return 38;
-		case 3:
-			return 35;
-		case 4:
-			return 25;
-		case 5:
-			return 20;
-		}
-		return 0;
-	}
-	
-	private static int getUtilityDefensiveKO(boolean aiIsBlack) {
-		
-		int blackMarbles = 14 - g.getWhiteScore();
-		int whiteMarbles = 14 - g.getBlackScore();
-
-		if(aiIsBlack) {
-			switch(blackMarbles) {
-			case 13:
-				return 70;
-			case 12:
-				return 50;
-			case 11:
-				return 40;
-			case 10:
-				return 50;
-			case 9: 
-				return 60;
-			case 8:
-				return 100;
-			}
-		}
-		else {
-			switch(blackMarbles) {
-			case 13:
-				return 70;
-			case 12:
-				return 50;
-			case 11:
-				return 40;
-			case 10:
-				return 50;
-			case 9: 
-				return 60;
-			case 8:
-				return 100;
-			}
-		}
-		return 0;
-	}
-
-	private static int getUtilityOffensiveKO(boolean aiIsBlack) {
-		
-		int blackMarbles = 14 - g.getWhiteScore();
-		int whiteMarbles = 14 - g.getBlackScore();
-
-		if (aiIsBlack) {
-			switch(blackMarbles) {
-			case 13:
-				return 85;
-			case 12:
-				return 70;
-			case 11:
-				return 60;
-			case 10:
-				return 65;
-			case 9: 
-				return 70;
-			case 8:
-				return 100;
-			}
-		}
-		else {
-			switch(blackMarbles) {
-			case 13:
-				return 85;
-			case 12:
-				return 70;
-			case 11:
-				return 60;
-			case 10:
-				return 65;
-			case 9: 
-				return 70;
-			case 8:
-				return 100;
-			}
-		}
-		return 0;
-	}
 	
     /**
      * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
@@ -384,26 +201,26 @@ public class AIPlayer {
         double eval = 0;
 
         // variables to modify for evaluation purposes
-        double ownMarbleVal = 1.0;
-        double oppMarbleVal = 1.0;
+        double ownMarbleVal = 3.0;
+        double oppMarbleVal = 3.5;
 
-        double centerMod = 2.0;
-        double ring1Mod = 1.5;
+        double centerMod = 4.0;
+        double ring1Mod = 3.5;
         double ring2Mod = 1.0;
         double ring3Mod = 0.75;
         double ring4Mod = 0.5;
 
         int dist;
-        double posMod = 1.0;
+        double posMod = 3.0;
 
-        double firstKO = 10.0;
-        double secondKO = 20.0;
-        double thirdKO = 40.0;
-        double fourthKO = 70.0;
+        double firstKO = 70.0;
+        double secondKO = 80.0;
+        double thirdKO = 90.0;
+        double fourthKO = 100.0;
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
         
-        double hexBonus = 50.0;
+        double hexBonus = 0.0;
 
         // counter for enemy marbles still in play, could get this from game score;
         // but I don't know if this method needs to be passed the whole game
