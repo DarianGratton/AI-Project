@@ -177,11 +177,11 @@ public class Move {
         for(Marble m: movedList) {
             sb.append(IODriver.getAlphaChar(m) + "" + m.getNumeric() +", ");        }
 
-        sb.append("direction=" + direction +", ");
+        sb.append("direction = " + direction +", ");
         //sb.append("\nTime: " + this.time);
         sb.append("val: " + this.eval);
         double secTime = this.time / 1000000000;
-        sb.append("time: " + secTime);
+        sb.append(" time: " + secTime);
 
         return sb.toString();
     }

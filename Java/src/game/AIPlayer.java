@@ -180,16 +180,16 @@ public class AIPlayer {
 
         return states;
     }
-    
+
     /**
      * this method returns as an integer the number of spaces away a marble is from the centre of the board
      * @param m
      * @return
      */
-    public static int distanceFromCenter(Marble m){
+    public static int distanceFromCenter(Marble m) {
         //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
         return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
-}
+    }
    
 	/**
 	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
@@ -197,6 +197,183 @@ public class AIPlayer {
 	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
 	 * @return the board state's evaluation
 	 */
+    public static int isAdjacent(Marble m1, Marble adjMarble, Board b, int x, int y) {
+        
+        char color1 = m1.getColor();
+        char color2 = adjMarble.getColor();
+        Board newBoard = Board.copyBoard(b);
+        
+        if (color1 != color2) {
+            return 0;
+        }
+        
+        int number = 1;
+    
+        Marble inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
+//        if (inlineMarble == null || inlineMarble.getColor() != adjMarble.getColor()) {
+//            return 1;
+//        } else {
+//            return 2;
+//        }
+//        
+        while (inlineMarble != null && inlineMarble.getColor() == adjMarble.getColor()) {
+            number++;
+            adjMarble = inlineMarble;
+            inlineMarble = Game.searchBoard(newBoard, adjMarble.getAlpha() + x, adjMarble.getNumeric() + y);
+        }
+        
+        return number;  
+    }
+    
+    public static int isLine(Marble marble, Board b) {
+        
+        int num = 0;
+            
+        for (int i = DIRECTION_MIN; i <= DIRECTION_MAX; i++) {
+            Marble adjMar = Game.checkAdjacent(b, marble, i);
+            while (adjMar != null && adjMar.getColor() == marble.getColor()) {
+                num++;
+                adjMar = Game.checkAdjacent(b, adjMar, i);
+            }
+        }
+            
+//        System.out.println(marble.toString());
+//        System.out.println(num);
+    
+        return num;
+    }
+
+//    public static int distanceFromCenter(Marble m) {
+//		if(RING1.contains(m)) {
+//			return 1;
+//		} else if(RING2.contains(m)) {
+//			return 2;
+//		} else if(RING3.contains(m)) {
+//			return 3;
+//		} else if(RING4.contains(m)) {
+//			return 4;
+//		} else
+//			return 5;
+//	}
+
+	private static int getUtilityDefensiveCenter(Marble m) {
+		int centerDistance = distanceFromCenter(m);
+
+
+		switch(centerDistance) {
+		case 1: 
+			return 50;
+		case 2:
+			return 40;
+		case 3:
+			return 30;
+		case 4:
+			return 20;
+		case 5:
+			return 3;
+		}
+		return 0;
+	}
+	
+	private static int getUtilityOffensiveCenter(Marble m) {
+		int centerDistance = distanceFromCenter(m);
+
+
+		switch(centerDistance) {
+		case 1: 
+			return 50;
+		case 2:
+			return 38;
+		case 3:
+			return 35;
+		case 4:
+			return 25;
+		case 5:
+			return 20;
+		}
+		return 0;
+	}
+	
+	private static int getUtilityDefensiveKO(boolean aiIsBlack) {
+		
+		int blackMarbles = 14 - g.getWhiteScore();
+		int whiteMarbles = 14 - g.getBlackScore();
+
+		if(aiIsBlack) {
+			switch(blackMarbles) {
+			case 13:
+				return 70;
+			case 12:
+				return 50;
+			case 11:
+				return 40;
+			case 10:
+				return 50;
+			case 9: 
+				return 60;
+			case 8:
+				return 100;
+			}
+		}
+		else {
+			switch(blackMarbles) {
+			case 13:
+				return 70;
+			case 12:
+				return 50;
+			case 11:
+				return 40;
+			case 10:
+				return 50;
+			case 9: 
+				return 60;
+			case 8:
+				return 100;
+			}
+		}
+		return 0;
+	}
+
+	private static int getUtilityOffensiveKO(boolean aiIsBlack) {
+		
+		int blackMarbles = 14 - g.getWhiteScore();
+		int whiteMarbles = 14 - g.getBlackScore();
+
+		if (aiIsBlack) {
+			switch(blackMarbles) {
+			case 13:
+				return 85;
+			case 12:
+				return 70;
+			case 11:
+				return 60;
+			case 10:
+				return 65;
+			case 9: 
+				return 70;
+			case 8:
+				return 100;
+			}
+		}
+		else {
+			switch(blackMarbles) {
+			case 13:
+				return 85;
+			case 12:
+				return 70;
+			case 11:
+				return 60;
+			case 10:
+				return 65;
+			case 9: 
+				return 70;
+			case 8:
+				return 100;
+			}
+		}
+		return 0;
+	}
+	
     /**
      * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
      * @param b the current board state
@@ -289,7 +466,6 @@ public class AIPlayer {
         //System.out.println(eval);
         return eval;
     }
-   
     
     public static boolean isHexCluster(Board b, Marble center){
         boolean surrounded = true;
