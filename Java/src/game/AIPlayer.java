@@ -19,149 +19,7 @@ public class AIPlayer {
     private static int MAX_DEPTH = 2;
     private static Move suggestedMove = null;
     private static Game g = new Game();
-	private static final ArrayList<Marble> RING1 = new ArrayList<Marble>() {
-		{
-			add(new Marble(5, 5, true));
-			add(new Marble(5, 5, false));
-		}
-	};
 
-	private static final ArrayList<Marble> RING2 = new ArrayList<Marble>() {
-		{
-			add(new Marble(5, 4, true));
-			add(new Marble(5, 4, false));
-			add(new Marble(6, 5, true));
-			add(new Marble(6, 5, false));
-			add(new Marble(6, 6, true));
-			add(new Marble(6, 6, false));
-			add(new Marble(5, 6, true));
-			add(new Marble(5, 6, false));
-			add(new Marble(4, 5, true));
-			add(new Marble(4, 5, false));
-			add(new Marble(4, 4, true));
-			add(new Marble(4, 4, false));
-		}
-	};
-	private static final ArrayList<Marble> RING3 = new ArrayList<Marble>() {
-		{
-			add(new Marble(7, 5, true));
-			add(new Marble(7, 7, false));
-			add(new Marble(7, 6, true));
-			add(new Marble(7, 6, false));
-			add(new Marble(7, 7, true));
-			add(new Marble(7, 7, false));
-			add(new Marble(6, 7, true));
-			add(new Marble(6, 7, false));
-			add(new Marble(5, 7, true));
-			add(new Marble(5, 7, false));
-			add(new Marble(4, 6, true));
-			add(new Marble(4, 6, false));
-			add(new Marble(3, 5, true));
-			add(new Marble(3, 5, false));
-			add(new Marble(3, 4, true));
-			add(new Marble(3, 4, false));
-			add(new Marble(3, 3, true));
-			add(new Marble(3, 3, false));
-			add(new Marble(4, 3, true));
-			add(new Marble(4, 3, false));
-			add(new Marble(5, 3, true));
-			add(new Marble(5, 3, false));
-			add(new Marble(6, 4, true));
-			add(new Marble(6, 4, false));
-		}
-	};
-	private static final ArrayList<Marble> RING4 = new ArrayList<Marble>() {
-		{
-			add(new Marble(8, 5, true));
-			add(new Marble(8, 5, false));
-			add(new Marble(8, 6, true));
-			add(new Marble(8, 6, false));
-			add(new Marble(8, 7, true));
-			add(new Marble(8, 7, false));
-			add(new Marble(8, 8, true));
-			add(new Marble(8, 8, false));
-			add(new Marble(7, 8, true));
-			add(new Marble(7, 8, false));
-			add(new Marble(6, 8, true));
-			add(new Marble(6, 8, false));
-			add(new Marble(5, 8, true));
-			add(new Marble(5, 8, false));
-			add(new Marble(4, 7, true));
-			add(new Marble(4, 7, false));
-			add(new Marble(3, 6, true));
-			add(new Marble(3, 6, false));
-			add(new Marble(2, 5, true));
-			add(new Marble(2, 5, false));
-			add(new Marble(2, 4, true));
-			add(new Marble(2, 4, false));
-			add(new Marble(2, 3, true));
-			add(new Marble(2, 3, false));
-			add(new Marble(2, 2, true));
-			add(new Marble(2, 2, false));
-			add(new Marble(3, 2, true));
-			add(new Marble(3, 2, false));
-			add(new Marble(4, 2, true));
-			add(new Marble(4, 2, false));
-			add(new Marble(5, 2, true));
-			add(new Marble(5, 2, false));
-			add(new Marble(8, 4, true));
-			add(new Marble(8, 4, false));
-			add(new Marble(6, 3, true));
-			add(new Marble(6, 3, false));
-		}
-	};
-	private static final ArrayList<Marble> RING5 = new ArrayList<Marble>(){
-		{
-			add(new Marble(9, 5, true));
-			add(new Marble(9, 5, false));
-			add(new Marble(9, 6, true));
-			add(new Marble(9, 6, false));
-			add(new Marble(9, 7, true));
-			add(new Marble(9, 7, false));
-			add(new Marble(9, 8, true));
-			add(new Marble(9, 8, false));
-			add(new Marble(9, 9, true));
-			add(new Marble(9, 9, false));
-			add(new Marble(8, 9, true));
-			add(new Marble(8, 9, false));
-			add(new Marble(7, 9, true));
-			add(new Marble(7, 9, false));
-			add(new Marble(6, 9, true));
-			add(new Marble(6, 9, false));
-			add(new Marble(5, 9, true));
-			add(new Marble(5, 9, false));
-			add(new Marble(4, 8, true));
-			add(new Marble(4, 8, false));
-			add(new Marble(3, 7, true));
-			add(new Marble(3, 7, false));
-			add(new Marble(2, 6, true));
-			add(new Marble(2, 6, false));
-			add(new Marble(1, 5, true));
-			add(new Marble(1, 5, false));
-			add(new Marble(1, 4, true));
-			add(new Marble(1, 4, false));
-			add(new Marble(1, 3, true));
-			add(new Marble(1, 3, false));
-			add(new Marble(1, 2, true));
-			add(new Marble(1, 2, false));
-			add(new Marble(1, 1, true));
-			add(new Marble(1, 1, false));
-			add(new Marble(2, 1, true));
-			add(new Marble(2, 1, false));
-			add(new Marble(3, 1, true));
-			add(new Marble(3, 1, false));
-			add(new Marble(4, 1, true));
-			add(new Marble(4, 1, false));
-			add(new Marble(5, 1, true));
-			add(new Marble(5, 1, false));
-			add(new Marble(6, 2, true));
-			add(new Marble(6, 2, false));
-			add(new Marble(7, 2, true));
-			add(new Marble(7, 2, false));
-			add(new Marble(8, 2, true));
-			add(new Marble(8, 2, false));
-		}
-	};
 
     /**
      * This method is responsible for generating a list of possible moves given the current board state
@@ -182,7 +40,7 @@ public class AIPlayer {
             for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
                 Move move = generateMove(g, m, i);
                 if (move != null) {
-                    //move.evaluate(g.getBoard());
+                    move.evaluate(g.getBoard());
                     moves.add(move);
                 }
             }
@@ -195,7 +53,7 @@ public class AIPlayer {
                 for(int i = DIRECTION_MIN; i <= DIRECTION_MAX; ++i){
                     Move move = generateMove(g, m, o, i);
                     if (move != null) {
-                        //move.evaluate(g.getBoard());
+                        move.evaluate(g.getBoard());
                         //System.out.println("before: " + move.toString());
                         moves.add(move);
                         //System.out.println("after: " + move.toString());
@@ -322,7 +180,23 @@ public class AIPlayer {
 
         return states;
     }
-    
+
+    /**
+     * this method returns as an integer the number of spaces away a marble is from the centre of the board
+     * @param m
+     * @return
+     */
+    public static int distanceFromCenter(Marble m) {
+        //System.out.println(m.toString() + " " + Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5)) );
+        return Math.max(Math.abs(m.getAlpha() - 5), Math.abs(m.getNumeric() - 5));
+    }
+   
+	/**
+	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
+	 * @param b the current board state
+	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
+	 * @return the board state's evaluation
+	 */
     public static int isAdjacent(Marble m1, Marble adjMarble, Board b, int x, int y) {
         
         char color1 = m1.getColor();
@@ -369,18 +243,18 @@ public class AIPlayer {
         return num;
     }
 
-    public static int distanceFromCenter(Marble m) {
-		if(RING1.contains(m)) {
-			return 1;
-		} else if(RING2.contains(m)) {
-			return 2;
-		} else if(RING3.contains(m)) {
-			return 3;
-		} else if(RING4.contains(m)) {
-			return 4;
-		} else
-			return 5;
-	}
+//    public static int distanceFromCenter(Marble m) {
+//		if(RING1.contains(m)) {
+//			return 1;
+//		} else if(RING2.contains(m)) {
+//			return 2;
+//		} else if(RING3.contains(m)) {
+//			return 3;
+//		} else if(RING4.contains(m)) {
+//			return 4;
+//		} else
+//			return 5;
+//	}
 
 	private static int getUtilityDefensiveCenter(Marble m) {
 		int centerDistance = distanceFromCenter(m);
@@ -500,77 +374,6 @@ public class AIPlayer {
 		return 0;
 	}
 	
-//	/**
-//	 * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
-//	 * @param b the current board state
-//	 * @param aiIsBlack true if the AI is playing black and false if it is playing white
-//	 * @return the board state's evaluation
-//	 */
-//	public static double evaluateBoard(Board b, boolean aiIsBlack) {
-//		int total = 0;
-//		int centreDistance = 0;
-//		double utilValBlack= 0.0;
-//		double utilValWhite = 0.0;
-//		boolean isOnOffensive = true;
-//		Board testBoard = Board.copyBoard(b);
-//		int blobTotal = 0;
-//		int adjTotal = 0;
-//		int whiteScore = g.getWhiteScore();
-//		int blackScore = g.getBlackScore();
-//		int scoreDiff = 0;
-//		
-//		// If AI is black, score has to be evaluated differently
-//		if(aiIsBlack) {
-//			scoreDiff = blackScore - whiteScore;
-//			if(scoreDiff == 0 || scoreDiff <= -2 || scoreDiff == 1) {
-//				isOnOffensive = true;
-//			} else {
-//				isOnOffensive = false;
-//			}
-//		} else {
-//			scoreDiff = whiteScore - blackScore;
-//			if(scoreDiff == 0 || scoreDiff <= -2 || scoreDiff == 1) {
-//				isOnOffensive = true;
-//			} else {
-//				isOnOffensive = false;
-//			}
-//		}
-//
-//		if(!isOnOffensive) {
-//			
-//			for(Marble m : b) {
-//				//System.out.println(adjTotal);
-//			    adjTotal += isLine(m, testBoard);
-//
-//				if(m.isBlack()) {
-//					utilValBlack += getUtilityDefensiveCenter(m);
-//				}
-//				else {
-//					utilValWhite += getUtilityDefensiveCenter(m);
-//				}
-//			}
-//
-//			//System.out.println("----------FOR DEFENSIVE--------------------------------------" + (utilValBlack) + ": "+ ( utilValWhite) + ": " + getUtilityDefensiveKO(aiIsBlack));
-//			return ((utilValBlack - utilValWhite) + getUtilityDefensiveKO(aiIsBlack));
-//		} else {
-//			
-//			for(Marble m : b) {
-//				//System.out.println(adjTotal);
-//			    adjTotal += isLine(m, testBoard);
-//
-//				if(m.isBlack()) {
-//					utilValBlack += getUtilityOffensiveCenter(m);
-//				}
-//				else {
-//					utilValWhite += getUtilityOffensiveCenter(m);
-//				}
-//			}
-//			
-//			//System.out.println("-----------FOR OFFENSIVE--------------------------------------" + (utilValBlack) + ": "+ ( utilValWhite) + ": " + getUtilityOffensiveKO(aiIsBlack));
-//			return ((utilValWhite - utilValBlack) +  getUtilityOffensiveKO(aiIsBlack));
-//		}
-//	}
-        
     /**
      * This method is responsible for returning a board state's evaluation based on the state of its marbles and the AI's colour
      * @param b the current board state
