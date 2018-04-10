@@ -522,7 +522,7 @@ public class AIPlayer {
     public static double maxMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
 
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 1000.0 || depth > maxDepth) { // replace true with terminal test
+        if(currentEval >= 10000.0 || depth > maxDepth) { // replace true with terminal test
             return currentEval;
         }
         depth++;
@@ -566,7 +566,7 @@ public class AIPlayer {
     public static double minMove(Board current, boolean aiIsBlack, double a, double B, int depth, int maxDepth){
         
         double currentEval = evaluateBoard(current, aiIsBlack);
-        if(currentEval >= 1000.0 || depth >= maxDepth){ // replace true with terminal test
+        if(currentEval >= 10000.0 || depth >= maxDepth){ // replace true with terminal test
             return currentEval;
         }
         depth++;
