@@ -155,7 +155,7 @@ public abstract class Gui {
                 maxDepth++;
                 Move move = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
                 // System.out.println(nextMove.toString());
-                nanoSec = System.nanoTime() - turnStartTest;
+//                nanoSec = System.nanoTime() - turnStartTest;
                 if (nanoSec <= g.getAiTimeLimit()) {
                     nextMove = move;
                     g.setRecommended(nextMove);

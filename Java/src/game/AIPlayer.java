@@ -384,22 +384,23 @@ public class AIPlayer {
         double eval = 0;
 
         // variables to modify for evaluation purposes
-        double ownMarbleVal = 1.0;
-        double oppMarbleVal = 1.0;
-
-        double centerMod = 2.0;
-        double ring1Mod = 1.5;
-        double ring2Mod = 1.0;
-        double ring3Mod = 0.75;
-        double ring4Mod = 0.5;
-
+        double ownMarbleVal = 5.0;
+        double oppMarbleVal = 10.0;
+        
+        //These are assigned to posMod
+        double centerMod = 50.0;
+        double ring1Mod = 30.0;
+        double ring2Mod = 20.0;
+        double ring3Mod = 10.0;
+        double ring4Mod = 0.0;
+        
         int dist;
-        double posMod = 1.0;
-
-        double firstKO = 10.0;
-        double secondKO = 20.0;
-        double thirdKO = 40.0;
-        double fourthKO = 70.0;
+        
+        double posMod = 0;
+        double firstKO = 100.0;
+        double secondKO = 80.0;
+        double thirdKO = 90.0;
+        double fourthKO = 100.0;
         double fifthKO = 150.0;
         double sixthKO = 1000.0;
         
@@ -499,7 +500,7 @@ public class AIPlayer {
                 if(m.getEval() == v){
                     bestMove = m;
                 }
-
+           
                 long newTime = timeTaken + totalTime;
                 bestMove.setTime(newTime);
             }
@@ -528,7 +529,7 @@ public class AIPlayer {
         depth++;
         
         /* Turn time limit should go here as terminal test */
-        //System.out.println("Entered maxMove: " + currentEval);
+        System.out.println("Entered maxMove: " + currentEval);
         double maxEval = -Double.MAX_VALUE;
         
         Game dummy = new Game(current, aiIsBlack);
@@ -571,7 +572,7 @@ public class AIPlayer {
         }
         depth++;
 
-        //System.out.println("Entered minMove: " + currentEval);
+        System.out.println("Entered minMove: " + currentEval);
         double minEval = Double.MAX_VALUE;
         Game dummy = new Game(current, aiIsBlack);
         ArrayList<Move> moves = AIPlayer.genPossibleMoves(dummy, !aiIsBlack);

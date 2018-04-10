@@ -8,7 +8,7 @@ import java.util.TreeSet;
  *
  */
 @SuppressWarnings("serial")
-public class Board extends TreeSet<Marble>{
+public class Board extends TreeSet<Marble> {
 
     private static MarbleComparator mc = new MarbleComparator();
     

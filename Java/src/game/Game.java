@@ -341,6 +341,9 @@ public class Game {
         // the line below breaks shit
         if (activePlayerIsBlack == this.aiIsBlack) {
             Gui.updateRecommended(this, this.aiIsBlack);
+        } else {
+            Gui.killExecutor();
+            System.out.println("Executor Killed");
         }
     }
 
@@ -560,7 +563,7 @@ public class Game {
         }
 
         // pushing first enemy marble
-        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy < pushedFriend){
+        if(adjacent.isBlack() != isBlack && pushedFriend > 0 && pushedEnemy == 0){
 
             pushedEnemy++;
             //System.out.println(pushedEnemy);
@@ -751,7 +754,7 @@ public class Game {
      * @param m
      * @return
      */
-    public boolean sumito(Marble m, boolean activeIsBlack){
+    public boolean sumito(Marble m, boolean activeIsBlack) {
 
         /*if(m.isBlack() == activeIsBlack){ // break the method to prevent suicide
             return false;
@@ -759,14 +762,39 @@ public class Game {
 
         /*System.out.println("in sumito, numMin: " + numMin + " numMax: " + numMax);
         System.out.println("in sumito, alphaMin: " + alphaMin + " alphaMax: " + alphaMax);*/
-        if (outOfBounds(m)) {
+        Marble killme = Game.searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric());
+        if (outOfBounds(killme)) {
             //System.out.println("You've activated my trap card Yugi");
             if (m.isBlack()) {
                 this.blackLost++;
             } else {
                 this.whiteLost++;
             }
-            this.getBoard().remove(m);
+            //this.getBoard().remove(killme);
+            //return true;
+            
+            Board copy = new Board();
+            //Marble killme = Game.searchBoard(this.getBoard(), m.getAlpha(), m.getNumeric());
+            for (Marble mar : this.getBoard()) {
+                if (mar.getAlpha() != killme.getAlpha() 
+                        || mar.getNumeric() != killme.getNumeric()) {
+                    copy.add(mar);
+                }
+            }
+            
+          
+            this.getBoard().clear();
+            
+            for (Marble mar : copy) {
+                this.getBoard().add(mar);
+            }
+            
+            System.out.println("Removing: " + killme.toString());
+            for (Marble mar : this.getBoard()) {
+                System.out.println(mar.toString());
+            }
+            //this.setBoard(copy);
+            
             return true;
         }
 
