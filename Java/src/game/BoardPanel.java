@@ -287,8 +287,10 @@ public class BoardPanel extends JPanel {
                                 	
                                     drawMarbles(b);
                                     repaint();
+                                    if (currActiveTeam == game.isAiBlack()) {
+                                        game.setAiTotalTurnTime(game.isAiBlack());
+                                    }
                                     frame.updateGameFrame(currActiveTeam);
-                                    
                                 }
                             }
 

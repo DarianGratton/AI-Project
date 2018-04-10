@@ -85,7 +85,7 @@ public abstract class Gui {
                 }
             }
             if (g.isAiBlack() == g.activeIsBlack()) {
-                g.addMoveToList(nextMove);
+                g.addMoveToList(getNextMove());
             } else {
                 g.addMoveToList(display);
             }
@@ -127,7 +127,7 @@ public abstract class Gui {
             }
             
             if (g.isAiBlack() == g.activeIsBlack()) {
-                g.addMoveToList(nextMove);
+                g.addMoveToList(getNextMove());
             } else {
                 g.addMoveToList(display);
             }
@@ -160,13 +160,12 @@ public abstract class Gui {
                 // System.out.println(nextMove.toString());
                 nanoSec = System.nanoTime() - turnStartTest;
                 if (nanoSec <= g.getAiTimeLimit()) {
-                    nextMove = move;
-                    g.setRecommended(nextMove);
-                    System.out.println(nextMove.getTime());
-                    g.setTotalTurnTime(g.isAiBlack(), nextMove.getTime() / 1000000000);
+                    setNextMove(move);
+                    g.setRecommended(getNextMove());
                 }
                 GameFrame.updateNextMove(g, nanoSec);
             }
+            System.out.println("Thread Ended");
         });       
         
     }
@@ -188,5 +187,13 @@ public abstract class Gui {
     
     public static long getElapsedTime(){
         return System.nanoTime() - turnStart;
+    }
+
+    public static Move getNextMove() {
+        return nextMove;
+    }
+
+    public static void setNextMove(Move nextMove) {
+        Gui.nextMove = nextMove;
     }
 }

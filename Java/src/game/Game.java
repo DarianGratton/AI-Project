@@ -343,7 +343,6 @@ public class Game {
             Gui.updateRecommended(this, this.aiIsBlack);
         } else {
             Gui.killExecutor();
-            System.out.println("Executor Killed");
         }
     }
 
@@ -835,6 +834,20 @@ public class Game {
             totalBlackTime += turnTimer;
         } else {
             totalWhiteTime += turnTimer;
+        }
+    }
+    
+    public void setAiTotalTurnTime(boolean aiIsBlack) {
+        if (aiIsBlack) {
+            totalBlackTime = 0;
+            for (int i = 0; i < this.getBlackMoves().size(); ++i) {
+                totalBlackTime += (this.getBlackMoves().get(i).getTime() / 1000000000);
+            }
+        } else {
+            totalWhiteTime = 0;
+            for (int i = 0; i < this.getBlackMoves().size(); ++i) {
+                totalWhiteTime += (this.getWhiteMoves().get(i).getTime() / 1000000000);
+            }
         }
     }
     
