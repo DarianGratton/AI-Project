@@ -3,6 +3,7 @@ package game;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.text.DecimalFormat;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
@@ -88,13 +89,15 @@ public class MarblePanel extends JPanel {
     }
     
     public void updateTotalTurnTimer(boolean activePlayerIsBlack) {
-    	totalTurnTime.setText("Total time: " + game.getTotalTurnTime(activePlayerIsBlack) );
+        DecimalFormat dec = new DecimalFormat("#0.00");
+    	totalTurnTime.setText("Total time: " + dec.format(game.getTotalTurnTime(activePlayerIsBlack)));
     }
     
     public void removeStats() {
         turnNumLabel.setText("Total # of Moves: " 
                     + game.getWhiteMoves().size());
         scoreLabel.setText(Integer.toString(game.getWhiteScore()));
+        totalTurnTime.setText("Total time: " + 0.0); 
     }
 
     /**

@@ -117,13 +117,13 @@ public abstract class Gui {
             if(activeIsBlack) {
                 if (!g.isAiBlack()) {
                     display.setTime(blackTimer.getTimerAsOne() * 1000000000);
+                    g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
                 }
-                g.setTotalTurnTime(activeIsBlack, blackTimer.getTimerAsOne());
             } else {
                 if (g.isAiBlack()) {
                     display.setTime(whiteTimer.getTimerAsOne() * 1000000000);
+                    g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
                 }
-                g.setTotalTurnTime(activeIsBlack, whiteTimer.getTimerAsOne());
             }
             
             if (g.isAiBlack() == g.activeIsBlack()) {
@@ -151,7 +151,7 @@ public abstract class Gui {
             System.out.println("Thread begun");
             long nanoSec = 0;
             int maxDepth = 0;
-            int depthLimit = 5;
+            int depthLimit = 4;
             long turnStartTest = System.nanoTime();
             while (nanoSec <= g.getAiTimeLimit() && maxDepth <= depthLimit) {
                 nanoSec = System.nanoTime() - turnStartTest;
@@ -162,7 +162,8 @@ public abstract class Gui {
                 if (nanoSec <= g.getAiTimeLimit()) {
                     nextMove = move;
                     g.setRecommended(nextMove);
-                    g.setTotalTurnTime(g.isAiBlack(), nextMove.getTime());
+                    System.out.println(nextMove.getTime());
+                    g.setTotalTurnTime(g.isAiBlack(), nextMove.getTime() / 1000000000);
                 }
                 GameFrame.updateNextMove(g, nanoSec);
             }

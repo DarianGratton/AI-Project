@@ -787,12 +787,6 @@ public class Game {
                 this.getBoard().add(mar);
             }
 
-            System.out.println("Removing: " + killme.toString());
-            for (Marble mar : this.getBoard()) {
-                System.out.println(mar.toString());
-            }
-            //this.setBoard(copy);
-
             return true;
         }
         return false;
