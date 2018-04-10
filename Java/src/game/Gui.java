@@ -150,7 +150,7 @@ public abstract class Gui {
             int maxDepth = 0;
             int depthLimit = 5;
             long turnStartTest = System.nanoTime();
-            while (nanoSec <= g.getAiTimeLimit() || maxDepth <= depthLimit) {
+            while (nanoSec <= g.getAiTimeLimit() && maxDepth <= depthLimit) {
                 nanoSec = System.nanoTime() - turnStartTest;
                 maxDepth++;
                 Move move = AIPlayer.alphaBetaSearch(g, aiIsBlack, maxDepth, nanoSec);
